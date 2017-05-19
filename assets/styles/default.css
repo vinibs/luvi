@@ -1,0 +1,36 @@
+@font-face { 
+    font-family: "OpenSans Light"; 
+    src: url("../fonts/OpenSans-Light.eot"), url("../fonts/OpenSans-Light.ttf");
+    font-weight: lighter; 
+}
+
+body {
+	font-family: "OpenSans Light", sans-serif;
+	text-align: center;
+}
+
+a, a:visited {
+	color: rgba(100,100,255,0.7);
+}
+
+#maintitle {
+	display: block;
+	font-size: 28px;	
+	text-transform: uppercase;
+	margin-top: 15%;
+}
+
+#maintitle h1 {
+	font-size: 72pt;
+	margin: 5px;
+}
+
+#maintitle h2 {
+	font-size: 22pt;
+	font-weight: lighter;
+	color: rgb(170,170,170);
+}
+
+.upper {
+	text-transform: uppercase;
+}

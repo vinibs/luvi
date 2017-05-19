@@ -1,0 +1,2282 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Documentação Luvi</title>
+	<meta charset="utf-8">
+	<meta name="author" content="Vinicius Baroni Soares">
+	<link rel="stylesheet" type="text/css" href="docstyle.css">
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
+</head>
+<body>
+	<div id="sidebar">
+		<a href="#"><h3>Início</h3></a>
+		<a href="#basicstructure"><h3>Etrutura básica</h3></a>
+		<a href="#nomenclature"><h3>Nomenclaturas</h3></a>
+		<a href="#sysconst"><h3>Constantes do sistema</h3></a>
+		<ul class="nolist">
+			<a href="#constbase"><li>Const. Base</li></a>
+			<a href="#constsession"><li>Const. Sessão</li></a>
+			<a href="#constdb"><li>Const. Banco de Dados</li></a>
+			<a href="#constemail"><li>Const. E-mail</li></a>
+		</ul>
+		<a href="#routes"><h3>Rotas</h3></a>
+		<ul class="nolist">
+			<a href="#autoroutes"><li>Rotas automáticas</li></a>
+			<a href="#customroutes"><li>Rotas personalizadas</li></a>
+			<a href="#paramroutes"><li>Rotas com argumentos</li></a>
+		</ul>
+		<a href="#errormessages"><h3>Mensagens de erro do sistema</h3></a>
+		<ul class="nolist">
+			<a href="#changetext"><li>Alterar texto das mensagens</li></a>
+			<ul class="nolist">
+				<a href="#changevalidationmsg"><li>Validação de dados</li></a>
+				<a href="#changeauthmsg"><li>Autenticação de usuário</li></a>
+				<!-- <a href="#modelinit"><li>Inicialização</li></a> -->
+			</ul>
+		</ul>
+		<a href="#controllers"><h3>Controllers</h3></a>
+		<ul class="nolist">
+			<a href="#mainpage"><li>Página principal</li></a>
+			<a href="#getrequest"><li>getRequest()</li></a>
+			<a href="#getparams"><li>Parâmetros GET</li></a>
+		</ul>	
+		<a href="#loadfunc"><h3>Inclusão de componentes</h3></a>
+		<ul class="nolist">
+			<a href="#load"><li><i>load()</i></li></a>
+			<a href="#view"><li><i>view()</i></li></a>
+			<a href="#model"><li><i>model()</i></li></a>
+		</ul>
+		<a href="#views"><h3>Views</h3></a>
+		<ul class="nolist">
+			<a href="#viewinclude"><li>Inclusão de views</li></a>
+			<a href="#viewvarpass"><li>Passagem de dados</li></a>
+		</ul>
+		<a href="#models"><h3>Models</h3></a>
+		<ul class="nolist">
+			<a href="#modelcreate"><li>Criação de um model</li></a>
+			<a href="#primarykey"><li>Chave primária</li></a>
+			<a href="#modelinit"><li>Inicialização</li></a>
+			<a href="#modeltoarray"><li>toArray()</li></a>
+			<a href="#modeljsonserialize"><li>jsonSerialize()</li></a>
+		</ul>
+		<a href="#database"><h3>Banco de Dados</h3></a>
+		<ul class="nolist">
+			<a href="#dbretrieve"><li>Consultas</li></a>
+			<ul class="nolist">
+				<a href="#dbget"><li><i>get()</i></li></a>
+				<a href="#dball"><li><i>all()</i></li></a>
+				<a href="#dbselect"><li><i>select()</i></li></a>
+				<a href="#dbwhere"><li><i>where()</i></li></a>
+				<a href="#dborderby"><li><i>orderBy()</i></li></a>
+				<a href="#dbextrasql"><li><i>extraSql()</i></li></a>
+			</ul>
+			<a href="#dbinsertupdate"><li>Inserção e atualização</li></a>
+			<ul class="nolist">
+				<a href="#dbsave"><li><i>save()</i></li></a>
+			</ul>
+			<a href="#dbexclusion"><li>Exclusão</li></a>
+			<ul class="nolist">
+				<a href="#dbdelete"><li><i>delete()</i></li></a>
+			</ul>
+			<a href="#dbclass"><li>Classe DB</li></a>
+			<ul class="nolist">
+				<a href="#dbclassselect"><li><i>DB->select()</i></li></a>
+				<a href="#dbclasswhere"><li><i>DB->where()</i></li></a>
+				<a href="#dbclasssave"><li><i>DB::save()</i></li></a>
+				<a href="#dbclassdelete"><li><i>DB::delete()</i></li></a>
+			</ul>
+		</ul>
+		<a href="#authentication"><h3>Autenticação</h3></a>
+		<ul class="nolist">
+			<a href="#dologin"><li>Auth::doLogin()</li></a>
+			<a href="#dologout"><li>Auth::doLogout()</li></a>
+			<a href="#doregister"><li>Auth::doRegister()</li></a>
+			<a href="#createauthsession"><li>Auth::createAuthSession()</li></a>
+			<a href="#setrestricted"><li>Auth::setRestricted()</li></a>
+			<a href="#islogged"><li>Auth::isLogged()</li></a>
+			<a href="#getloggeduser"><li>Auth::getLoggedUser()</li></a>
+			<a href="#bindauth"><li>Auth::bindAuth()</li></a>
+			<a href="#counttries"><li>Auth::countTries()</li></a>
+			<a href="#hashpassword"><li>Auth::hashPassword()</li></a>
+			<a href="#passwordreset"><li>Redefinição de senha</li></a>
+			<ul class="nolist">
+				<a href="#requestpassreset"><li>Auth::requestPassReset()</li></a>
+				<a href="#checktoken"><li>Auth::checkToken()</li></a>
+				<a href="#resendemail"><li>Auth::resendEmail()</li></a>
+				<a href="#changepassword"><li>Auth::changePassword()</li></a>
+			</ul>
+		</ul>
+		<a href="#email"><h3>E-mail</h3></a>
+		<ul class="nolist">
+			<a href="#mailsetfrom"><li>Mail->setFrom()</li></a>
+			<a href="#mailsetfromname"><li>Mail->setFromName()</li></a>
+			<a href="#mailsetto"><li>Mail->setTo()</li></a>
+			<a href="#mailsetsubject"><li>Mail->setSubject()</li></a>
+			<a href="#mailsetcontent"><li>Mail->setContent()</li></a>
+			<a href="#mailgetfrom"><li>Mail->getFrom()</li></a>
+			<a href="#mailgetfromname"><li>Mail->getFromName()</li></a>
+			<a href="#mailgetto"><li>Mail->getTo()</li></a>
+			<a href="#mailgetsubject"><li>Mail->getSubject()</li></a>
+			<a href="#mailgetcontent"><li>Mail->getContent()</li></a>
+			<a href="#mailsend"><li>Mail->send()</li></a>
+		</ul>
+		<a href="#sessionfunc"><h3>Sessões e Cookies</h3></a>
+		<ul class="nolist">
+			<a href="#session"><li><i>session()</i></li></a>
+			<a href="#flash"><li><i>flash()</i></li></a>
+			<a href="#cookie"><li><i>cookie()</i></li></a>
+			<a href="#unsetcookie"><li><i>unsetcookie()</i></li></a>
+		</ul>
+		<a href="#forms"><h3>Formulários</h3></a>
+		<ul class="nolist">
+			<a href="#oldval"><li><i>oldVal()</i></li></a>
+			<a href="#getinputerrors"><li><i>getInputErrors()</i></li></a>
+		</ul>
+		<a href="#formfunc"><h3>Processamento de Formulários</h3></a>
+		<ul class="nolist">
+			<a href="#filterpost"><li><i>filterPost()</i></li></a>
+			<a href="#filterput"><li><i>filterPut()</i></li></a>
+			<a href="#filterget"><li><i>filterGet()</i></li></a>
+			<a href="#orderfiles"><li><i>orderFiles()</i></li></a>
+			<a href="#withvalues"><li><i>withValues()</i></li></a>
+			<a href="#witherrors"><li><i>withErrors()</i></li></a>
+		</ul>
+		<a href="#validfunc"><h3>Validação de Formulários</h3></a>
+		<ul class="nolist">
+			<a href="#validcheckfunc"><li><i>Validation::check()</i></li></a>
+			<a href="#valrules"><li><i>Opções de validação</i></li></a>
+		</ul>
+		<a href="#redirfunc"><h3>Redirecionamento</h3></a>
+		<ul class="nolist">
+			<a href="#redirect"><li><i>redirect()</i></li></a>
+			<a href="#back"><li><i>back()</i></li></a>
+			<a href="#joinuse"><li><i>Uso conjunto</i></li></a>
+			<ul class="nolist">
+				<a href="#redirwithval"><li><i>redirect + withValues</i></li></a>
+				<a href="#redirwitherr"><li><i>redirect + withErrors</i></li></a>
+				<a href="#redirwithvalerr"><li><i>redirect + withValues + withErrors</i></li></a>
+				<a href="#redirflash"><li><i>redirect + flash</i></li></a>
+				<a href="#redirsession"><li><i>redirect + session</i></li></a>
+				<a href="#redircookie"><li><i>redirect + cookie</i></li></a>
+				<a href="#redirunsetcookie"><li><i>redirect + unsetcookie</i></li></a>
+			</ul>
+		</ul>
+		<a href="#utilfunc"><h3>Funções utilitárias</h3></a>
+		<ul class="nolist">
+			<a href="#dump"><li><i>dump()</i></li></a>
+			<a href="#dd"><li><i>dd()</i></li></a>
+		</ul>
+	</div>
+
+	<div id="content">
+		<span class="maintitle">
+			<h1>Luvi</h1>
+			<h2>
+				Foco na simplicidade.
+			</h2>
+		</span>
+
+
+		<br><br><br>
+
+		
+		<a name="basicstructure"><h2>Estrutura básica</h2></a>
+		<p>
+			Uma vez colocados os arquivos base do sistema em um diretório para iniciar o desenvolvimento,
+			basta criar os controllers, models, views e arquivos como CSS e JavaScript, armazenando-os
+			nas respectivas pastas do sistema para começar a criar algo incrível.
+		</p>
+		<p>
+			A estrutura básica não é muito grande ou complexa. Ainda assim, merece atenção para que 
+			cada componente esteja em seu devido lugar durante o desenvolvimento da aplicação.
+		</p>
+		<p>
+			A relação dos diretórios padrão é a seguinte: 
+		</p>
+		<span class="dirtree">
+		<ul>
+			<li>/ <i class="grayfont" style="font-weight: lighter;">(raiz do sistema)</i></li>
+			<ul>
+				<li>app <i class="comment">&nbsp;&nbsp;// Estrutura básica do sistema</i></li>
+				<ul>
+					<li>controllers <i class="comment">&nbsp;&nbsp;// Destinada a armazenamento de controllers</i></li>
+					<ul>
+						<li class="treefile">MainController.php</li>
+					</ul>
+					<li>models <i class="comment">&nbsp;&nbsp;// Destinada a armazenamento de models</i></li>
+					<li>system <i class="comment">&nbsp;&nbsp;// Componentes essenciais do sistema</i></li>
+					<ul>
+						<li>base</li>
+						<ul>
+							<li class="treefile">Controller.php  <i class="comment">&nbsp;&nbsp;// Controller básico</i></li>
+							<li class="treefile">Model.php  <i class="comment">&nbsp;&nbsp;// Model básico</i></li>
+						</ul>
+						<li>components  <i class="comment">&nbsp;&nbsp;// Contém classes essenciais ao sistema</i></li>
+						<ul>
+							<li class="treefile">DB.php</li>
+							<li class="treefile">Mail.php</li>
+							<li class="treefile">Validation.php</li>
+						</ul>
+						<li>core</li>
+						<ul>
+							<li class="treefile">App.php <i class="comment">&nbsp;&nbsp;// Classe principal do sistema</i></li>
+							<li class="treefile">Auth.php  <i class="comment">&nbsp;&nbsp;// Classe com os métodos de autenticação</i></li>
+							<li class="treefile">RequestInfo.php  <i class="comment">&nbsp;&nbsp;// Processa as URLs e direciona os conteúdos</i></li>
+							<li class="treefile">SystemFunctions.php  <i class="comment">&nbsp;&nbsp;// Globaliza as funções principais do sistema</i></li>
+						</ul>
+						<li>lib <i class="comment">&nbsp;&nbsp;// Contém as bibliotecas essenciais para o sistema</i></li>
+							<ul>
+								<li>PHPMailer</li>
+								<ul>
+									<li class="treefile"><i class="grayfont">(Conteúdo da biblioteca)</i></li>
+								</ul>
+							</ul>
+						<li class="treefile">Routes.php <i class="comment">&nbsp;&nbsp;// Contém as rotas personalizadas</i></li>
+						<li class="treefile">SystemData.php <i class="comment">&nbsp;&nbsp;// Contém as constantes do sistema</i></li>
+					</ul>
+					<li>views <i class="comment">&nbsp;&nbsp;// Destinada a armazenamento de views</i></li>
+					<ul>
+						<li>error</li>
+						<ul>
+							<li class="treefile">404.php</li>
+						</ul>
+						<li class="treefile">Default.php</li>
+					</ul>
+				</ul>
+				<li>assets <i class="comment">&nbsp;&nbsp;// Arquivos para exibição pública</i></li>
+				<ul>
+					<li>fonts</li>
+					<ul>
+						<li class="treefile">OpenSans-Light.eot</li>
+						<li class="treefile">OpenSans-Light.ttf</li>
+					</ul>
+					<li>images</li>
+					<li>scripts</li>
+					<li>styles</li>
+					<ul>
+						<li class="treefile">default.css</li>
+					</ul>
+					<li>uploads</li>
+				</ul>
+				<li>doc <i class="comment">&nbsp;&nbsp;// Documentação do sistema</i></li>
+				<ul>
+					<li class="treefile">docstyle.css</li>
+					<li class="treefile">index.html</li>
+				</ul>
+				<li class="treefile">.htaccess</li>
+				<li class="treefile">index.php</li>
+				<li class="treefile">LICENSE</li>
+				<li class="treefile">robots.txt</li>
+			</ul>
+		</ul>
+		</span>
+
+
+		<br><br>
+
+		
+		<a name="nomenclature"><h2>Nomenclaturas</h2></a>
+		<p>
+			O padrão de nomes adotado define que todo e qualquer controller deve possuir a primeira
+			letra de seu nome maiúscula e que deve terminar com o termo "Controller" - sem aspas e 
+			também com a letra C maiúscula. Isso se aplica <b>tanto ao arquivo quanto ao nome da
+			classe</b>.
+		</p>
+		<p>
+			Portanto, para criar um controller que seria originalmente chamado de, por exemplo, 
+			<b>"usuario"</b>, o nome do arquivo e da classe deve ser <b>"UsuarioController"</b>.
+		</p>
+		<p>
+			Para toda e qualquer classe é recomendado definir seu nome com a primeira letra maiúscula,
+			em sintonia com o padrão dos controllers. <b>Tanto para o arquivo quanto para o nome da
+			classe</b>.
+		</p>
+		<p>
+			Para views, é recomendado utilizar a primeira letra maiúscula no nome do arquivo.
+		</p>
+		<p>
+			No banco de dados, cada tabela deve ter exatamente o mesmo nome dos models equivalentes,
+			sem a necessidade de serem idênticos quanto às letras maiúsculas e minúsculas.
+		</p>
+		<p>
+			Quanto aos atributos das tabelas, <b>o padrão adotado para a chave primária é "id"</b>.
+		</p>
+		<p class="obs">
+			<b>Observação:</b> ao realizar uma chamada aos arquivos, como, por exemplo, pelas funções
+			<a href="#load">load()</a>, <a href="#view">view()</a> ou <a href="#model">model()</a>,
+			utilize o nome dos arquivos exatamente como foram definidos (com as letras maiúsculas e
+			minúsculas), para evitar erros ao incluí-los.
+		</p>
+
+
+		<br>
+
+		
+		<a name="sysconst"><h2>Constantes do sistema</h2></a>
+		<p>
+			O arquivo <b>/app/<wbr>system/<wbr>SystemData.php</b> contém as constantes que são utilizadas pelo
+			sistema na configuração de determinados recursos.
+		</p>
+		<p>
+			Estas constantes devem ser alteradas de acordo com o projeto, definindo os parâmetros de
+			configuração com o banco de dados, as configurações do sistema de e-mails, dados referentes
+			à sessão criada pelo sistema e informações sobre o caminho da raiz do projeto.
+		</p>
+		<p>
+			Seguem maiores detalhes sobre as constantes do sistema que devem ser alteradas de acordo
+			com o projeto:
+		</p>
+		<a name="constbase"><h3>Const. Base</h3></a>
+		<span class="pregroup">
+			<pre>define('SYSROOT', '/'); <i class="comment">// Define a raiz da aplicação em relação à raiz do servidor</i></pre>
+		</span>
+		<br>
+		<a name="constsession"><h3>Const. Sessão</h3></a>
+		<span class="pregroup">
+			<pre>define('SESSION_NAME', 'Application'); <i class="comment">// Define o nome da sessão</i></pre>
+			<pre>define('SESSION_HTTP_ONLY', 1); <i class="comment">// Propriedade HTTP_Only dos cookies de sessão (1 = TRUE, 0 = FALSE)</i></pre>
+			<pre>define('SESSION_ACTIVITY_TIME', 5); <i class="comment">// Tempo de inatividade até que seja realizado o logout do usuário (0 = não faz o logout automático)</i></pre>
+		</span>
+		<br>
+		<a name="constdb"><h3>Const. Banco de Dados</h3></a>
+		<span class="pregroup">
+			<pre>define('DB_HOST', 'localhost'); <i class="comment">// Endereço do host do banco de dados</i></pre>
+			<pre>define('DB_USER', 'user'); <i class="comment">// Nome de usuário no banco de dados</i></pre>
+			<pre>define('DB_PASS', '123'); <i class="comment">// Senha do usuário no banco de dados</i></pre>
+			<pre>define('DB_NAME', 'MyDatabase'); <i class="comment">// Nome do banco de dados a ser utilizado</i></pre>
+		</span>
+		<p>
+			Base de conexão ao banco de dados: <b>PDO</b>. Certifique-se de tê-lo habilitado.
+		</p>
+		<br>
+		<a name="constemail"><h3>Const. E-mail</h3></a>
+		<span class="pregroup">
+			<pre>define('MAIL_FROM_NAME', 'David'); <i class="comment">// Atalho para o nome a ser exibido como remetente do e-mail</i></pre>
+			<br>
+			<pre>define('SMTP_HOST', 'smtp.email.com'); <i class="comment">// Endereço do servidor SMTP</i></pre>
+			<pre>define('SMTP_PORT', '465'); <i class="comment">// Porta do servidor SMTP</i></pre>
+			<pre>define('SMTP_USER', 'Username'); <i class="comment">// Usuário no servidor SMTP</i></pre>
+			<pre>define('SMTP_PASS', 'Password'); <i class="comment">// Senha no servidor SMTP</i></pre>
+			<pre>define('SMTP_SECURE', 'ssl'); <i class="comment">// Tipo de segurança do servidor SMTP ('tls' ou 'ssl')</i></pre>
+			<pre>define('SMTP_AUTH', TRUE); <i class="comment">// Define se o servidor SMTP exige autenticação</i></pre>
+		</span>
+		<p>
+			Base de envio de e-mails: <b>PHPMailer</b>.
+		</p>
+
+
+		<br><br>
+
+
+		<a name="routes"><h2>Rotas</h2></a>
+		<p>
+			As rotas sempre encaminharão o visitante para a função <b><i>"method"</i></b> da classe
+			<b><i>"controller"</i></b>, passando os argumentos <b><i>"id"</i></b> e 
+			<b><i>"param"</i></b>, quando houver, representados nos exemplos abaixo.
+		</p>
+		<br>
+		<a name="autoroutes"><h3>Rotas automáticas</h3></a>
+		<p>	
+			As rotas são definidas automaticamente com base na URL conforme o seguinte padrão:
+		</p>
+		<span class="pregroup">
+			<pre><span class="grayfont">http://baseurl/</span>controller/method/id/param1/param2/...</pre>
+		</span>
+		<p>
+			Portanto, o primeiro parâmetro passado pela URL é referente ao <b>controller</b>, o segundo
+		 	refere-se ao <b>método</b> e, a partir do terceiro parâmetro, são definidas as <b>variáveis
+		 	passadas ao sistema por meio do método GET</b>, sendo a primeira delas referente ao ID e as
+		 	demais indexadas como variáveis qualquer.
+	 	</p>
+	 	<br>
+	 	<a name="customroutes"><h3>Rotas personalizadas</h3></a>
+	 	<p>
+	 		Podem também ser definidas rotas personalizadas ao editar o arquivo 
+	 		<b>/app/<wbr>system/<wbr>Routes.php</b> e adicionando a rota ao vetor <b>$route</b>
+	 		conforme o padrão:
+ 		</p>
+		<span class="pregroup">
+	 		<pre>$route['URL'] = 'Controller/Method';</pre>
+	 	</span>
+	 	<br>
+	 	<p>
+	 		Observe que <b>URL</b> deve ser definida como um caminho relativo a partir da raiz, como
+	 		nos exemplos abaixo:
+	 	</p>
+	 	<span class="pregroup">
+		 	<pre>$route['user/restrictedarea'] = 'ExampleController/example';</pre>
+		 	<pre>$route['/user/restrictedarea'] = 'ExampleController/example';</pre>
+		 	<pre>$route['/user/restrictedarea/'] = 'ExampleController/example';</pre>
+			<pre>$route['user/restrictedarea/'] = 'ExampleController/example';</pre>
+		</span>
+		<p>
+			Todos os exemplos representam a mesma rota.
+		</p>
+		<p>
+			Para direcionar uma rota ao método <b>index</b> de um controller, é possível definir o
+			valor da rota como apenas o controller, sem o método. Por exemplo, ao invés de
+			<b>ExampleController/index</b>, é também possível definir como <b>ExampleController</b> e
+			obter o mesmo efeito.
+		</p>
+		<p class="obs">
+			<b>Observação:</b> As rotas mais abaixo no arquivo sobrescrevem as anteriores, portanto,
+			se houver uma rota <b>'/page/?'</b> e, mais abaixo, uma rota <b>'/page/<wbr>newpage'</b>,
+			a primeira será sobrescrita pela segunda e não funcionará.
+		</p>
+		<br>
+		<a name="paramroutes"><h3>Rotas com argumentos</h3></a>
+		<p>
+			É possível determinar quando uma rota <b>deve receber as variáveis GET</b> passadas como 
+			argumentos da URL adicionando um '?' (sem aspas) à rota, conforme o padrão:
+		</p>
+		<span class="pregroup">
+			<pre>$route['posts/?'] = 'PostsController/show';</pre>
+		</span>
+		<p>
+			Dessa forma, todo e qualquer parte da URL vinda depois de 'posts' será traduzida para uma
+			variável passada à função determinada na rota.
+		</p>
+		<p>
+			No caso de serem passados mais de um dado, o primeiro sempre será definido, na variável
+			passada à função, com o índice <b>'id'</b>. Por exemplo, a URL 
+			<b>'posts/<wbr>12/<wbr>14/<wbr>feb/<wbr>2017'</b> irá resultar em um vetor semelhante a:
+		</p>
+		<span class="pregroup">
+			<pre>$param = array(</pre>
+			<pre>    0 => '14',</pre>
+			<pre>    1 => 'feb',</pre>
+			<pre>    2 => '2017',</pre>
+			<pre>    id => '12'</pre>
+			<pre>);</pre>
+		</span>
+		<p>
+			Observe que o nome da variável é definido pelo nome do argumento recebido pelo método do 
+			controller que o receberá.
+		</p>
+		<p>
+			Portanto, se a função for definida como <b>show ($get) { ... }</b>, o nome do vetor
+			passado será <b>$get</b>, e não $param.
+		</p>
+
+
+		<br><br>
+		
+
+		<a name="errormessages"><h2>Mensagens de erro do sistema</h2></a>
+		<p>
+			Por padrão, existem algumas mensagens de erro que são utilizadas nas validações realizadas
+			pelas funções aqui descritas.
+		</p>
+		<p>
+			Por exemplo, quando é encontrado um erro pela função 
+			<a href="#validcheckfunc">Validation::check()</a> e são retornados, ao formulário, os
+			erros encontrados no preenchimento dos mesmos, são essas mensagens de erro que são exibidas
+			para o usuário.
+		</p>
+		<br>
+		<a name="changetext"><h3>Alterar texto das mensagens</h3></a>		
+		<p>
+			É possível alterar o texto das mensagens, indo diretamente ao arquivo ao qual pertence
+			a função que a utiliza.
+		</p><br>
+		<div class="lv2-content">
+			<a name="changevalidationmsg"><b>Validação de dados</b></a>
+			<p>
+				Para alterar as mensagens de validação de dados, vá até o arquivo 
+				<b>app/<wbr>system/<wbr>components/<wbr>Validation.php</b> e procure pelas definições
+				das variáveis <b>$message</b>.
+			</p>
+			<p>
+				Tais variáveis estão dispostas da seguinte maneira (o número da linha pode variar):
+			</p>
+			<span class="pregroup">
+				<pre> 43| <b>$message</b> = '...'; <i class="comment">// Caso um campo seja obrigatório e não tenha sido preenchido</i></pre>
+				<pre> 51| <b>$message</b> = '...'; <i class="comment">// Caso um valor deva ser um número inteiro</i></pre>
+				<pre> 59| <b>$message</b> = '...'; <i class="comment">// Caso um valor deva ser um número decimal</i></pre>
+				<pre> 67| <b>$message</b> = '...'; <i class="comment">// Caso um valor deva ser composto de apenas letras e espaço</i></pre>
+				<pre> 75| <b>$message</b> = '...'; <i class="comment">// Caso um valor deva ser composto de apenas letras, números e espaço</i></pre>
+				<pre> 83| <b>$message</b> = '...'; <i class="comment">// Caso um valor deva ser um endereço de e-mail com sintaxe válida</i></pre>
+				<pre> 93| <b>$message</b> = '...'; <i class="comment">// Caso um valor não tenha o número mínimo de caracteres, definido por <b>$rulepart[1]</b></i></pre>
+				<pre>102| <b>$message</b> = '...'; <i class="comment">// Caso um valor ultrapasse o número máximo de caracteres, definido por <b>$rulepart[1]</b></i></pre>
+				<pre>110| <b>$message</b> = '...'; <i class="comment">// Caso um campo não seja igual a um dado outro campo, definido por <b>$rulepart[1]</b></i></pre>
+			</span>
+			<p>
+				<b>Lembrando que <i>$field</i>, presente em todas as mensagens, representa o nome do 
+				campo do qual se trata quando a mensagem é retornada.</b>
+			</p>
+			<p>
+				Por exemplo, se, ao analisar um campo nomeado <b><i>username</i></b> que é obrigatório
+				e não esteja preenchido, é retornada a seguinte mensagem, sendo que <b>$field</b> é 
+				responsável por exibir o nome do campo:
+			</p>
+			<span class="pregroup">
+				<pre>"username" deve ser preenchido</pre>
+			</span>
+			<br>
+			<a name="changeauthmsg"><b>Autenticação de usuário</b></a>
+			<p>
+				Para alterar as mensagens de validação de dados, vá até o arquivo 
+				<b>/app/<wbr>system/<wbr>core/<wbr>Auth.php</b> e procure pelas definições de 
+				variáveis que contenham <i><b>"Msg</b></i> em seu nome.
+			</p>
+			<p>
+				Tais variáveis estão dispostas da seguinte maneira (o número da linha pode variar):
+			</p>
+			<span class="pregroup">
+				<pre> 17| <b>$noUserMsg</b> = '...'; <i class="comment">// Caso o usuário buscado não exista no banco de dados</i></pre>
+				<pre> 18| <b>$wrongPassMsg</b> = '...'; <i class="comment">// Caso a senha digitada esteja incorreta</i></pre>
+				<pre> 81| <b>$usedUserMsg</b> = '...'; <i class="comment">// Caso o usuário digitado não esteja disponível para registro</i></pre>
+			</span>
+		</div>
+
+
+		<br><br>
+		
+
+		<a name="controllers"><h2>Controllers</h2></a>
+		<p>
+			Todos os conrollers criados devem extender o controller principal <b>"Controller"</b>. 
+			Os controllers fazem a conexão entre os dados armazenados (obtendo-os através dos models) e
+			sua exibição (a partir das views).
+		</p>
+		<p>
+			Os controllers devem ser armazenados no diretório <b>/app/<wbr>controllers</b> e devem ter
+			a primeira letra de seu nome maiúscula, seguida da palavra <b>Controller</b>.
+		</p>
+		<span class="pregroup">
+			<pre>class SomeController extends <i><b>Controller</b></i> { ... }</pre>
+		</span>
+		<p>
+			É importante ressaltar que cada função representa o método para o qual a URL direcionará.
+		</p>
+		<p>
+			Assim, uma função <b>index</b> em um controller qualquer, será responsável por atender a 
+			URL quando um método não for definido. Por exemplo, ao entrar com a URL 
+			<b>mysite.com/<wbr>user</b>, a função <b>index</b> do controller <b>User</b> processará a 
+			requisição (assumindo-se o uso das <a href="#autoroutes">rotas automáticas</a>).
+		</p>
+		<span class="pregroup">
+			<pre>mysite.com/user <i class="comment">// Essa URL será processada pela seguinte função:</i></pre>
+			<pre>class <b>UserController</b> extends <i>Controller</i> { </pre>
+			<pre>   public function <b>index</b> () { ... } </pre>
+			<pre>} </pre>
+			<br>
+			<pre>mysite.com/user/register <i class="comment">// Essa URL será processada pela seguinte função:</i></pre>
+			<pre>class <b>UserController</b> extends <i>Controller</i> { </pre>
+			<pre>   public function <b>register</b> () { ... } </pre>
+			<pre>} </pre>
+		</span>
+		<br>		
+		<a name="mainpage"><h3>Página principal</h3></a>
+		<p>
+			A página principal, raiz do sistema, é exibida a partir da rota padrão para o 
+			<b>MainController</b>, utilizando seu método index. Para alterar a página inicial,
+			pode-se alterar a view <b>Default</b> ou o próprio controller, ou mesmo substituí-lo
+			por um novo, com outro nome, e criar uma <a href="#customroutes">rota personalizada</a>
+			para a raiz do sistema, apontando para este novo controller.
+		</p>
+
+		<span class="pregroup">
+			<pre>mysite.com/ <i class="comment">// Essa URL será processada, por padrão, em:</i></pre>
+			<pre>class <b>MainController</b> { </pre>
+			<pre>   public function <b>index</b> () { ... } </pre>
+			<pre>} </pre>
+		</span>
+		<br>
+		<a name="getrequest"><h3>getRequest()</h3></a>
+		<p>
+			Identifica o tipo de requisição realizada para a página (GET, POST, PUT, DELETE, etc.).
+		</p>
+		<span class="pregroup">
+			<pre>string <b>getRequest (</b> <b>)</b></pre>
+			<br>
+			<pre><b>Usage example:</b></pre>
+			<pre>$requestType = getRequest ();</pre>
+		</span>
+		<p>
+			Retorna uma string contendo o tipo de requisição realizada.
+		</p>
+		<br>
+		<a name="getparams"><h3>Parâmetros GET</h3></a>
+		<p>
+			Considerando a passagem de parâmetros padrão das <a href="paramroutes">rotas com 
+			argumentos</a>, as variáveis passadas aos métodos são processadas como trechos da URL,
+			separadas por uma barra. Desta forma, não são utilizadas as variáveis GET com o intuito
+			de manter a URL mais limpa.
+		</p>
+		<p>
+			Entretanto, para que um método do controller possa fazer uso dos valores vindos da URL,
+			ele deve poder receber argumentos, ou seja, a função deve estar habilitada a receber
+			parâmetros.
+		</p>
+		<span class="pregroup">
+			<pre>public function something (<b> $params </b>) { ... }</pre>
+		</span>
+		<p>
+			Por outro lado, os parâmetros GET continuam podendo ser usados, tendo à disposição apenas
+			a função <a href="#filterget">filterGet()</a> para manuseio destes dados.
+		</p>
+		<p>
+			Portanto, se utilizar o parâmetro GET tradicional, a URL ficará bagunçada mas os dados serão
+			acessados normalmente.
+		</p>
+		<span class="pregroup">
+			<pre><b>URL:</b> mysite.com/controller/method?id=X&something=Y</pre>
+			<br>
+			<pre><b>GET vars:</b></pre>
+			<pre>array(2) {</pre>
+			<pre>  ["id"]=></pre>
+			<pre>    string(1) "X"</pre>
+			<pre>  ["something"]=></pre>
+			<pre>    string(1) "Y"</pre>
+			<pre>}</pre>
+		</span>
+
+
+		<br><br>
+		
+
+		<a name="loadfunc"><h2>Inclusão de componentes</h2></a>
+		<a name="load"><h3><i>load()</i></h3></a>
+		<p>
+			Carrega um arquivo, passado o caminho <b>a partir da raiz da aplicação</b>. Caso não consiga
+			encontrar tal arquivo, gera um <i>Fatal Error</i>.
+		</p>
+		<span class="pregroup">
+			<pre>bool <b>load (</b> string $pathToFile <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>load ('/app/lib/anything.php');</pre>
+		</span>
+		<p>
+			Retorna <b>TRUE</b> se o arquivo já tiver sido carregado ou <b>FALSE</b> caso contrário.
+		</p>
+		<br>
+		<a name="view"><h3><i>view()</i></h3></a>
+		<p>
+			Carrega uma view, dado o nome do arquivo <b>sem a extensão</b>. Caso não consiga
+			encontrar tal arquivo no diretório <b>/app/<wbr>views</b>, gera um <i>Fatal Error</i>.
+		</p>
+		<p>
+			Pode receber uma variável de dados para usar no arquivo de view, passado e acessado sempre
+			por <b>$data</b>, conforme citado em <a href="#viewvarpass">passagem de dados</a>.
+		</p>
+		<span class="pregroup">
+			<pre>bool <b>view (</b> string $viewName, [$data = NULL] <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>view ('LoginForm');</pre>
+			<pre>view ('somePage', $viewData);</pre>
+		</span>
+		<p>
+			Retorna <b>TRUE</b> se o arquivo já tiver sido carregado ou <b>FALSE</b> caso contrário.
+		</p>
+		<br>
+		<a name="model"><h3><i>model()</i></h3></a>
+		<p>
+			Carrega um model, dado o nome do arquivo <b>sem a extensão</b>. Caso não consiga
+			encontrar tal arquivo <b>/app/<wbr>models</b>, gera um <i>Fatal Error</i>.
+		</p>
+		<p>
+			Por padrão todos os models são carregados automaticamente, portanto, essa função não
+			se faz muito necessária.
+		</p>
+		<span class="pregroup">
+			<pre>bool <b>model (</b> string $viewName <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>model ('Animal');</pre>
+		</span>
+		<p>
+			Retorna <b>TRUE</b> se o arquivo já tiver sido carregado ou <b>FALSE</b> caso contrário.
+		</p>
+
+
+		<br><br>
+		
+
+		<a name="views"><h2>Views</h2></a>
+		<p>
+			As views são responsáveis pela exibição dos dados.
+		</p>
+		<p>
+			Não há um padrão definido para a forma como as views são utilizadas. Elas apenas devem
+			ser armazenadas no diretório <b>/app/views</b>.
+		</p>
+		<br>
+		<a name="viewinclude"><h3>Inclusão de views</h3></a>
+		<p>
+			Quando for necessário usar uma view no sistema, deve-se utilizar a função 
+			<a href="#view">view()</a> para carregar o arquivo que contém as informações necessárias.
+		</p>
+		<p>
+			Também é possível passar dados para uma view, adicionando o segundo parâmetro à sua
+			chamada. O dado passado fica acessível na view pelo nome <b>$data</b>.
+		</p>
+		<span class="pregroup">
+			<pre>public function someFunction () {</pre>
+			<pre>...</pre>
+			<pre>return view('some');</pre>
+			<pre>return view('another', $someData);</pre>
+			<pre>}</pre>
+		</span>
+		<p class="obs">
+			<b>Observação:</b> utilizar o return ao carregar uma view é opcional, mas pode ser útil
+			para garantir que não haverá código sendo executado após o carregamento da tela do 
+			usuário.
+		</p>
+		<br>
+		<a name="viewvarpass"><h3>Passagem de dados</h3></a>
+		<p>
+			É possível passar uma variável para a view através da função <a href="#view">view()</a>,
+			passando a variável desejada como segundo argumento.
+		</p>
+		<p>
+			Caso haja a necessidade de passar mais de uma variável para a view, é preciso colocar as
+			múltiplas variáveis a serem passadas em um array e então passar esse array para a função
+			view().
+		</p>
+		<p>
+			Note que toda view, ao receber uma variável, tem seu nome definido como <b>$data</b>. Assim,
+			para acessar qualquer valor enviado para a view, deve-se usar esta variável.
+		</p>
+		<span class="pregroup">
+			<pre><b>Passando um valor ou variável única:</b></pre>
+			<pre>view('someView', 'Fruits');</pre>
+			<pre><b>Na view, para se obter o valor, usa-se:</b></pre>
+			<pre>$data</pre>
+			<br>
+			<pre><b>Passando um array:</b></pre>
+			<pre>view('someView', [$var1, $var2, var3, ... ]);</pre>
+			<pre><b>Na view, para se obter os valores, usa-se:</b></pre>
+			<pre>$data[0] <i class="comment">// Contém o valor de <b>$var1</b></i></pre>
+			<pre>$data[1] <i class="comment">// Contém o valor de <b>$var2</b></i></pre>
+			<pre>...</pre>
+		</span>
+
+
+		<br><br>
+		
+
+		<a name="models"><h2>Models</h2></a>
+		<p>
+			Todos os models criados devem extender o model principal <b>"Model"</b>. São os models quem
+			farão a comunicação com o banco de dados para realizar consultas e inserir, alterar ou 
+			apagar dados.
+		</p>
+		<p>
+			Os models devem ser armazenados no diretório <b>/app/models</b>.
+		</p>
+		<span class="pregroup">
+			<pre>class SomeModel extends <i><b>Model</b></i> { ... }</pre>
+		</span>
+		<p>
+			Quando representando um objeto armazenado no banco de dados, <b>é essencial que o model tenha
+			exatamente o mesmo nome</b> da tabela no banco a qual representa.
+		</p>
+		<p>
+			Assim, para representar uma tabela denominada, por exemplo, por <b>animal</b> no banco
+			de dados, o model referente a ela deve se chamar <b>Animal</b> também.
+		</p>
+		<span class="pregroup">
+			<pre>CREATE TABLE <b>animal</b> ( ... ); <i class="comment">// Representa a tabela no banco de dados</i></pre>
+			<pre>class <b>Animal</b> extends <i>Model</i> { ... } <i class="comment">// Representa o model que se comunica com a tabela</i></pre>
+		</span>
+		<br>
+		<a name="modelcreate"><h3><i>Criação de um model</i></h3></a>
+		<p>
+			Ao criar um model, é preciso adicionar a ele variáveis privadas para cada uma das colunas
+			na tabela referente a este objeto no banco de dados, bem como suas respectivas funções
+			<b>set</b> e <b>get</b>.
+		</p>
+		<span class="pregroup">
+			<pre>class Car extends <i>Model</i> { </pre>
+			<pre>    <i>private</i> $id;</pre>
+			<pre>    <i>private</i> $model;</pre>
+			<pre>    <i>private</i> $year;</pre>
+			<br>
+			<pre>    <i>public</i> function setId ($id) { ... };</pre>
+			<pre>    <i>public</i> function setModel ($model) { ... };</pre>
+			<pre>    <i>public</i> function setYear ($year) { ... };</pre>
+			<br>
+			<pre>    <i>public</i> function getId () { ... };</pre>
+			<pre>    <i>public</i> function getModel () { ... };</pre>
+			<pre>    <i>public</i> function getYear () { ... };</pre>
+			<pre>}</pre>
+		</span>
+		<p>
+			Ao definir as funções <b>set</b> de um model, é conveniente fazê-las retornar <b>$this</b>.
+			Dessa forma, será possível agrupar as chamadas às funções set do objeto como no exemplo:
+		</p>
+		<span class="pregroup">
+			<pre>public function setId ($id) { </pre>
+			<pre>    $this->id = $id;</pre>
+			<pre>    return $this;</pre>
+			<pre>}</pre>
+			<br>
+			<pre>$object->setId ($id)->setName ($name)->setColor ($color)->setType ($type);</pre>
+		</span>
+		<br>
+		<a name="primarykey"><h3><i>Chave primária</i></h3></a>
+		<p>
+			Por padrão, é considerado que a coluna de uma tabela no banco de dados usada como chave
+			primária (<i>primary key</i>) chama-se <b>"id"</b>.
+		</p>
+		<p>
+			Caso o nome da chave primária de uma tabela seja diferente, pode-se definir, no próprio
+			model, a variável <b><i>private</i> $primarykey</b>, a qual indica o nome do campo a ser usado
+			para buscas por valores únicos na tabela de nome igual ao da classe.
+		</p>
+		<span class="pregroup">
+			<pre>class Animal extends <i>Model</i> { </pre>
+			<pre>    <b><i>private</i> $primarykey</b> = 'animal_id'; </pre>
+			<pre>}</pre>
+		</span>
+		<p>
+			Desta forma, ao relizar uma busca pela função <a href="#dbget">get()</a>, a consulta 
+			procurará pelo valor passado na coluna denominada "animal_id", ao invés de procurar por uma
+			coluna chamada "id" e buscar tal valor nela.
+		</p>
+		<a name="modelinit"><h3><i>Inicialização</i></h3></a>
+		<p>
+			Todos os models são carregados por padrão no carregamento da aplicação.
+		</p>
+		<p>
+			Todavia, caso haja a necessidade de incluir um model durante o desenvolvimento do projeto,
+			a função <a href="#model">model()</a> se encarrega disso.
+		</p>
+		<p>
+			Após o model carregado, ressaltando, é preciso iniciar o objeto para fazer uso de suas
+			funções.
+		</p>
+		<span class="pregroup">
+			<pre>$object = new <b>Bird</b>;</pre>
+			<pre>$object->all ();</pre>
+			<br>
+			<pre>(new <b>Bird</b>)->all ();</pre>
+		</span>
+		<br>
+		<a name="modeltoarray"><h3><i>toArray()</i></h3></a>
+		<p>
+			Converte os atributos e valores do objeto atual em um array, partindo dos métodos setters do objeto para a obtenção das informações.
+		</p>
+		<span class="pregroup">
+			<pre>array <b>toArray (</b> <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>$device->toArray (); <i class="comment">// Obtém um vetor contendo os atributos e valores do objeto $device</i></pre>
+		</span>
+		<p>
+			Retorna um vetor com os atributos do objeto.
+		</p>
+		<br>
+		<a name="modeljsonserialize"><h3><i>jsonSerialize()</i></h3></a>
+		<p>
+			Converte os atributos e valores do objeto atual em uma string JSON.
+		</p>
+		<span class="pregroup">
+			<pre>string <b>jsonSerialize (</b> <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>$guitar->jsonSerialize (); <i class="comment">// Obtém a string JSON contendo os atributos e valores do objeto $guitar</i></pre>
+		</span>
+		<p>
+			Retorna uma string JSON com os atributos do objeto, partindo dos métodos setters do objeto para a obtenção das informações.
+		</p>
+
+
+		<br><br>
+		
+
+		<a name="database"><h2>Banco de Dados</h2></a>
+		<p>
+			Para realizar a comunicação com o banco de dados é necessário que as 
+			<a href="#constdb">constantes de banco de dados</a> estejam corretamente definidas.
+		</p>
+		<p>
+			Todo model, quando <a href="#models">extendendo</a> o model principal <b>"Model"</b>, 
+			herda as funções básicas de comunicação com o banco, definidos originalmente na
+			<a href="#dbclass">classe DB</a>.
+		</p>
+		<p class="obs">
+			<b>Observação:</b> para garantir o sucesso das consultas ao banco de dados, inclusive em 
+			funções como <a href="#dologin">doLogin()</a> e <a href="#doregister">doRegister()</a>,
+			é importante que os vetores de dados sejam passados contendo em seu índice o nome do 
+			atributo da tabela a ser utilizado, conforme o exemplo:
+		</p>
+			<div style="text-align: center;">
+				<span class="pregroup inlinepre">
+					<pre><b>Data array:</b></pre>
+					<pre>$data = [</pre>
+					<pre>    '<b>username</b>' => $username,</pre>
+					<pre>    '<b>password</b>' => $password,</pre>
+					<pre>    '<b>firstName</b>' => $firstname,</pre>
+					<pre>    ...</pre>
+					<pre>];</pre>
+				</span>
+				<span class="pregroup inlinepre">
+					<pre><b>Database table:</b></pre>
+					<pre>CREATE TABLE user (</pre>
+					<pre>    <b>username</b> VARCHAR(X) ... ,</pre>
+					<pre>    <b>password</b> VARCHAR(Y) ... ,</pre>
+					<pre>    <b>firstName</b> VARCHAR(Z) ... ,</pre>
+					<pre>    ...</pre>
+					<pre>);</pre>
+				</span>
+			</div>
+		<br>
+		<a name="dbretrieve"><h3><i>Consultas</i></h3></a>
+		<div class="lv2-content">
+			<a name="dbget"><b><i>get()</i></b></a>
+			<p>
+				Procura na tabela definida pelo objeto por um dado cuja chave primária seja igual a 
+				<b>$id</b>.
+			</p>
+			<span class="pregroup">
+				<pre>object <b>get (</b> $id <b>)</b></pre>
+				<pre><br><b>Usage example:</b></pre>
+				<pre>(new Fruit)->get (5); <i class="comment">// Procura na tabela Fruit pela primeira linha cujo valor da chave primária seja igual a 5</i></pre>
+				<pre>(new Product)->get ('rice'); <i class="comment">// Procura na tabela Product pela primeira linha cujo valor da chave primária seja igual a 'rice</i></pre>
+			</span>
+			<p>
+				Retorna um objeto do tipo da classe que originou a chamada à função.
+			</p>
+			<br>
+			<a name="dball"><b><i>all()</i></b></a>
+			<p>
+				Seleciona todos os dados da tabela definida pelo objeto.
+			</p>
+			<span class="pregroup">
+				<pre>object_array <b>all (</b> <b>)</b></pre>
+				<pre><br><b>Usage example:</b></pre>
+				<pre>(new Juice)->all (); <i class="comment">// Retorna um vetor de objetos do tipo Juice com todos os dados armazenados na tabela de mesmo nome</i></pre>
+			</span>
+			<p>
+				Retorna um vetor de objetos do tipo da classe que originou a chamada à função.
+			</p>
+			<br>
+			<a name="dbselect"><b><i>select()</i></b></a>
+			<p>
+				Define o que deve ser buscado no banco de dados.
+			</p>
+			<p>
+				Quando executado sozinho junto à função <a class="normallink" href="#dbfind">find()</a>,
+				procura pelos dados recebidos por parâmetro (ou por todos os dados, quando o parâmetro
+				não for recebido ou definido) sem uma condição de restrição (<i>where</i>) na tabela do
+				objeto pelo qual a função é chamada.
+			</p>
+			<span class="pregroup">
+				<pre>object:DB <b>select (</b> [string $selectedData = NULL] <b>)</b></pre>
+				<pre><br><b>Usage example:</b></pre>
+				<pre>(new Person)->select ('id, name, lastname')->find (); <i class="comment">// Seleciona apenas 'id', 'name' e 'lastname' da tabela Person</i></pre>
+				<pre>(new Car)->select ('*')->find (); <i class="comment">// Seleciona todos os dados da tabela Car</i></pre>
+				<pre>(new Animal)->select ()->find (); <i class="comment">// Seleciona todos os dados da tabela Animal</i></pre>
+			</span>
+			<p>
+				Retorna um objeto da classe DB.
+			</p>
+			<p class="obs">
+				<b>Observação:</b> esta função deve ser executada SEMPRE seguida da função find(). 
+				Caso contrário, a consulta não será executada.
+			</p>
+			<br>
+			<a name="dbwhere"><b><i>where()</i></b></a>
+			<p>
+				Define a condição de restrição para a consulta dada pela função 
+				<a class="normallink" href="dbselect">select()</a> ou inicia uma nova busca por todas as colunas da tabela
+				seguindo a condição de restrição passada.
+			</p>
+			<p>
+				A condição de busca (<b>$where</b>) é composta de uma string com o código SQL do where
+				(exceto pela palavra chave "WHERE"), com os valores a serem buscados trocados por 
+				uma "?", enquanto que <b>$whereVars</b> pode ser uma string contendo o único valor
+				a substituir a "?" na string $where ou um vetor com todos os elementos que substituirão,
+				respectivamente, cada uma das interrogações do código passado.
+			</p>
+			<span class="pregroup">
+				<pre>object:DB <b>where (</b> string $where, $whereVars <b>)</b></pre>
+				<pre><br><b>Usage example:</b></pre>
+				<pre>(new Cat)->where ('name = ?', 'Felix')->find (); <i class="comment">// Procura por toda a tabela Cat por um valor cujo atributo 'name' seja 'Felix'</i></pre>
+				<pre>(new Dog)->select ('id, age')->where ('name = ? AND weight > ?', [$name, $weight])->find (); <i class="comment">// Seleciona 'id' e 'age' na tabela Dog, procurando por uma linha em que 'name' seja igual ao valor de $name e 'weight' seja maior que o valor de $weight</i></pre>
+			</span>
+			<p>
+				Retorna um objeto da classe DB.
+			</p>
+			<p class="obs">
+				<b>Observação:</b> esta função deve ser executada SEMPRE depois da função select()
+				(quando aplicável) e seguida da função find(). Caso contrário, a consulta não
+				será executada.
+			</p>
+			<br>
+			<a name="dborderby"><b><i>orderBy()</i></b></a>
+			<p>
+				Define o campo pelo qual os resultados da consulta serão ordenados em <b>$orderValue</b>
+				e a forma de ordenação dos dados (<i>ASC</i> ou <i>DESC</i>) em <b>$order</b>.
+			</p>
+			<p>
+				Pode ser usada várias vezes em uma mesma consulta para definir os vários campos pelos
+				quais a consulta deverá ordenar os dados.
+			</p>
+			<span class="pregroup">
+				<pre>object:DB <b>orderBy (</b> string $orderValue, [string $order = 'ASC'] <b>)</b></pre>
+				<pre><br><b>Usage example:</b></pre>
+				<pre>(new People)->select ()->orderBy ('name', 'DESC')->find (); <i class="comment">// Ordena o resultado da busca pelo campo 'name' de forma descendente (DESC)</i></pre>
+				<pre>(new Dog)->select ('id, name')->where ('weight > ?', $weight)->orderBy ('name')->orderBy ('weight', 'DESC')->find (); <i class="comment">// Ordena os resultados pelo atributo 'name' de forma ascendente e, posteriormente, pelo atributo 'weight' de forma descendente (DESC)</i></pre>
+			</span>
+			<p>
+				Retorna um objeto da classe DB.
+			</p>
+			<p class="obs">
+				<b>Observação:</b> esta função deve ser executada SEMPRE após as funções select() e where(),
+				em qualquer situação, e seguida da função find(). Caso contrário, a consulta não será 
+				executada.
+			</p>
+			<br>
+			<a name="dbextrasql"><b><i>extraSql()</i></b></a>
+			<p>
+				Adiciona código SQL à consulta.
+			</p>
+			<p>
+				Caso seja necessário adicionar código SQL à consulta, como um <i>JOIN</i> ou outro comando,
+				a função realiza este procedimento antes da execução da consulta.
+			</p>
+			<span class="pregroup">
+				<pre>object:DB <b>extraSql (</b> string $sql <b>)</b></pre>
+				<pre><br><b>Usage example:</b></pre>
+				<pre>(new Television)->select ()->extraSql ('Some SQL')->find (); <i class="comment">// Acrescenta o SQL à consulta</i></pre>
+				<pre>(new Printer)->select ('id, code')->where ('code < ?', $code)->orderBy ('name')->extraSql ('Another SQL')->find (); </pre>
+			</span>
+			<p>
+				Retorna um objeto da classe DB.
+			</p>
+			<p class="obs">
+				<b>Observação:</b> esta função deve ser executada SEMPRE após as funções select() ou where(),
+				em qualquer situação, e seguida da função find(). Caso contrário, a consulta não será 
+				executada.
+			</p>
+		</div>
+		<br>
+		<a name="dbinsertupdate"><h3><i>Inserção e atualização</i></h3></a>	
+		<div class="lv2-content">
+			<a name="dbsave"><b><i>save()</i></b></a>
+			<p>
+				Recebe o objeto que originou a chamada à função e verifica se ele já está salvo no 
+				banco de dados. Se estiver, atualiza seus valores para os valores atuais do objeto.
+				Se não estiver, insere seus dados no banco.
+			</p>
+			<span class="pregroup">
+				<pre>object <b>save (</b> <b>)</b></pre>
+				<pre><br><b>Usage example:</b></pre>
+				<pre>$objAnimal->save (); <i class="comment">// Salva os dados atuais do objeto no banco</i></pre>
+			</span>
+			<p>
+				Retorna um objeto do tipo da classe que originou a chamada à função em caso de sucesso
+				ou <b>FALSE</b> caso contrário.
+			</p>
+		</div>
+		<br>
+		<a name="dbexclusion"><h3><i>Exclusão</i></h3></a>	
+		<div class="lv2-content">
+			<a name="dbdelete"><b><i>delete()</i></b></a>
+			<p>
+				Recebe o objeto que originou a chamada à função e exclui seus dados do banco.
+			</p>
+			<span class="pregroup">
+				<pre>bool <b>delete (</b> <b>)</b></pre>
+				<pre><br><b>Usage example:</b></pre>
+				<pre>$objFruit->delete (); <i class="comment">// Remove os dados atuais do objeto do banco</i></pre>
+			</span>
+			<p>
+				Retorna <b>TRUE</b> em caso de sucesso ou <b>FALSE</b> caso contrário.
+			</p>
+		</div>
+		<br>
+		<br>
+		<a name="dbclass"><h3><i>Classe DB</i></h3></a>
+		<p>
+			Também é possível fazer consultas, inserções e exclusões no banco de dados a partir de
+			funções da classe DB, ao invés de fazê-las a partir de objetos. 
+		</p>
+		<p>
+			Essa opção pode ser útil caso seja necessário buscar em uma tabela diferente da do objeto
+			que esteja em uso no momento.
+		</p>
+		<p>
+			<b>As funções desta classe são exatamente as mesma descritas acima, exceto pelas funções
+			<a href="#dbget">get()</a> e <a href="#dball">all()</a>.</b>
+		</p>
+		<p>
+			Os parâmetros de algumas das funções são diferentes para a classe DB. As mudanças são
+			descritas a seguir.
+		</p>
+		<div class="lv2-content">
+			<a name="dbclassselect"><b><i>DB->select()</i></b></a>
+			<p>
+				As mesmas propriedades da função <a class="normallink" href="#dbselect">select()</a> descrita
+				anteriormente, com a diferença de que esta exige o <b>nome da tabela como parâmetro 
+				adicional</b>.
+			</p>
+			<span class="pregroup">
+				<pre>object:DB <b>select (</b> [string $selectedData = NULL], string $table <b>)</b></pre>
+				<pre><br><b>Usage example:</b></pre>
+				<pre>(new DB)->select ('id, name, lastname', 'Person')->find ();</pre>
+				<pre>(new DB)->select ('*', 'Car')->find ();</pre>
+				<pre>(new DB)->select (NULL, 'Animal')->find ();</pre>
+			</span>
+			<p>
+				Retorna o objeto salvo em caso de sucesso ou <b>FALSE</b> caso contrário.
+			</p>
+			<br>
+			<a name="dbclasswhere"><b><i>DB->where()</i></b></a>
+			<p>
+				As mesmas propriedades da função <a class="normallink" href="#dbwhere">where()</a> descrita
+				anteriormente, com a diferença de que esta exige o <b>nome da tabela como parâmetro 
+				adicional</b>, quando não usada em conjunto com a função <a href="#dbclassselect">select()</a>.
+			</p>
+			<span class="pregroup">
+				<pre>object:DB <b>where (</b> string $where, $whereVars, string $table <b>)</b></pre>
+				<pre><br><b>Usage example:</b></pre>
+				<pre>(new DB)->where ('name = ?', 'Felix', 'Cat')->find ();</pre>
+				<pre>(new DB)->select ('id, age', 'Cat')->where ('name = ? AND weight > ?', [$name, $weight])->find (); <i class="comment">// Seleciona 'id' e 'age' na tabela Dog, procurando por uma linha em que 'name' seja igual ao valor de $name e 'weight' seja maior que o valor de $weight</i></pre>
+			</span>
+			<p>
+				Retorna o objeto salvo em caso de sucesso ou <b>FALSE</b> caso contrário.
+			</p>
+			<br>
+			<a name="dbclasssave"><b><i>DB::save()</i></b></a>
+			<p>
+				Recebe um objeto <b>$object</b> por parâmetro e insere ou atualiza seus dados no banco.
+			</p>
+			<span class="pregroup">
+				<pre>object <b>save (</b> $object <b>)</b></pre>
+				<pre><br><b>Usage example:</b></pre>
+				<pre>DB::save ($objAnimal); <i class="comment">// Insere ou atualiza os dados atuais do objeto $objAnimal do banco</i></pre>
+			</span>
+			<p>
+				Retorna o objeto salvo em caso de sucesso ou <b>FALSE</b> caso contrário.
+			</p>
+			<br>
+			<a name="dbclassdelete"><b><i>DB::delete()</i></b></a>
+			<p>
+				Recebe um objeto <b>$object</b> por parâmetro e exclui seus dados do banco.
+			</p>
+			<span class="pregroup">
+				<pre>bool <b>delete (</b> $object <b>)</b></pre>
+				<pre><br><b>Usage example:</b></pre>
+				<pre>DB::delete ($objFruit); <i class="comment">// Remove os dados atuais do objeto $objFruit do banco</i></pre>
+			</span>
+			<p>
+				Retorna <b>TRUE</b> em caso de sucesso ou <b>FALSE</b> caso contrário.
+			</p>
+		</div>
+
+
+		<br><br>
+		
+
+		<a name="authentication"><h2>Autenticação</h2></a>
+		<p>
+			Para facilitar o processo de autenticação e simplificar o sistema de login
+			e registro de usuários, há a classe <b>Auth</b>.
+		</p>
+		<p>
+			Todas as funções dessa classe são estáticas.
+		</p>
+		<p class="obs">
+			<b>Observação:</b> ao utilizar esta classe, deve-se lembrar que o campo destinado à senha do
+			usuário é criptografado dentro das funções nativas da classe. Para que seus métodos
+			funcionem corretamente, ao criar um <a href="#models">model</a> para o objeto usuário
+			é preciso definir que na função <i>setPassword()</i> (ou equivalente destinada a preencher o
+			campo da senha) a atribuição ao valor será feita através da função 
+			<a href="#hashpassword">hashPassword()</a>.
+		</p>
+		<span class="pregroup">
+			<pre>public function <i>setPassword</i> ($password) {</pre>
+			<pre>    $this->password = <b>Auth::hashPassword(</b>$password<b>)</b>;</pre>
+			<pre>    return $this;</pre>
+			<pre>}</pre>
+		</span>
+		<br>
+		<a name="dologin"><h3>Auth::doLogin()</h3></a>
+		<p>
+			Recebe os dados do usuário <b>$authData</b> e realiza o login, retornando à página 
+			anterior e enviando os erros encontrados e os valores dos campos (vide 
+			<a href="#witherrors">withErrors()</a> e <a href="#withvalues">withValues()</a>) para
+			que sejam exibidos ao usuário, ou realizando a criação da sessão (vide 
+			<a href="#createauthsession">createAuthSession()</a>) para o usuário, redirecionando-o
+			para uma página especificada por <b>$redirectLocation</b> (ou para a página inicial, caso
+			não seja passado o valor) e buscando os dados na tabela	<b>$dbTable</b> (definida como
+			'User' caso não seja passada) para fazer a validação.
+		</p>
+		<p class="obs">
+			<b>Observação:</b> essa função utiliza o índice do vetor passado como parâmetro para identificar
+			o atributo na tabela do banco de dados a ser comparado. Por isso, é essencial que o 
+			formulário tenha em seus campos o atributo <i>name</i> igual ao nome das suas respectivas
+			colunas no banco, conforme citado em <a href="#database">Banco de Dados</a>.
+		</p>
+
+		<span class="pregroup">
+			<pre>bool <b>doLogin (</b> array $authData, [string $redirectLocation = NULL], [string $dbTable = 'User'] <b>)</b></pre>
+			<br>
+			<pre><b>Usage example:</b></pre>
+			<pre>Auth::doLogin (filterPost(), 'logged/home', 'Users');</pre>
+			<pre>Auth::doLogin ($data); <i class="comment">// Ao final redireciona para a raiz (/) e procura os dados na tabela 'User'</i></pre>
+		</span>	
+		<p>
+			Retorna <b>TRUE</b> caso o login seja bem sucedido ou <b>FALSE</b> caso contrário.
+		</p>
+		<br>
+		<a name="dologout"><h3>Auth::doLogout()</h3></a>
+		<p>
+			Finaliza a sessão do usuário criada pelas funções <a href="dologin">doLogin()</a> e 
+			<a href="#createauthsession">createAuthSession()</a>.
+		</p>
+		<span class="pregroup">
+			<pre>void <b>doLogout (</b> array $authData,  [string $dbTable = 'User'] <b>)</b></pre>
+			<br>
+			<pre><b>Usage example:</b></pre>
+			<pre>Auth::doLogout ();</pre>
+		</span>	
+		<p>
+			Não possui retorno.
+		</p>
+		<br>
+		<a name="doregister"><h3>Auth::doRegister()</h3></a>
+		<p>
+			Recebe os dados do usuário <b>$authData</b> e realiza o registro na tabela especificada
+			por	<b>$dbTable</b> (definida como 'User' caso não seja passada).
+		</p>
+		<p class="obs">
+			<b>Observação:</b> essa função utiliza o índice do vetor passado como parâmetro para 
+			identificar o atributo na tabela do banco de dados a ser comparado. Por isso, é essencial
+			que o formulário tenha em seus campos o atributo <i>name</i> igual ao nome das suas
+			respectivas colunas no banco, conforme citado em <a href="#database">Banco de Dados</a>.
+		</p>
+		<span class="pregroup">
+			<pre>object <b>doRegister (</b> array $authData,  [string $dbTable = 'User'] <b>)</b></pre>
+			<br>
+			<pre><b>Usage example:</b></pre>
+			<pre>Auth::doRegister (filterPost(), 'Users');</pre>
+			<pre>Auth::doRegister ($data); <i class="comment">// Registra os dados na tabela 'User'</i></pre>
+		</span>	
+		<p>
+			Retorna um objeto do tipo usuário (também definido por $dbTable) caso o registro seja bem
+			sucedido ou <b>FALSE</b> caso contrário.
+		</p>
+		<br>
+		<a name="createauthsession"><h3>Auth::createAuthSession()</h3></a>
+		<p>
+			Recebe os dados do usuário definidos por <b>$user</b> e cria as variáveis de sessão 
+			utilizadas pelas demais funções da classe <b>Auth</b> e redireciona à página definida
+			por <b>$redirectLocation</b> ou para a página inicial, caso esta não seja passada.
+		</p>
+		<span class="pregroup">
+			<pre>void <b>createAuthSession (</b> $user,  [string $redirectLocation = NULL] <b>)</b></pre>
+			<br>
+			<pre><b>Usage example:</b></pre>
+			<pre>Auth::createAuthSession ($objUser, 'logged/welcome');</pre>
+			<pre>Auth::createAuthSession ($objUser); </pre>
+		</span>	
+		<p>
+			Não possui retorno.
+		</p>
+		<br>
+		<a name="setrestricted"><h3>Auth::setRestricted()</h3></a>
+		<p>
+			Define que os dados a partir deste ponto (ou que o acesso à essa página, se posicionada a
+			função no início do método do <a href="#controllers">controller</a>) são restritos a apenas
+			usuários logados e que não tenham passado do 
+			<a href="#constsession">tempo de expiração da sessão</a>.
+		</p>
+		<p>
+			Recebe como parâmetro a URL para redirecionar caso o usuário não esteja logado, em 
+			<b>$redirectNoLogin</b>, e a URL para qual redirecionar o usuário caso o tempo de sua
+			sessão expire, definida por <b>$redirectTimeout</b>. Por padrão, ambas redirecionam à
+			página inicial quando o parâmetro não é passado.
+		</p>
+		<span class="pregroup">
+			<pre>void <b>setRestricted (</b> [string $redirectNoLogin = NULL],  [string $redirectTimeout = NULL] <b>)</b></pre>
+			<br>
+			<pre><b>Usage example:</b></pre>
+			<pre>Auth::setRestricted (null, 'login');</pre>
+			<pre>Auth::setRestricted ('login', 'login'); </pre>
+			<pre>Auth::setRestricted ('login'); </pre>
+		</span>	
+		<p>
+			Não possui retorno.
+		</p>
+		<br>
+		<a name="islogged"><h3>Auth::isLogged()</h3></a>
+		<p>
+			Verifica se o usuário está ou não autenticado no sistema com base na sessão criada pela
+			função <a href="#createauthsession">createAuthSession()</a>.
+		</p>
+		<span class="pregroup">
+			<pre>bool <b>isLogged (</b> <b>)</b></pre>
+			<br>
+			<pre><b>Usage example:</b></pre>
+			<pre>Auth::isLogged (); </pre>
+		</span>	
+		<p>
+			Retorna <b>TRUE</b> se o usuário estiver autenticado ou <b>FALSE</b> caso não esteja.
+		</p>
+		<br>
+		<a name="getloggeduser"><h3>Auth::getLoggedUser()</h3></a>
+		<p>
+			Obtém o objeto referente ao usuário autenticado.
+		</p>
+		<span class="pregroup">
+			<pre>object <b>getLoggedUser (</b> <b>)</b></pre>
+			<br>
+			<pre><b>Usage example:</b></pre>
+			<pre>Auth::getLoggedUser (); </pre>
+		</span>	
+		<p>
+			Retorna o objeto referente ao usuário caso esteja autenticado ou NULL caso contrário.
+		</p>
+		<br>
+		<a name="bindauth"><h3>Auth::bindAuth()</h3></a>
+		<p>
+			Verifica se as credenciais <b>$authData</b> estão de acordo com seus dados armazenados 
+			na tabela <b>$dbTable</b> (por padrão definida como 'User') no banco de dados.
+		</p>
+		<span class="pregroup">
+			<pre>bool <b>bindAuth (</b> array $authData, [string $dbTable = 'User'] <b>)</b></pre>
+			<br>
+			<pre><b>Usage example:</b></pre>
+			<pre>Auth::bindAuth ([$user, $password], 'Users'); </pre>
+			<pre>Auth::bindAuth (filterPost()); </pre>
+		</span>	
+		<p>
+			Retorna <b>TRUE</b> caso os dados confiram ou <b>FALSE</b> caso contrário.
+		</p>
+		<br>
+		<a name="counttries"><h3>Auth::countTries()</h3></a>
+		<p>
+			Conta o número de tentativas de login para o último nome de usuário e diz se atingiu 
+			ou passou um limite <b>$maxTries</b> de vezes.
+		</p>
+		<span class="pregroup">
+			<pre>bool <b>countTries (</b> int $maxTries <b>)</b></pre>
+			<br>
+			<pre><b>Usage example:</b></pre>
+			<pre>Auth::countTries (5); </pre>
+			<pre>if (Auth::countTries (3)) { ... } </pre>
+		</span>	
+		<p>
+			Retorna <b>TRUE</b> caso o número de tentativas seja maior ou igual ao valor passado ou
+			<b>FALSE</b> caso contrário.
+		</p>
+		<br>
+		<a name="hashpassword"><h3>Auth::hashPassword()</h3></a>
+		<p>
+			Criptografa a senha passada pelo parâmetro <b>$passwordText</b> e devolve o código 
+			referente ao texto codificado.
+		</p>
+		<span class="pregroup">
+			<pre>string <b>hashPassword (</b> string $passwordText <b>)</b></pre>
+			<br>
+			<pre><b>Usage example:</b></pre>
+			<pre>public function <i>setPassword</i> ($password) {</pre>
+			<pre>    $this->password = <b>Auth::hashPassword (</b>$password<b>)</b>;</pre>
+			<pre>    return $this;</pre>
+			<pre>}</pre>
+		</span>	
+		<p>
+			Retorna uma string contendo o valor passado em $passwordText codificado.
+		</p>
+		<br>
+		<a name="passwordreset"><h3>Redefinição de senha</h3></a>
+		<p>
+			Há também um conjunto de funções criadas para facilitar o processo de redefinição de senha
+			do usuário. Estas funções exigem que o banco de dados possua algumas características.
+		</p>
+		<p>
+			Para que funcionem as funções, é preciso que o banco de dados tenha uma tabela específica
+			para armazenar as requisições de redefinição de senha. Essa tabela <b>deve</b> conter, no
+			mínimo, três colunas, sendo elas <b>email</b> (referente ao e-mail do usuário, <b>que deve
+			estar disponível na tabela de usuários</b>), <b>token</b> (o código alfanumérico de
+			redefinição gerado automaticamente) e <b>val</b> (indica se o código já foi usado ou não).
+			É um sistema bastante simples, que não envolve tempo para expiração de código ou métodos 
+			mais sofisticados.
+		</p>
+		<span class="pregroup">
+			<pre>CREATE TABLE passwordreset (</pre>
+			<pre>    id INT ... ,</pre>
+			<pre>    <b>email</b> VARCHAR ... ,</pre>
+			<pre>    <b>token</b> VARCHAR ... ,</pre>
+			<pre>    <b>val</b> BOOL ... </pre>
+			<pre>);</pre>
+		</span>	
+		<p>
+			Esta tabela é o suficiente para que o mecanismo de recuperação de senha funcione.
+		</p>
+		<p class="obs">
+			<b>Observação:</b> o nome das três colunas citadas DEVE ser exatamente como descrito. Caso
+			contrário, a redefinição de senha não funcionará.
+		</p>
+		<br>
+		<div class="lv2-content">
+			<a name="requestpassreset"><b>Auth::requestPassReset()</b></a>
+			<p>
+				Função que recebe o e-mail do usuário pela variável <b>$email</b>, o nome da
+				classe de usuários pela variável <b>$userClass</b>, o nome da classe de requisições
+				de redefinição de senha pelo parâmetro <b>$resetRequestClass</b> e a URL para onde
+				o usuário será mandado ao receber o e-mail com o link para a redefinição por 
+				<b>$urlValidate</b> e gera o token de redefinição de senha do usuário, o registra e
+				envia por e-mail. 
+			</p>
+			<p>
+				É possível também que seja passada a variável <b>$mailContent</b>
+				para a função, contendo o conteúdo (em texto ou HTML) da mensagem que será enviada 
+				ao usuário junto com o link - que será anexado ao final da mensagem automaticamente.
+			</p>
+			<span class="pregroup">
+				<pre>bool <b>requestPassReset (</b> string $email, string $userClass, string $resetRequestClass, string $urlValidate, [string $mailContent] <b>)</b></pre>
+				<br>
+				<pre><b>Usage example:</b></pre>
+				<pre>Auth::requestPassReset ($email, 'User', 'PasswordReset', 'user/resetpassword');</pre>
+				<pre>Auth::requestPassReset ($email, 'Users', 'NewPassRequest', 'resetpassword', $emailContent);</pre>
+			</span>
+			<p>
+				Retorna <b>TRUE</b> caso tenha sucesso ao enviar o e-mail ou <b>FALSE</b> caso contrário.
+			</p>
+			<br>
+			<a name="checktoken"><b>Auth::checkToken()</b></a>
+			<p>
+				Função que recebe o token de redefinição <b>$token</b> (passado para o método do
+				controller como parâmetro get na rota) que o usuário recebeu no e-mail e o nome da
+				classe de requisições de redefinição de senha pelo parâmetro <b>$resetRequestClass</b>
+				e verifica se o token está correto, comparando-o com os registros do banco e analisando
+				sua validade.
+			</p>
+			<span class="pregroup">
+				<pre>bool <b>checkToken (</b> string $token, string $resetRequestClass <b>)</b></pre>
+				<br>
+				<pre><b>Usage example:</b></pre>
+				<pre>Auth::checkToken ($token, 'PasswordReset');</pre>
+				<pre>Auth::checkToken ($dataGET['id'], 'PasswordReset'); <i class="comment">// Recebe o nome de 'id' ao ser passado da rota para o método por ser o primeiro parâmetro</i></pre>
+			</span>
+			<p>
+				Retorna <b>TRUE</b> caso os dados confiram ou <b>FALSE</b> caso não.
+			</p>
+			<br>
+			<a name="resendemail"><b>Auth::resendEmail()</b></a>
+			<p>
+				Função que recebe o e-mail do usuário pela variável <b>$email</b>, o nome da
+				classe de usuários pela variável <b>$userClass</b>, o nome da classe de requisições
+				de redefinição de senha pelo parâmetro <b>$resetRequestClass</b> e a URL para onde
+				o usuário será mandado ao receber o e-mail com o link para a redefinição por 
+				<b>$urlValidate</b>, obtém os dados de redefinição salvos e reenvia o e-mail ao 
+				usuário. 
+			</p>
+			<p>
+				É possível também que seja passada a variável <b>$mailContent</b>
+				para a função, contendo o conteúdo (em texto ou HTML) da mensagem que será enviada 
+				ao usuário junto com o link - que será anexado ao final da mensagem automaticamente.
+			</p>
+			<span class="pregroup">
+				<pre>bool <b>resendEmail (</b> string $email, string $userClass, string $resetRequestClass, string $urlValidate, [string $mailContent] <b>)</b></pre>
+				<br>
+				<pre><b>Usage example:</b></pre>
+				<pre>Auth::resendEmail ($email, 'User', 'PasswordReset', 'user/resetpassword');</pre>
+				<pre>Auth::resendEmail ($email, 'Users', 'NewPassRequest', 'resetpassword', $emailContent);</pre>
+			</span>
+			<p>
+				Retorna <b>TRUE</b> caso tenha sucesso ao enviar o e-mail ou <b>FALSE</b> caso contrário.
+			</p>
+			<br>
+			<a name="changepassword"><b>Auth::changePassword()</b></a>
+			<p>
+				Função que recebe o array contendo a nova senha e a sua confirmação através da variável
+				<b>$passData</b>, realiza a validação dos valores (verifica se ambas estão preenchidas
+				e são iguais), recebe o token de redefinição pela variável <b>$token</b>, o nome da
+				classe de usuários em <b>$userClass</b> e o nome da classe de requisições de redefinição
+				em <b>$resetRequestClass</b> e verifica se o token (que pode ser enviado para o método do
+				controller por meio de um campo oculto no formulário) está correto e altera a senha do 
+				usuário.
+			</p>
+			<p>
+				Essa função também é responsável por invalidar o token utilizado, para que ele não seja usado
+				duas vezes.
+			</p>
+			<span class="pregroup">
+				<pre>bool <b>changePassword (</b> array $passData, string $token, string $userClass, string $resetRequestClass <b>)</b></pre>
+				<br>
+				<pre><b>Usage example:</b></pre>
+				<pre>Auth::changePassword (filterPost(), $token, 'User', 'PasswordReset');</pre>
+				<pre>Auth::changePassword (['password' => $data['password'], 'password_confirm' => $data['password_confirm']], $token, 'User', 'PasswordReset');</pre>
+			</span>
+			<p>
+				Retorna <b>TRUE</b> caso tenha sucesso ao alterar a senha do usuário ou <b>FALSE</b> caso
+				contrário.
+			</p>
+		</div>
+
+
+		<br><br>
+
+
+		<a name="email"><h2>E-mail</h2></a>
+		<a name="mailsetfrom"><h3><i>Mail->setFrom()</i></h3></a>
+		<p>
+			Define o e-mail remetente da mensagem.
+		</p>
+		<span class="pregroup">
+			<pre>object:Mail <b>setFrom (</b> string $from <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>(new Mail)->setFrom ('someone@email.com');</pre>
+		</span>
+		<p>
+			Retorna um objeto da classe Mail.
+		</p>
+		<br>
+		<a name="mailsetfromname"><h3><i>Mail->setFromName()</i></h3></a>
+		<p>
+			Define o nome do remetente da mensagem.
+		</p>
+		<span class="pregroup">
+			<pre>object:Mail <b>setFromName (</b> string $fromName <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>(new Mail)->setFromName ('Someone');</pre>
+		</span>
+		<p>
+			Retorna um objeto da classe Mail.
+		</p>
+		<br>
+		<a name="mailsetto"><h3><i>Mail->setTo()</i></h3></a>
+		<p>
+			Define o e-mail destinatário da mensagem.
+		</p>
+		<span class="pregroup">
+			<pre>object:Mail <b>setTo (</b> string $to <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>(new Mail)->setTo ('someone@email.com');</pre>
+		</span>
+		<p>
+			Retorna um objeto da classe Mail.
+		</p>
+		<br>
+		<a name="mailsetsubject"><h3><i>Mail->setSubject()</i></h3></a>
+		<p>
+			Define o assunto da mensagem.
+		</p>
+		<span class="pregroup">
+			<pre>object:Mail <b>setSubject (</b> string $subject <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>(new Mail)->setSubject ('New home');</pre>
+		</span>
+		<p>
+			Retorna um objeto da classe Mail.
+		</p>
+		<br>
+		<a name="mailsetcontent"><h3><i>Mail->setContent()</i></h3></a>
+		<p>
+			Define o conteúdo da mensagem. Pode ser em código HTML.
+		</p>
+		<span class="pregroup">
+			<pre>object:Mail <b>setContent (</b> string $content <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>(new Mail)->setContent ('Hello, my friend!');</pre>
+			<pre>(new Mail)->setContent ('Dear friend,&lt;br&gt;I just want to say "hello".');</pre>
+		</span>
+		<p>
+			Retorna um objeto da classe Mail.
+		</p>
+		<br>
+		<a name="mailgetto"><h3><i>Mail->getTo()</i></h3></a>
+		<p>
+			Obtém o e-mail do destinatário da mensagem.
+		</p>
+		<span class="pregroup">
+			<pre>string <b>getTo (</b> <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>(new Mail)->getTo ();</pre>
+		</span>
+		<p>
+			Retorna uma string com o conteúdo da variável.
+		</p>
+		<br>
+		<a name="mailgetfrom"><h3><i>Mail->getFrom()</i></h3></a>
+		<p>
+			Obtém o e-mail do remetente da mensagem.
+		</p>
+		<span class="pregroup">
+			<pre>string <b>getFrom (</b> <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>(new Mail)->getFrom ();</pre>
+		</span>
+		<p>
+			Retorna uma string com o conteúdo da variável.
+		</p>
+		<br>
+		<a name="mailgetfromname"><h3><i>Mail->getFromName()</i></h3></a>
+		<p>
+			Obtém o name do remetente da mensagem.
+		</p>
+		<span class="pregroup">
+			<pre>string <b>getFromName (</b> <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>(new Mail)->getFromName ();</pre>
+		</span>
+		<p>
+			Retorna uma string com o conteúdo da variável.
+		</p>
+		<br>
+		<a name="mailgetsubject"><h3><i>Mail->getSubject()</i></h3></a>
+		<p>
+			Obtém o assunto destinatário da mensagem.
+		</p>
+		<span class="pregroup">
+			<pre>string <b>getSubject (</b> <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>(new Mail)->getSubject ();</pre>
+		</span>
+		<p>
+			Retorna uma string com o conteúdo da variável.
+		</p>
+		<br>
+		<a name="mailgetcontent"><h3><i>Mail->getContent()</i></h3></a>
+		<p>
+			Obtém o conteúdo da mensagem.
+		</p>
+		<span class="pregroup">
+			<pre>string <b>getContent (</b> <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>(new Mail)->getContent ();</pre>
+		</span>
+		<p>
+			Retorna uma string com o conteúdo da variável.
+		</p>
+		<br>
+		<a name="mailsend"><h3><i>Mail->send()</i></h3></a>
+		<p>
+			Envia a mensagem, configurando o servidor com base nos dados gravados nas
+			<a href="#constemail">constantes de e-mail</a>.
+		</p>
+		<span class="pregroup">
+			<pre>bool <b>send (</b> <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>$objMail->send ();</pre>
+		</span>
+		<p>
+			Retorna <b>TRUE</b> se o e-mail for enviado com sucesso (com base na resposta do servidor,
+			e não na chegada da mensagem ao destinatário) ou <b>FALSE</b> caso contrário.
+		</p>
+
+
+		<br><br>
+
+
+		<a name="sessionfunc"><h2>Sessões e Cookies</h2></a>
+		<a name="session"><h3><i>session()</i></h3></a>
+		<p>
+			Cria ou atualiza o valor de uma variável de sessão especificada por <b>$name</b>, 
+			definindo-o para <b>$content</b>, quando este for passado.
+		</p> 
+		<p>
+			Caso não seja passada a variável <b>$content</b>, a função retorna o valor atual da
+			variável de sessão especificada.
+		</p>
+		<span class="pregroup">
+			<pre>undefined <b>session (</b> string $name, [$content = null] <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>session ('someString', 'String content'); <i class="comment">// Define o valor 'String content' para a variável de sessão 'someString'</i></pre>
+			<pre>session ('someString'); <i class="comment">// Obtém o valor armazenado na variável de sessão 'someString'</i></pre>
+		</span>
+		<p>
+			Retorna a variável de sessão com o valor atualizado quando <b>$content</b> é passado ou
+			retorna apenas seu valor caso contrário.
+		</p>
+		<p class="obs">
+			<b>Observação:</b> pode ser usada em conjunto com as funções <a href="#redirect">redirect()</a>
+			e <a href="#back">back()</a>.
+		</p>
+		<br>
+		<a name="flash"><h3><i>flash()</i></h3></a>
+		<p>
+			Cria ou atualiza o valor de uma variável de sessão que pode ser utilizada apenas uma vez,
+			especificada por <b>$name</b>, definindo-o para <b>$content</b>, quando este for passado.
+		</p> 
+		<p>
+			Caso não seja passada a variável <b>$content</b>, a função retorna o valor atual da
+			variável de sessão especificada e a destroi.
+		</p>
+		<span class="pregroup">
+			<pre>undefined <b>flash (</b> string $name, [$content = null] <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>flash ('flashThis', 'some message'); <i class="comment">// Define o valor 'some message' para a variável de sessão 'flashThis'</i></pre>
+			<pre>flash ('flashThis'); <i class="comment">// Obtém o valor armazenado na variável de sessão 'flashThis' e a destroi</i></pre>
+		</span>
+		<p>
+			Retorna a variável de sessão com o valor atualizado quando <b>$content</b> é passado ou
+			retorna apenas seu valor caso contrário.
+		</p>
+		<p class="obs">
+			<b>Observação:</b> pode ser usada em conjunto com as funções <a href="#redirect">redirect()</a>
+			e <a href="#back">back()</a>.
+		</p>
+		<br>
+		<a name="cookie"><h3><i>cookie()</i></h3></a>
+		<p>
+			Cria ou atualiza o valor de um cookie especificado por <b>$name</b>, 
+			definindo-o para <b>$content</b>, quando este for passado.
+		</p> 
+		<p>
+			Caso não seja passada a variável <b>$content</b>, a função retorna o valor atual da
+			variável de sessão especificada.
+		</p>
+		<span class="pregroup">
+			<pre>undefined <b>cookie (</b> string $name, [$content = null] <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>cookie ('aCookie', 'Some value'); <i class="comment">// Define o valor 'Some value' para o cookie 'aCookie'</i></pre>
+			<pre>cookie ('aCookie'); <i class="comment">// Obtém o valor armazenado no cookie 'aCookie'</i></pre>
+		</span>
+		<p>
+			Retorna o cookie com o valor atualizado quando <b>$content</b> é passado ou
+			retorna apenas seu valor caso contrário.
+		</p>
+		<p class="obs">
+			<b>Observação:</b> pode ser usada em conjunto com as funções <a href="#redirect">redirect()</a>
+			e <a href="#back">back()</a>.
+		</p>
+		<br>
+		<a name="unsetcookie"><h3><i>unsetcookie()</i></h3></a>
+		<p>
+			Destroi um cookie especificado por <b>$name</b>.
+		</p>
+		<span class="pregroup">
+			<pre>bool <b>unsetcookie (</b> string $name <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>unsetcookie ('aCookie');</pre>
+		</span>
+		<p>
+			Retorna <b>TRUE</b> caso a destruição tenha ocorrido corretamente ou <b>FALSE</b>
+			caso contrário.
+		</p>
+		<p class="obs">
+			<b>Observação:</b> pode ser usada em conjunto com as funções <a href="#redirect">redirect()</a>
+			e <a href="#back">back()</a>.
+		</p>
+		
+
+		<br><br>
+
+
+		<a name="forms"><h2>Formulários</h2></a>
+		<p>
+			Funções que auxiliam na <b>criação</b> e no <b>preenchimento</b> de formulários HTML.
+		</p>
+		<p>
+			<b>Dica:</b> para facilitar o envio de formulários e outros endereços/links utilizados
+			na aplicação, é possível utilizar a constante <b>SYSROOT</b> no campo <b>action</b> da
+			tag form.
+		</p>
+		<p class="obs">
+			<b>Observação:</b> é recomendado que os nomes dos campos (atributo <i>name</i>) sejam sempre
+			iguais aos nomes dos respectivos campos na tabela do banco de dados. Isso porque o
+			nome do campo é utilizado como índice do vetor de dados para identificar o nome correto
+			do atributo na tabela. Algumas funções como <a href="#dologin">doLogin()</a> e 
+			<a href="#doregister">doRegister()</a> precisam dessa informação.
+		</p>
+		<div style="text-align: center;">
+				<span class="pregroup inlinepre">
+					<pre><b>Inputs:</b></pre>
+					<pre>&lt;form ... &gt;</pre>
+					<pre>    &lt;input type="text" name="<b>username</b>"&gt;</pre>
+					<pre>    &lt;input type="password" name="<b>password</b>"&gt;</pre>
+					<pre>    &lt;input type="text" name="<b>firstName</b>"&gt;</pre>
+					<pre>    ...</pre>
+					<pre>&lt;/form&gt;</pre>
+				</span>
+				<span class="pregroup inlinepre">
+					<pre><b>Database table:</b></pre>
+					<pre>CREATE TABLE user (</pre>
+					<pre>    <b>username</b> VARCHAR(X) ... ,</pre>
+					<pre>    <b>password</b> VARCHAR(Y) ... ,</pre>
+					<pre>    <b>firstName</b> VARCHAR(Z) ... ,</pre>
+					<pre>    ...</pre>
+					<pre>);</pre>
+				</span>
+			</div>
+		<br>
+		<a name="oldval"><h3><i>oldVal()</i></h3></a>
+		<p>
+			Obtém o valor antigo de um campo de formulário, após um 
+			<a href="joinuse">redirecionamento em conjunto</a>
+			com a função <b><a href="#withvalues">withValues()</a></b>.
+		</p> 
+		<p>
+			Ideal para manter os campos de um formulário preenchido em caso de erros.
+		</p>
+		<p>
+			O valor retornado por esta função é uma <i>flash</i>, e, portanto, só é exibido uma vez,
+			a menos que seu valor seja redefinido.
+		</p>
+		<span class="pregroup">
+			<pre>string <b>oldVal (</b> string $inputName <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>&lt;input type="text" name="username" value="&lt;?= oldVal ('username') ?&gt;"&gt; </pre>
+		</span>
+		<p>
+			Retorna o valor da <i>flash</i> que contém o conteúdo digitado em <b>$inputName</b> antes da
+			última submissão de formulário.
+		</p>
+		<br>
+		<a name="getinputerrors"><h3><i>getInputErrors()</i></h3></a>
+		<p>
+			Obtém a lista de erros referentes a um campo de formulário, após um 
+			<a href="joinuse">redirecionamento em conjunto</a>
+			com a função <b><a href="#witherrors">withErrors()</a></b>.
+		</p> 
+		<p>
+			Ideal para exibir os erros encontrados em um determinado campo de formulário.
+		</p>
+		<p>
+			O valor retornado por esta função é uma <i>flash</i>, e, portanto, só é exibido uma vez,
+			a menos que seu valor seja redefinido.
+		</p>
+		<span class="pregroup">
+			<pre>string <b>getInputErrors (</b> string $inputName <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>&lt;input type="text" name="username"&gt; &lt;?= getInputErrors ('username') ?&gt;</pre>
+			<pre></pre>
+		</span>
+		<p>
+			Retorna o valor da <i>flash</i> que contém a lista de erros encontrados no preenchimento
+			do campo de formulário identificado por <b>$inputName</b>.
+		</p>
+		
+
+		<br><br>
+
+
+		<a name="formfunc"><h2>Processamento de Formulários</h2></a>
+		<p>
+			Para o processamento do formulário ser bem sucedido quando fazendo uso de conexão com o 
+			banco de dados ou a <a href="#authentication">autenticação</a> do usuário, é importante
+			garantir que os índices do vetor passado para as funções sejam iguais aos nomes das suas
+			respectivas propriedade na tabela do banco de dados, conforme citado em 
+			<a href="#database">Banco de Dados</a>.
+		</p>
+		<p>
+			Para simplificar este processo, os formulários podem ter em seu atributo <i>name</i> já
+			os nomes dos campos no banco, de forma que os dados obtidos por <i>POST</i> ou <i>PUT</i>
+			já tenham seus índices preparados para a utilização das funções, conforme citado em
+			<a href="#forms">Formulários</a>.
+		</p>
+		<br>
+		<a name="filterpost"><h3><i>filterPost()</i></h3></a>
+		<p>
+			Filtra e retorna os dados recebidos pelo método POST.
+		</p>
+		<span class="pregroup">
+			<pre>array <b>filterPost (</b> <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>$data = $filterPost (); <i class="comment">// $data receberá os dados enviados por POST já filtrados</i> </pre>
+		</span>
+		<p>
+			Retorna um array com os valores recebidos pelo método POST.
+		</p>
+		<br>
+		<a name="filterput"><h3><i>filterPut()</i></h3></a>
+		<p>
+			Filtra e retorna os dados recebidos pelo método PUT.
+		</p>
+		<span class="pregroup">
+			<pre>array <b>filterPut (</b> <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>$data = $filterPut (); <i class="comment">// $data receberá os dados enviados por PUT já filtrados</i> </pre>
+		</span>
+		<p>
+			Retorna um array com os valores recebidos pelo método PUT.
+		</p>
+		<br>
+		<a name="filterget"><h3><i>filterGet()</i></h3></a>
+		<p>
+			Filtra e retorna os dados recebidos pelo método GET.
+		</p>
+		<span class="pregroup">
+			<pre>array <b>filterGet (</b> <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>$data = $filterGet (); <i class="comment">// $data receberá os dados enviados por GET já filtrados</i> </pre>
+		</span>
+		<p>
+			Retorna um array com os valores recebidos pelo método GET.
+		</p>
+		<br>
+		<a name="orderfiles"><h3><i>orderFiles()</i></h3></a>
+		<p>
+			Reordena os dados de arquivos recebidos de um formulário, agrupando-os por arquivo ao invés
+			de agrupá-los por propriedade, como o vetor <i>$_FILES</i> faz por padrão.
+		</p>
+		<span class="pregroup">
+			<pre>array <b>orderFiles (</b> array $files <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>$newFiles = $orderFiles ($_FILES);</pre>
+		</span>
+		<p>
+			Retorna um array com os dados dos arquivos.
+		</p>
+		<br>
+		<h3 style="margin-bottom: 0; text-align: center;">Comparativo: $_FILES x $newFiles</h3>
+		<div style="text-align: center">
+			<span class="pregroup inlinepre">
+				<pre><b>$_FILES</b></pre>
+				<br>
+				<pre>array(1) { </pre>
+				<pre>  ["inputFiles"]=></pre>
+				<pre>  array(5) {</pre>
+				<pre>    ["name"]=></pre>
+				<pre>    array(2) {</pre>
+				<pre>      [0]=></pre>
+				<pre>      string(10) "Image1.jpg"</pre>
+				<pre>      [1]=></pre>
+				<pre>      string(10) "Image2.jpg"</pre>
+				<pre>    }</pre>
+				<pre>    ["type"]=></pre>
+				<pre>    array(2) {</pre>
+				<pre>      [0]=></pre>
+				<pre>      string(10) "image/jpeg"</pre>
+				<pre>      [1]=></pre>
+				<pre>      string(10) "image/jpeg"</pre>
+				<pre>    }</pre>
+				<pre>    ["tmp_name"]=></pre>
+				<pre>    array(2) {</pre>
+				<pre>      [0]=></pre>
+				<pre>      string(36) "/tmp/folder/phpBknODb"</pre>
+				<pre>      [1]=></pre>
+				<pre>      string(36) "/tmp/folder/phpZDivRW"</pre>
+				<pre>    }</pre>
+				<pre>    ["error"]=></pre>
+				<pre>    array(2) {</pre>
+				<pre>      [0]=></pre>
+				<pre>      int(0)</pre>
+				<pre>      [1]=></pre>
+				<pre>      int(0)</pre>
+				<pre>    }</pre>
+				<pre>    ["size"]=></pre>
+				<pre>    array(2) {</pre>
+				<pre>      [0]=></pre>
+				<pre>      int(176938)</pre>
+				<pre>      [1]=></pre>
+				<pre>      int(147029)</pre>
+				<pre>    }</pre>
+				<pre>  }</pre>
+				<pre>}</pre>
+			</span>
+
+			<span class="pregroup inlinepre">
+				<pre><b>$newFiles</b></pre>
+				<br>
+				<pre>array(2) {</pre>
+				<pre>  [0]=></pre>
+				<pre>  array(5) {</pre>
+				<pre>    ["name"]=></pre>
+				<pre>    string(10) "Image1.jpg"</pre>
+				<pre>    ["type"]=></pre>
+				<pre>    string(10) "image/jpeg"</pre>
+				<pre>    ["tmp_name"]=></pre>
+				<pre>    string(36) "/tmp/folder/phpBknODb"</pre>
+				<pre>    ["error"]=></pre>
+				<pre>    int(0)</pre>
+				<pre>    ["size"]=></pre>
+				<pre>    int(176938)</pre>
+				<pre>  }</pre>
+				<pre>  [1]=></pre>
+				<pre>  array(5) {</pre>
+				<pre>    ["name"]=></pre>
+				<pre>    string(10) "Image2.jpg"</pre>
+				<pre>    ["type"]=></pre>
+				<pre>    string(10) "image/jpeg"</pre>
+				<pre>    ["tmp_name"]=></pre>
+				<pre>    string(36) "/tmp/folder/phpZDivRW"</pre>
+				<pre>    ["error"]=></pre>
+				<pre>    int(0)</pre>
+				<pre>    ["size"]=></pre>
+				<pre>    int(147029)</pre>
+				<pre>  }</pre>
+				<pre>}</pre>
+			</span>
+		</div>
+		<div style="clear:both;"></div>
+		<br>
+		<a name="withvalues"><h3><i>withValues()</i></h3></a>
+		<p>
+			Envia um <i>flash</i> com os valores dos campos de formulário junto a um 
+			<a href="#redirect">redirect()</a> ou <a href="#back">back()</a> para que os campos
+			possam ser automaticamente preenchidos com os valores digitados antes do último envio
+			do formulário.
+		</p>
+		<p>
+			Seu valor deve ser exibido no formulário com a função 
+			<a href="#oldval">oldVal()</a>.
+		</p>
+		<p class="obs">
+			<b>Observação:</b> esta função pode ser utilizada 
+			<b><a href="#joinuse">APENAS EM CONJUNTO</a></b> com as funções 
+			<a href="#redirect">redirect()</a> e <a href="#back">back()</a>.
+		</p>
+		<span class="pregroup">
+			<pre>object:App <b>withValues (</b> <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>back()->withValues();</pre>
+			<pre>redirect('login/form')->withValues();</pre>
+		</span>
+		<p>
+			Retorna um objeto da classe App.
+		</p>
+		<p>
+			<i>Função relacionada: <b><a href="#oldval">oldVal()</a></b></i>
+		</p>
+		<br>
+		<a name="witherrors"><h3><i>withErrors()</i></h3></a>
+		<p>
+			Envia um <i>flash</i> com as mensagens de erro referentes aos campos de formulário 
+			junto a um <a href="#redirect">redirect()</a> ou <a href="#back">back()</a> para o
+			usuário veja 
+		</p>
+		<p>
+			Seu valor deve ser exibido no formulário com a função 
+			<a href="#getinputerrors">getInputErrors()</a>.
+		</p>
+		<p class="obs">
+			<b>Observação:</b> esta função pode ser utilizada 
+			<b><a href="#joinuse">APENAS EM CONJUNTO</a></b> com as funções 
+			<a href="#redirect">redirect()</a> e <a href="#back">back()</a>.
+		</p>
+		<span class="pregroup">
+			<pre>object:App <b>withErrors (</b> <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>back()->withErrors();</pre>
+			<pre>redirect('register')->withErrors();</pre>
+		</span>
+		<p>
+			Retorna um objeto da classe App.
+		</p>
+		<p>
+			<i>Função relacionada: <b><a href="#getinputerrors">getInputErrors()</a></b></i>
+		</p>
+
+
+		<br><br>
+		
+
+		<a name="validfunc"><h2>Validação de Formulários</h2></a>
+		<a name="validcheckfunc"><h3><i>Validation::check()</i></h3></a>
+		<p>
+			Função estática da classe <b>Validation</b>. 
+		</p> 
+		<p>
+			Checka a validade dos valores em <b>$data</b>, normalmente o vetor resultante do
+			recebimento de um formulário, com base em regras de validação passadas em <b>$rules</b>
+			e redireciona de volta ao formulário, carregando em <i>flash</i> os erros encontrados
+			em cada campo.
+		</p>
+		<span class="pregroup">
+			<pre>bool <b>Validation::check (</b> array $data, array $rules <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>Validation::check (</pre>
+			<pre>   filterPost(),</pre>
+			<pre>   array(</pre>
+			<pre>      'username' => 'required|min:6|alphanum|max:12',</pre>
+			<pre>      'email' => 'required|min:6|email',</pre>
+			<pre>      'password' => 'required|equal:confirm_password',</pre>
+			<pre>      'confirm_password' => 'required',</pre>
+			<pre>   )</pre>
+			<pre>);</pre>
+		</span>
+		<p>
+			Redirecione e retorna <b>TRUE</b> caso não encontre erros e <b>FALSE</b> caso contrário.
+		</p>
+		<br>
+		<a name="valrules"><h3>Opções de validação</h3></a>
+		<span class="pregroup">
+			<pre>required <i class="comment">// Campos obrigatórios</i></pre>
+			<pre>int <i class="comment">// Números inteiros</i></pre>
+			<pre>decimal <i class="comment">// Números decimais</i></pre>
+			<pre>alpha <i class="comment">// Apenas letras e espaço</i></pre>
+			<pre>alphanum <i class="comment">// Apenas letras, números e espaço</i></pre>
+			<pre>email <i class="comment">// E-mail com sintaxe válida</i></pre>
+			<pre>min:X <i class="comment">// Tamanho mínimo de caracteres definido por X</i></pre>
+			<pre>max:X <i class="comment">// Tamanho máximo de caracteres definido por X</i></pre>
+			<pre>equal:Y <i class="comment">// Deve ser igual ao campo Y</i></pre>
+		</span>
+
+
+		<br><br>
+		
+
+		<a name="redirfunc"><h2>Redirecionamento</h2></a>
+		<a name="redirect"><h3><i>redirect()</i></h3></a>
+		<p>
+			Redireciona o visitante a outra página, definida por <b>$newAddress</b> (com base no
+			endereço da raiz da aplicação para endereços internos), com o código HTTP definido 
+			por <b>$statusCode</b>.
+		</p> 
+		<p>
+			Caso não seja passado o endereço, redireciona para a
+			página inicial da aplicação. Caso não seja passado o código HTTP, utiliza o padrão 200.
+		</p>
+		<span class="pregroup">
+			<pre>object:App <b>redirect (</b> [string $newAddress = ''], [int $statusCode = 200] <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>redirect ('posts');</pre>
+			<pre>redirect ('error/notfound', 404);</pre>
+			<pre>redirect (); <i class="comment">// Redireciona para a página inicial</i></pre>
+		</span>
+		<p>
+			Retorna um objeto da classe App.
+		</p>
+		<br>
+		<a name="back"><h3><i>back()</i></h3></a>
+		<p>
+			Redireciona o visitante para a página anterior.
+		</p>
+		<span class="pregroup">
+			<pre>object:App <b>back (</b> <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>back ();</pre>
+		</span>
+		<p>
+			Retorna um objeto da classe App.
+		</p>
+
+		<br>
+		
+		<a name="joinuse"><h3>Uso conjunto</h3></a>
+		<p>
+			Tanto a função <a href="#redirect">redirect()</a> quanto a função <a href="#back">back()</a>
+			podem ser usadas em conjunto com algumas outras funções:
+		</p>
+		<br>
+		<div class="lv2-content">
+			<a name="redirwithval"><b>Redirecionar retornando o preenchimento do formulário</b></a>	
+			<span class="pregroup">
+				<pre>back()->withValues();</pre>
+				<pre>redirect('login/form')->withValues();</pre>
+			</span>
+			<p>
+				<b>Lembre-se:</b> para exibir os dados retornados, é preciso usar a função
+				<a href="#oldval">oldVal()</a> no formulário.
+			</p>
+			<p>
+				<i>Referência: <a class="normallink" href="#withvalues">withValues()</a></i>
+			</p>
+			<br>
+
+			<a name="redirwitherr"><b>Redirecionar retornando os erros encontrados no formulário</b></a>		
+			<span class="pregroup">
+				<pre>back()->withErrors();</pre>
+				<pre>redirect('register')->withErrors();</pre>
+			</span>
+			<p>
+				<b>Lembre-se:</b> para exibir os erros retornados, é preciso usar a função
+				<a href="#getinputerrors">getInputErrors()</a> no formulário.
+			</p>
+			<p>
+				<i>Referência: <a class="normallink" href="#witherrors">withErrors()</a></i>
+			</p>
+			<br>
+
+			<a name="redirwithvalerr"><b>Redirecionar retornando o preenchimento do formulário e os erros encontrados</b></a>
+			<span class="pregroup">
+				<pre>back()->withValues()->withErrors();</pre>
+				<pre>redirect('some/form')->withErrors()->withValues();</pre>
+			</span>
+			<p>
+				<b>Lembre-se:</b> para exibir os dados e erros retornados, é preciso usar as funções
+				<a href="#oldval">oldVal()</a> e <a href="#getinputerrors">getInputErrors()</a> 
+				no formulário.
+			</p>
+			<p>
+				<i>Referência: <a class="normallink" href="#witherrors">withErrors()</a> e 
+				<a class="normallink" href="#withvalues">withValues()</a></i>
+			</p>
+			<br>
+
+			<a name="redirflash"><b>Redirecionar definindo uma mensagem <i>flash</i></b></a>
+			<span class="pregroup">
+				<pre>back()->flash('itsaflash', 'some message');</pre>
+				<pre>redirect()->flash('itsaflash', 'some message');</pre>
+			</span>
+			<p>
+				<b>Lembre-se:</b> para exibir o valor da variável <i>flash</i>, você precisa exibí-lo
+				na página destino com o uso da função <a href="#flash">flash()</a>. Seu conteúdo será
+				apagado em seguida.
+			</p>
+			<p>
+				<i>Referência: <a class="normallink" href="#flash">flash()</a></i>
+			</p>
+			<br>
+
+			<a name="redirsession"><b>Redirecionar definindo uma variável de sessão</b></a>
+			<span class="pregroup">
+				<pre>back()->session('itsasession', 'some content');</pre>
+				<pre>redirect('example')->session('itsasession', 'some content');</pre>
+			</span>
+			<p>
+				<b>Lembre-se:</b> para exibir o valor da variável de sessão, você precisa exibí-lo
+				na página destino com o uso da função <a href="#session">session()</a>.
+			</p>
+			<p>
+				<i>Referência: <a class="normallink" href="#session">session()</a></i>
+			</p>
+			<br>
+
+			<a name="redircookie"><b>Redirecionar definindo um cookie</b></a>
+			<span class="pregroup">
+				<pre>back()->cookie('itsacookie', 'other content');</pre>
+				<pre>redirect('somewhere')->cookie('itsacookie', 'other content');</pre>
+			</span>
+			<p>
+				<b>Lembre-se:</b> para exibir o valor do cookie, você precisa exibí-lo
+				na página destino com o uso da função <a href="#cookie">cookie()</a>.
+			</p>
+			<p>
+				<i>Referência: <a class="normallink" href="#cookie">cookie()</a></i>
+			</p>
+			<br>
+
+			<a name="redirunsetcookie"><b>Redirecionar destruindo um cookie</b></a>
+			<span class="pregroup">
+				<pre>back()->unsetcookie('itsacookie');</pre>
+				<pre>redirect('another/place')->unsetcookie('itsacookie');</pre>
+			</span>
+			<p>
+				<i>Referência: <a class="normallink" href="#unsetcookie">unsetcookie()</a></i>
+			</p>
+		</div>
+
+
+		<br><br>
+		
+
+		<a name="utilfunc"><h2>Funções utilitárias</h2></a>		
+		<a name="dump"><h3><i>dump()</i></h3></a>
+		<p>
+			Realiza o despejo (dump) de uma variável ou retorno de uma função. É basicamente a
+			função <i>var_dump()</i>, nativa do PHP, com sua visualização otimizada.
+		</p>
+		<span class="pregroup">
+			<pre>void <b>dump (</b> $var or function() <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>dump ($cars);</pre>
+			<pre>dump (getCars());</pre>
+		</span>
+		<p>
+			Não possui retorno, apenas exibe os dados.
+		</p>
+		<br>
+		<a name="dd"><h3><i>dd()</i></h3></a>
+		<p>
+			Realiza o despejo (dump) de uma variável ou retorno de uma função e encerra a execução
+			do script. É a abreviação de <i>"Dump and Die"</i>.
+		</p>		
+		<span class="pregroup">
+			<pre>void <b>dd (</b> $var or function() <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>dd ($cars);</pre>
+			<pre>dd (getCars());</pre>
+		</span>
+		<p>
+			Não possui retorno, apenas exibe os dados.
+		</p>
+	</div>
+</body>
+</html>

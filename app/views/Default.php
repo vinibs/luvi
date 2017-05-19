@@ -1,0 +1,20 @@
+<?php defined('INITIALIZED') OR exit('You cannot access this file directly'); ?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Luvi</title>
+	<meta charset="utf-8">
+	<meta name="author" content="Vinicius Baroni Soares">
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="assets/styles/default.css">
+</head>
+<body>
+	<span id="maintitle">
+		<h1>Luvi</h1>
+		<h2>Foco na simplicidade.</h2>
+		<br>
+		<span style="font-size: 70%">Ir para a <a href="doc/" target="new">documentação</a></span>
+	</span>
+</body>
+</html>
+
