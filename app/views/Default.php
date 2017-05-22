@@ -13,7 +13,7 @@
 		<h1>Luvi</h1>
 		<h2>Foco na simplicidade.</h2>
 		<br>
-		<span style="font-size: 70%">Ir para a <a href="doc/" target="new">documentação</a></span>
+		<span style="font-size: 70%">Ir para a <a href="docs/" target="new">documentação</a></span>
 	</span>
 </body>
 </html>
