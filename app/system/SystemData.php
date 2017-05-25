@@ -4,7 +4,7 @@ define('SYSROOT', '/Luvi'); // Default: '/'
 define('BASEPATH', realpath($_SERVER["DOCUMENT_ROOT"]).SYSROOT); // Complete path to application root
 
 // Session settings
-define('SESSION_NAME', 'MicroSystem'); // Name of session cookie
+define('SESSION_NAME', 'LuviSession'); // Name of session cookie
 define('SESSION_HTTP_ONLY', 1); // HTTP_ONLY property of session cookies
 define('SESSION_ACTIVITY_TIME', 2); // Set the time of inactivity before the user is logged out
 

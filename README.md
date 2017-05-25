@@ -1,4 +1,4 @@
-# Bem vindo ao Luvi
+# Bem-vindo ao Luvi
 O Luvi é um micro framework MVC, focado em simplificar as tarefas básicas para o desenvolvimento de uma aplicação PHP.
 
 
