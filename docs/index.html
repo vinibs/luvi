@@ -626,7 +626,13 @@
 			<pre>public function something (<b> $params </b>) { ... }</pre>
 		</span>
 		<p>
-			Por outro lado, os parâmetros GET continuam podendo ser usados, tendo à disposição apenas
+			Ao utilizar uma variável, por exemplo, <b>$params</b>, para receber os dados vindos da URL
+			em um método, todos os parâmteros passados serão adicionados a ela, de forma que ela passa
+			a ter uma estrutura semelhante à da variável <b>$_GET</b>. Assim, os parâmetros são 
+			alcançados utilizando <b><i>$params["id"]</i></b>, <b><i>$params["param1"]</i></b>, etc.
+		</p>
+		<p>
+			Por outro lado, os parâmetros GET ($_GET) continuam podendo ser usados, tendo à disposição apenas
 			a função <a href="#filterget">filterGet()</a> para manuseio destes dados.
 		</p>
 		<p>
