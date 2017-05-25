@@ -18,6 +18,17 @@ a, a:visited, .lv2-content a.normallink, .lv2-content a.normallink:visited {
 	color: rgba(100,100,255,0.7);
 }
 
+
+
+#logo{
+	display: block;
+	width: 345px;
+	height: 175px;
+	background: url(../assets/images/luvi.png) no-repeat center center;
+	background-size: 170px auto;
+	margin: 0 auto;
+}
+
 #sidebar a, #sidebar a:visited, .nolist a, .nolist a:visited, a h2, a h3,
 .lv2-content a, .lv2-content a:visited {
 	color: black;
