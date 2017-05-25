@@ -1,5 +1,6 @@
-# Luvi
-Luvi micro framework PHP
+# Bem vindo ao LUVI
+O Luvi é um micro framework MVC, focado em simplificar as tarefas básicas para o desenvolvimento de uma aplicação PHP.
 
-## Um framework básico, focado em simplificar tarefas comuns do desenvolvimento em PHP
-Seguindo uma estrutura MVC, é focado em oferecer uma estrutura básica para o desenvolvimento de aplicações PHP, sem contar com recursos avançados.
+
+## Uma estrutura básica, para aplicações básicas
+Como o foco é fornecer uma estrutura para a programação de sistemas em PHP, o Luvi não apresenta muitos recursos avançados que simplifiquem o processo. Porém, fornece algumas funções básicas para agilizar e facilizar tarefas como a inserção de dados em um sistema de banco de dados, comunicação entre controllers, models e views.
