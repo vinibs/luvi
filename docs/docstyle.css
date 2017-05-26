@@ -22,7 +22,6 @@ a, a:visited, .lv2-content a.normallink, .lv2-content a.normallink:visited {
 
 #logo{
 	display: block;
-	width: 345px;
 	height: 175px;
 	background: url(images/luvi.png) no-repeat center center;
 	background-size: 170px auto;
