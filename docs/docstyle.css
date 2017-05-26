@@ -24,7 +24,7 @@ a, a:visited, .lv2-content a.normallink, .lv2-content a.normallink:visited {
 	display: block;
 	width: 345px;
 	height: 175px;
-	background: url(../assets/images/luvi.png) no-repeat center center;
+	background: url(images/luvi.png) no-repeat center center;
 	background-size: 170px auto;
 	margin: 0 auto;
 }
