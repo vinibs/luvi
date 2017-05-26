@@ -2,7 +2,7 @@
 
 abstract class Controller {
 	public function getRequest () {
-		return strtoupper($_SERVER['REQUEST_METHOD']);
+		return strtolower($_SERVER['REQUEST_METHOD']);
 	}
 
 }
