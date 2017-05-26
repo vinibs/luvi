@@ -234,7 +234,7 @@
 						<ul>
 							<li class="treefile">App.php <i class="comment">&nbsp;&nbsp;// Classe principal do sistema</i></li>
 							<li class="treefile">Auth.php  <i class="comment">&nbsp;&nbsp;// Classe com os métodos de autenticação</i></li>
-							<li class="treefile">RequestInfo.php  <i class="comment">&nbsp;&nbsp;// Processa as URLs e direciona os conteúdos</i></li>
+							<li class="treefile">RequestRouter.php  <i class="comment">&nbsp;&nbsp;// Processa as URLs e direciona os conteúdos</i></li>
 							<li class="treefile">SystemFunctions.php  <i class="comment">&nbsp;&nbsp;// Globaliza as funções principais do sistema</i></li>
 						</ul>
 						<li>lib <i class="comment">&nbsp;&nbsp;// Contém as bibliotecas essenciais para o sistema</i></li>
@@ -607,7 +607,7 @@
 			<pre>$requestType = getRequest ();</pre>
 		</span>
 		<p>
-			Retorna uma string contendo o tipo de requisição realizada.
+			Retorna uma string, em letras maiúsculas, contendo o tipo de requisição realizada.
 		</p>
 		<br>
 		<a name="getparams"><h3>Parâmetros GET</h3></a>
@@ -626,7 +626,13 @@
 			<pre>public function something (<b> $params </b>) { ... }</pre>
 		</span>
 		<p>
-			Por outro lado, os parâmetros GET continuam podendo ser usados, tendo à disposição apenas
+			Ao utilizar uma variável, por exemplo, <b>$params</b>, para receber os dados vindos da URL
+			em um método, todos os parâmteros passados serão adicionados a ela, de forma que ela passa
+			a ter uma estrutura semelhante à da variável <b>$_GET</b>. Assim, os parâmetros são 
+			alcançados utilizando <b><i>$params["id"]</i></b>, <b><i>$params["param1"]</i></b>, etc.
+		</p>
+		<p>
+			Por outro lado, os parâmetros GET ($_GET) continuam podendo ser usados, tendo à disposição apenas
 			a função <a href="#filterget">filterGet()</a> para manuseio destes dados.
 		</p>
 		<p>
