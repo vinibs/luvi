@@ -20,6 +20,7 @@ a, a:visited {
 	background: url(../images/luvi.png) no-repeat center center;
 	background-size: 170px auto;
 	margin: 0 auto;
+	color: transparent;
 }
 
 #maintitle {

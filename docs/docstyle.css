@@ -26,6 +26,7 @@ a, a:visited, .lv2-content a.normallink, .lv2-content a.normallink:visited {
 	background: url(images/luvi.png) no-repeat center center;
 	background-size: 170px auto;
 	margin: 0 auto;
+	color: transparent;
 }
 
 #sidebar a, #sidebar a:visited, .nolist a, .nolist a:visited, a h2, a h3,

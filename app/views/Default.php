@@ -12,7 +12,7 @@
 </head>
 <body>
 	<span id="maintitle">
-        <span id="logo"></span>
+        <span id="logo">Luvi</span>
 		<h2>Foco na simplicidade.</h2>
 		<br>
 		<span style="font-size: 70%">Ir para a <a href="docs/" target="new">documentação</a></span>
