@@ -212,6 +212,6 @@ class DB {
 	}	
 
 	public static function connect () {
-		return new PDO("mysql:host=".DB_HOST.";dbname=".DB_NAME, DB_USER, DB_PASS);
+		return new PDO(DB_DRIVER.":host=".DB_HOST.";dbname=".DB_NAME, DB_USER, DB_PASS);
 	}
 }

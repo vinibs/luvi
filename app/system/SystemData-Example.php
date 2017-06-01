@@ -9,6 +9,7 @@ define('SESSION_HTTP_ONLY', 1); // HTTP_ONLY property of session cookies
 define('SESSION_ACTIVITY_TIME', 2); // Set the time of inactivity before the user is logged out
 
 // Database settings - Uses PDO
+define('DB_DRIVER', 'mysql'); // Options: mysql, pgsql, sqlite
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
 define('DB_PASS', '');

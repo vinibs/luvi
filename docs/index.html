@@ -84,6 +84,7 @@
 			<ul class="nolist">
 				<a href="#dbclassselect"><li><i>DB->select()</i></li></a>
 				<a href="#dbclasswhere"><li><i>DB->where()</i></li></a>
+				<a href="#dbclassfind"><li><i>find()</i></li></a>
 				<a href="#dbclasssave"><li><i>DB::save()</i></li></a>
 				<a href="#dbclassdelete"><li><i>DB::delete()</i></li></a>
 			</ul>
@@ -354,6 +355,7 @@
 		<br>
 		<a name="constdb"><h3>Const. Banco de Dados</h3></a>
 		<span class="pregroup">
+			<pre>define('DB_DRIVER', 'mysql'); <i class="comment">// Driver de banco de dados utilizado</i></pre>
 			<pre>define('DB_HOST', 'localhost'); <i class="comment">// Endereço do host do banco de dados</i></pre>
 			<pre>define('DB_USER', 'user'); <i class="comment">// Nome de usuário no banco de dados</i></pre>
 			<pre>define('DB_PASS', '123'); <i class="comment">// Senha do usuário no banco de dados</i></pre>
@@ -1117,8 +1119,8 @@
 			que esteja em uso no momento.
 		</p>
 		<p>
-			<b>As funções desta classe são exatamente as mesma descritas acima, exceto pelas funções
-			<a href="#dbget">get()</a> e <a href="#dball">all()</a>.</b>
+			<b>As funções desta classe são exatamente as mesma descritas acima, exceto pela função
+			<a href="#dbget">get()</a>.</b>
 		</p>
 		<p>
 			Os parâmetros de algumas das funções são diferentes para a classe DB. As mudanças são
@@ -1149,7 +1151,7 @@
 				adicional</b>, quando não usada em conjunto com a função <a href="#dbclassselect">select()</a>.
 			</p>
 			<span class="pregroup">
-				<pre>object:DB <b>where (</b> string $where, $whereVars, string $table <b>)</b></pre>
+				<pre>object:DB <b>where (</b> string $where, $whereVars, [string $table] <b>)</b></pre>
 				<pre><br><b>Usage example:</b></pre>
 				<pre>(new DB)->where ('name = ?', 'Felix', 'Cat')->find ();</pre>
 				<pre>(new DB)->select ('id, age', 'Cat')->where ('name = ? AND weight > ?', [$name, $weight])->find (); <i class="comment">// Seleciona 'id' e 'age' na tabela Dog, procurando por uma linha em que 'name' seja igual ao valor de $name e 'weight' seja maior que o valor de $weight</i></pre>
@@ -1158,7 +1160,23 @@
 				Retorna o objeto salvo em caso de sucesso ou <b>FALSE</b> caso contrário.
 			</p>
 			<br>
-			<a name="dbclasssave"><b><i>DB::save()</i></b></a>
+			<a name="dbclassfind"><b><i>find()</i></b></a>
+			<p>
+				Executa a operação iniciada pelas funções <a href="#dbclassselect">select()</a> e 
+				<a href="#dbclasswhere">where()</a>. Deve ser usada <b>apenas depois</b> de pelo menos
+				alguma das funções citadas. 
+			</p>
+			<span class="pregroup">
+				<pre>object:DB <b>find (</b> <b>)</b></pre>
+				<pre><br><b>Usage example:</b></pre>
+				<pre>(new DB)->select ('id, age', 'Cat')->find (); <i class="comment">// Executa a consulta select anterior</i></pre>
+				<pre>(new DB)->select ('id, age', 'Cat')->where ('name = ? AND weight > ?', [$name, $weight])->find (); <i class="comment">// Executa a consulta select/where anterior</i></pre>
+				<pre>(new DB)->where ('name = ? AND weight > ?', [$name, $weight])->find (); <i class="comment">// Executa a consulta select/where anterior</i></pre>
+			</span>
+			<p>
+				Retorna o objeto salvo em caso de sucesso ou <b>NULL</b> caso contrário.
+			</p>
+			<br><a name="dbclasssave"><b><i>DB::save()</i></b></a>
 			<p>
 				Recebe um objeto <b>$object</b> por parâmetro e insere ou atualiza seus dados no banco.
 			</p>
