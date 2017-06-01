@@ -183,10 +183,10 @@
 
 		
 		<p class="obs">
-			<b>Atenção:</b> ao iniciar um projeto utilizando o Luvi, não se esqueça de definir 
-			as <a href="#sysconst">constantes do sistema</a> em 
-			<b>/app/<wbr>system/<wbr>SystemData.php</b> para que o sistema funcione 
-			corretamente.
+			<b>Atenção:</b> ao iniciar um projeto utilizando o Luvi, não se esqueça de renomear o arquivo
+			<b>SystemData-Example.php</b> (localizado em <i>/app/<wbr>system/<wbr></i>) para 
+			<b>SystemData.php</b> e de definir nele as
+			<a href="#sysconst">constantes do sistema</a> para que o sistema funcione corretamente.
 		</p>
 
 		<br>
@@ -245,7 +245,7 @@
 								</ul>
 							</ul>
 						<li class="treefile">Routes.php <i class="comment">&nbsp;&nbsp;// Contém as rotas personalizadas</i></li>
-						<li class="treefile">SystemData.php <i class="comment">&nbsp;&nbsp;// Contém as constantes do sistema</i></li>
+						<li class="treefile">SystemData-Example.php <i class="comment">&nbsp;&nbsp;// Arquivo base que contém as constantes do sistema</i></li>
 					</ul>
 					<li>views <i class="comment">&nbsp;&nbsp;// Destinada a armazenamento de views</i></li>
 					<ul>
@@ -327,8 +327,9 @@
 		
 		<a name="sysconst"><h2>Constantes do sistema</h2></a>
 		<p>
-			O arquivo <b>/app/<wbr>system/<wbr>SystemData.php</b> contém as constantes que são utilizadas pelo
-			sistema na configuração de determinados recursos.
+			O arquivo <b>/app/<wbr>system/<wbr>SystemData-Example.php</b> contém as constantes que são utilizadas pelo
+			sistema na configuração de determinados recursos. Deve ser renomeado para apenas <b>SystemData.php</b>
+			para que funcione corretamente.
 		</p>
 		<p>
 			Estas constantes devem ser alteradas de acordo com o projeto, definindo os parâmetros de
@@ -840,12 +841,12 @@
 		</p>
 		<p>
 			Caso o nome da chave primária de uma tabela seja diferente, pode-se definir, no próprio
-			model, a variável <b><i>private</i> $primarykey</b>, a qual indica o nome do campo a ser usado
+			model, a variável <b><i>public</i> $primarykey</b>, a qual indica o nome do campo a ser usado
 			para buscas por valores únicos na tabela de nome igual ao da classe.
 		</p>
 		<span class="pregroup">
 			<pre>class Animal extends <i>Model</i> { </pre>
-			<pre>    <b><i>private</i> $primarykey</b> = 'animal_id'; </pre>
+			<pre>    <b><i>public</i> $primarykey</b> = 'animal_id'; </pre>
 			<pre>}</pre>
 		</span>
 		<p>

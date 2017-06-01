@@ -92,4 +92,8 @@ abstract class Model {
 
 		return lcfirst($class);
 	}
+
+	public function getPrimaryKey() {
+		return $this->primarykey;
+	}
 }

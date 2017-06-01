@@ -8,23 +8,38 @@ class DB {
 	public static function save ($object) {
 		$arrVars = $object->getObjVars();
 
+		// Remove o atributo 'primarykey' da lista
+		$arr = $arrVars;
+		$arrVars = array();
+		foreach($arr as $i => $var){
+			if($var != 'primarykey'){
+				$arrVars[] = $var;
+			}
+		}
+
+		// Define o número que deve ser subtraído 
+		// da contagem máxima de elementos nas rotinas abaixo
+		$varsSub = 1;
+		if(in_array('id', $arrVars))
+			$varsSub++;
+
 		$table = $object->getTableVar();
 
 		if (self::isNew($object)) {
 			$sql = 'INSERT INTO ' . $table . ' (';
 			foreach ($arrVars as $i => $var) {
-				if($var != 'id'){
+				if($var != 'id' && $var != 'primarykey'){
 					$sql .= $var;
-					if ($i < (sizeof($arrVars) - 1))
+					if ($i < (sizeof($arrVars) - $varsSub))
 						$sql .= ', ';
 				}
 			}
 			$sql .= ') VALUES (';
 			foreach ($arrVars as $i => $var) {
-				if($var != 'id'){
+				if($var != 'id' && $var != 'primarykey'){
 					$get = 'get' . ucfirst($var);
 					$sql .= ':' . $var;
-					if ($i < (sizeof($arrVars) - 1))
+					if ($i < (sizeof($arrVars) - $varsSub))
 						$sql .= ', ';
 				}
 			}
@@ -34,14 +49,14 @@ class DB {
 		} else {
 			$sql = 'UPDATE ' . $table . ' SET ';
 			foreach ($arrVars as $i => $var) {
-				if($var != 'id'){
+				if($var != 'id' && $var != 'primarykey'){
 					$get = 'get' . ucfirst($var);
 					$sql .= $var . ' = :' . $var;
-					if ($i < (sizeof($arrVars) - 1))
+					if ($i < (sizeof($arrVars) - $varsSub))
 						$sql .= ', ';
 				}
 			}
-			$sql .= ' WHERE id = :id;';
+			$sql .= ' WHERE '.$object->primarykey.' = :'.$object->primarykey.';';
 		}
 
 		
@@ -49,16 +64,18 @@ class DB {
 		$stmt = $con->prepare($sql);
 
 		foreach ($arrVars as $var) {
-			if ($var != 'id') {
+			if ($var != 'id' && $var != 'primarykey') {
 				$getFunc = 'get' . ucfirst($var);
 				$stmt->bindValue(':'.$var, (string) $object->$getFunc());
 			}
 		}
 
-		if (!self::isNew($object)) 
-			$stmt->bindValue(':id', (int) $object->getId());
+		if (!self::isNew($object)) {
+			$getFunc = 'get'.ucfirst($object->primarykey);
+			$stmt->bindValue(':'.$object->primarykey, (int) $object->$getFunc());
+		}
 
-
+dump($sql);
 		if ($stmt->execute())
 			return $object;
 		else
@@ -179,11 +196,13 @@ class DB {
 		$arrVars = $object->getObjVars();
 		$table = $object->getTableVar();
 
-		$sql = 'SELECT * FROM ' . $table . ' WHERE id = :id;';
+		$sql = 'SELECT * FROM ' . $table . ' WHERE '.$object->primarykey.' = :'.$object->primarykey.';';
 
 		$con = self::connect();
 		$stmt = $con->prepare($sql);
-		$stmt->bindValue(':id', (int) $object->getId());
+
+		$getFunc = 'get'.ucfirst($object->primarykey);
+		$stmt->bindValue(':'.$object->primarykey, (int) $object->$getFunc());
 
 		$stmt->execute();
 
