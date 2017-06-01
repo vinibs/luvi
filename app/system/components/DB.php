@@ -62,7 +62,7 @@ class DB {
 		if ($stmt->execute())
 			return $object;
 		else
-			return FALSE;
+			return NULL;
 	}
 
 	public static function delete ($object) {
