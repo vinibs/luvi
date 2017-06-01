@@ -69,7 +69,6 @@ abstract class Model {
 				}
 			}
 		}
-		dump($arrProperties);
 		return $arrProperties;
 	}
 
