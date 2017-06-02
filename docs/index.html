@@ -999,14 +999,14 @@
 			<span class="pregroup">
 				<pre>object:DB <b>join (</b> string $joinTable, $joinTableCol, $thisTableCol, [$compare] <b>)</b></pre>
 				<pre><br><b>Usage example:</b></pre>
-				<pre>(new Television)->select ('name')->join ('hometheater', 'hometheater.id_tv', 'television.id')->where ('hometheater.video = ?', 'hdmi')->find (); <i class="comment">// Procura por toda a tabela Television, unindo-se com a tabela Hometheater, por uma TV cujo HT tenha a propriedade 'video' igual a 'hdmi' </i></pre>
+				<pre>(new Television)->join ('hometheater', 'hometheater.id_tv', 'television.id')->where ('hometheater.video = ?', 'hdmi')->find (); <i class="comment">// Procura por toda a tabela Television, unindo-se com a tabela Hometheater, por uma TV cujo HT tenha a propriedade 'video' igual a 'hdmi' </i></pre>
 			</span>
 			<p>
 				Retorna um objeto da classe DB.
 			</p>
 			<p class="obs">
-				<b>Observação:</b> esta função deve ser executada SEMPRE após a função select() e, quando
-				aplicável, antes da função where(). Caso contrário, a consulta não será executada 
+				<b>Observação:</b> esta função deve ser executada SEMPRE antes da função where()
+				(quando aplicável). Caso contrário, a consulta não será executada 
 				corretamente.
 			</p>
 			<br>
@@ -1161,7 +1161,8 @@
 			<a name="dbclassjoin"><b><i>DB->join()</i></b></a>
 			<p>
 				As mesmas propriedades da função <a class="normallink" href="#dbjoin">join()</a> descrita
-				anteriormente.
+				anteriormente, com a diferença de que deve ser executada <b>SEMPRE</b> após um 
+				<a class="normallink" href="#dbclassselect">select()</a>.
 			</p>
 			<span class="pregroup">
 				<pre>object:DB <b>join (</b> string $joinTable, $joinTableCol, $thisTableCol, [$compare] <b>)</b></pre>
