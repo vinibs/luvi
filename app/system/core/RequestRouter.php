@@ -204,7 +204,6 @@ class RequestRouter {
 	}
 
 	private function iniSession () {
-		ini_set('session.cookie_secure',1);
 		ini_set('session.use_only_cookies',1);
 		ini_set( 'session.cookie_httponly', SESSION_HTTP_ONLY );
 
