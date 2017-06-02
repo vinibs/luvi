@@ -2,6 +2,7 @@
 
 define('SYSROOT', '/Luvi'); // Default: '/'
 define('BASEPATH', realpath($_SERVER["DOCUMENT_ROOT"]).SYSROOT); // Complete path to application root
+define('ENVIRONMENT', 'dev'); // 'dev' or 'production'
 
 // Session settings
 define('SESSION_NAME', 'LuviSession'); // Name of session cookie

@@ -1,6 +1,4 @@
-<?php
-ini_set('display_errors', 'On');  //On or Off
-
+<?php 
 define('INITIALIZED', TRUE); // Allow to access the other files via require/include
 
 require_once 'app/SystemData.php';

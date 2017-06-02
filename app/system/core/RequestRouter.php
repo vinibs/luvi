@@ -18,7 +18,7 @@ class RequestRouter {
 		$method = $data['method'];
 		$params = $data['params'];
 		$error = $data['error'];
-
+		
 		if (!$error) {
 			// Inclui e instancia o controller e o método, passando os parâmetros
 			if (file_exists(BASEPATH . '/app/controllers/' . $controller . '.php')
@@ -126,8 +126,9 @@ class RequestRouter {
 		if ($routed == FALSE) {
 			$urlcomponents = $path = explode('/', $urlcomponents);
 
-			// Define o controller a ser usado
-			if (isset($urlcomponents[0]) && !empty($urlcomponents[0])) 
+			// Define o controller a ser usado 
+			// (caso o primeiro caractere seja '?', chama o MainController e passa o $_GET)
+			if (isset($urlcomponents[0]) && !empty($urlcomponents[0]) && $urlcomponents[0][0] != '?') 
 				$controller = $urlcomponents[0].'Controller';
 			 else
 				$controller = 'MainController';
@@ -167,7 +168,6 @@ class RequestRouter {
 		} else
 			$params = '';
 
-
 		return array(
 			'controller' => $controller, 
 			'method' => $method, 
@@ -196,6 +196,13 @@ class RequestRouter {
 		require_once BASEPATH . '/app/system/components/DB.php';
 		require_once BASEPATH . '/app/system/components/Mail.php';
 		require_once BASEPATH . '/app/system/components/Validation.php';
+
+		// Mostra ou oculta os erros com base na constante ENVIRONMENT
+		if(ENVIRONMENT == 'dev'){
+			ini_set('display_errors', 'On');
+		} else if(ENVIRONMENT == 'production'){
+			ini_set('display_errors', 'Off');
+		}
 
 		// Define cabeçalhos HTTP com foco na segurança da aplicação
 		header('X-Frame-Options: DENY');

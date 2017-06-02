@@ -65,6 +65,7 @@
 				<a href="#dbget"><li><i>get()</i></li></a>
 				<a href="#dball"><li><i>all()</i></li></a>
 				<a href="#dbselect"><li><i>select()</i></li></a>
+				<a href="#dbjoin"><li><i>join()</i></li></a>
 				<a href="#dbwhere"><li><i>where()</i></li></a>
 				<a href="#dborderby"><li><i>orderBy()</i></li></a>
 				<a href="#dbextrasql"><li><i>extraSql()</i></li></a>
@@ -80,6 +81,7 @@
 			<a href="#dbclass"><li>Classe DB</li></a>
 			<ul class="nolist">
 				<a href="#dbclassselect"><li><i>DB->select()</i></li></a>
+				<a href="#dbclassjoin"><li><i>DB->join()</i></li></a>
 				<a href="#dbclasswhere"><li><i>DB->where()</i></li></a>
 				<a href="#dbclassfind"><li><i>find()</i></li></a>
 				<a href="#dbclassall"><li><i>DB::all()</i></li></a>
@@ -972,6 +974,41 @@
 				Caso contrário, a consulta não será executada.
 			</p>
 			<br>
+			<a name="dbjoin"><b><i>join()</i></b></a>
+			<p>
+				Define uma união com outra tabela do banco de dados.
+			</p>
+			<p>
+				Realiza a união com a tabela <b>$joinTable</b>, comparando a coluna <b>$joinTableCol</b>,
+				da tabela a ser unida, com a coluna <b>$thisTableCol</b>, tabela ao qual o objeto atual
+				pertence, utilizando a comparação <b>$compare</b> (por padrão, verifica se são iguais).
+			</p>
+			<p>
+				Ao executar a consulta, utilizando o método 
+				<a href="dbclassfind" class="normallink">find()</a>, <b>os resultados
+				obtidos são adicionados a um objeto do mesmo tipo do objeto que originou a chamada da
+				função</b>, com as colunas adicionais, 
+				do objeto unido, sendo definidas como atributos públicos.
+			</p>
+			<p>
+				Em outras palavras, ao chamar a função a partir de um objeto, por exemplo, Device e uni-lo
+				com um objeto Person, o resultado será um objeto da classe Device, com seus atributos
+				tradicionais (manipulados pelos métodos getters e setters) mais os atributos da classe
+				Person, públicos (manipuláveis diretamente, sem necessitar dos métodos get e set).
+			</p>
+			<span class="pregroup">
+				<pre>object:DB <b>join (</b> string $joinTable, $joinTableCol, $thisTableCol, [$compare] <b>)</b></pre>
+				<pre><br><b>Usage example:</b></pre>
+				<pre>(new Television)->join ('hometheater', 'hometheater.id_tv', 'television.id')->where ('hometheater.video = ?', 'hdmi')->find (); <i class="comment">// Procura por toda a tabela Television, unindo-se com a tabela Hometheater, por uma TV cujo HT tenha a propriedade 'video' igual a 'hdmi' </i></pre>
+			</span>
+			<p>
+				Retorna um objeto da classe DB.
+			</p>
+			<p class="obs">
+				<b>Observação:</b> esta função deve ser executada SEMPRE antes da função where()
+				(quando aplicável). Caso contrário, a consulta não será executada corretamente.
+			</p>
+			<br>
 			<a name="dbwhere"><b><i>where()</i></b></a>
 			<p>
 				Define a condição de restrição para a consulta dada pela função 
@@ -981,15 +1018,16 @@
 			<p>
 				A condição de busca (<b>$where</b>) é composta de uma string com o código SQL do where
 				(exceto pela palavra chave "WHERE"), com os valores a serem buscados trocados por 
-				uma "?", enquanto que <b>$whereVars</b> pode ser uma string contendo o único valor
-				a substituir a "?" na string $where ou um vetor com todos os elementos que substituirão,
-				respectivamente, cada uma das interrogações do código passado.
+				uma "?", enquanto que <b>$whereVars</b>, quando passada, pode ser uma string contendo 
+				o único valor a substituir a "?" na string $where ou um vetor com todos os elementos
+				que substituirão, respectivamente, cada uma das interrogações do código passado.
 			</p>
 			<span class="pregroup">
-				<pre>object:DB <b>where (</b> string $where, $whereVars <b>)</b></pre>
+				<pre>object:DB <b>where (</b> string $where, [$whereVars] <b>)</b></pre>
 				<pre><br><b>Usage example:</b></pre>
 				<pre>(new Cat)->where ('name = ?', 'Felix')->find (); <i class="comment">// Procura por toda a tabela Cat por um valor cujo atributo 'name' seja 'Felix'</i></pre>
 				<pre>(new Dog)->select ('id, age')->where ('name = ? AND weight > ?', [$name, $weight])->find (); <i class="comment">// Seleciona 'id' e 'age' na tabela Dog, procurando por uma linha em que 'name' seja igual ao valor de $name e 'weight' seja maior que o valor de $weight</i></pre>
+				<pre>(new Lion)->select ('*')->where ('wild = TRUE')->find (); <i class="comment">// Seleciona tudo na tabela Lion, procurando por uma linha em que 'wild' seja TRUE</i></pre>
 			</span>
 			<p>
 				Retorna um objeto da classe DB.
@@ -1116,7 +1154,21 @@
 				<pre>(new DB)->select (NULL, 'Animal')->find ();</pre>
 			</span>
 			<p>
-				Retorna o objeto salvo em caso de sucesso ou <b>FALSE</b> caso contrário.
+				Retorna um objeto do tipo DB.
+			</p>
+			<br>
+			<a name="dbclassjoin"><b><i>DB->join()</i></b></a>
+			<p>
+				As mesmas propriedades da função <a class="normallink" href="#dbjoin">join()</a> descrita
+				anteriormente.
+			</p>
+			<span class="pregroup">
+				<pre>object:DB <b>join (</b> string $joinTable, $joinTableCol, $thisTableCol, [$compare] <b>)</b></pre>
+				<pre><br><b>Usage example:</b></pre>
+				<pre>(new DB)->join ('hometheater', 'hometheater.id_tv', 'television.id')->where ('hometheater.video = ?', 'hdmi')->find (); <i class="comment">// Procura por toda a tabela Television, unindo-se com a tabela Hometheater, por uma TV cujo HT tenha a propriedade 'video' igual a 'hdmi' </i></pre>
+			</span>
+			<p>
+				Retorna um objeto do tipo DB.
 			</p>
 			<br>
 			<a name="dbclasswhere"><b><i>DB->where()</i></b></a>
@@ -1126,13 +1178,14 @@
 				adicional</b>, quando não usada em conjunto com a função <a href="#dbclassselect">select()</a>.
 			</p>
 			<span class="pregroup">
-				<pre>object:DB <b>where (</b> string $where, $whereVars, [string $table] <b>)</b></pre>
+				<pre>object:DB <b>where (</b> string $where, [$whereVars], [string $table] <b>)</b></pre>
 				<pre><br><b>Usage example:</b></pre>
 				<pre>(new DB)->where ('name = ?', 'Felix', 'Cat')->find ();</pre>
-				<pre>(new DB)->select ('id, age', 'Cat')->where ('name = ? AND weight > ?', [$name, $weight])->find (); <i class="comment">// Seleciona 'id' e 'age' na tabela Dog, procurando por uma linha em que 'name' seja igual ao valor de $name e 'weight' seja maior que o valor de $weight</i></pre>
+				<pre>(new DB)->select ('id, age', 'Dog')->where ('name = ? AND weight > ?', [$name, $weight])->find (); <i class="comment">// Seleciona 'id' e 'age' na tabela Dog, procurando por uma linha em que 'name' seja igual ao valor de $name e 'weight' seja maior que o valor de $weight</i></pre>
+				<pre>(new DB)->select ('*', 'Lion')->where ('wild = TRUE')->find (); <i class="comment">// Seleciona tudo na tabela Lion, procurando por uma linha em que 'wild' seja TRUE</i></pre>
 			</span>
 			<p>
-				Retorna o objeto salvo em caso de sucesso ou <b>FALSE</b> caso contrário.
+				Retorna um objeto do tipo DB.
 			</p>
 			<br>
 			<a name="dbclassfind"><b><i>find()</i></b></a>
@@ -2076,30 +2129,36 @@
 		<br>
 		<a name="witherrors"><h3><i>withErrors()</i></h3></a>
 		<p>
-			Envia um <i>flash</i> com as mensagens de erro referentes aos campos de formulário 
-			junto a um <a href="#redirect">redirect()</a> ou <a href="#back">back()</a> para o
-			usuário veja 
+			Envia um <i>flash</i> com as mensagens de erro referentes aos campos de formulário,
+			conforme passados por parâmetro na variável $arrayErrors, 
+			junto a um <a href="#redirect">redirect()</a> ou <a href="#back">back()</a>.
+		</p>
+		<p>
+			O parâmetro deve seguir o padrão <b>$fielNname => $errorMessage</b>, onde <i>$fieldName</i>
+			representa o nome do campo no formulário e <i>$errorMessage</i> representa a mensagem de
+			erro a ser exibida para o usuário.
 		</p>
 		<p>
 			Seu valor deve ser exibido no formulário com a função 
 			<a href="#getinputerrors">getInputErrors()</a>.
 		</p>
 		<p class="obs">
-			<b>Observação:</b> esta função pode ser utilizada 
+			<b>Observação:</b> esta função deve ser utilizada 
 			<b><a href="#joinuse">APENAS EM CONJUNTO</a></b> com as funções 
 			<a href="#redirect">redirect()</a> e <a href="#back">back()</a>.
 		</p>
 		<span class="pregroup">
-			<pre>object:App <b>withErrors (</b> <b>)</b></pre>
+			<pre>object:App <b>withErrors (</b> $arrayErrors <b>)</b></pre>
 			<pre><br><b>Usage example:</b></pre>
-			<pre>back()->withErrors();</pre>
-			<pre>redirect('register')->withErrors();</pre>
+			<pre>back()->withErrors($arrError);</pre>
+			<pre>redirect('register')->withErrors(array('user' => 'Usuário inválido'));</pre>
 		</span>
 		<p>
 			Retorna um objeto da classe App.
 		</p>
 		<p>
-			<i>Função relacionada: <b><a href="#getinputerrors">getInputErrors()</a></b></i>
+			<i>Funções relacionadas: <b><a href="#getinputerrors">getInputErrors()</a></b> e
+			<b><a href="#checkinputerrors">checkInputErrors()</a></b></i>
 		</p>
 
 
