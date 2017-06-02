@@ -58,8 +58,12 @@ class App {
 	}
 
 	public function withErrors ($inputErrors) {
-		foreach ($inputErrors as $input => $error)
-			$_SESSION['flash']['inputErrors'][$input] .= $error.'<br>';
+		foreach ($inputErrors as $input => $error) {
+            if (!isset($_SESSION['flash']['inputErrors'][$input]))
+                $_SESSION['flash']['inputErrors'][$input] = '';
+
+            $_SESSION['flash']['inputErrors'][$input] .= $error . '<br>';
+        }
 		return $this;
 	}
 

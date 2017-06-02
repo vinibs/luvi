@@ -21,7 +21,12 @@ abstract class Model {
 		return (new DB)->select($selectedData, $table);
 	}
 
-	public function where ($where, $whereVars) {
+    public function join ($table, $tableCol, $thisCol, $compare = '=') {
+        $tableOrigin = $this->getTableVar();
+        return (new DB)->select('*', $tableOrigin)->join($table, $tableCol, $thisCol, $compare);
+    }
+
+	public function where ($where, $whereVars = NULL) {
 		$table = $this->getTableVar();
 		return (new DB)->where($where, $whereVars, $table);
 	}

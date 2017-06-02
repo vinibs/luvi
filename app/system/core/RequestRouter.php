@@ -207,7 +207,7 @@ class RequestRouter {
 		ini_set('session.cookie_secure',1);
 		ini_set('session.use_only_cookies',1);
 		ini_set( 'session.cookie_httponly', SESSION_HTTP_ONLY );
-		
+
 		session_name(SESSION_NAME);
 		session_start();
 		ob_start();
