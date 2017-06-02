@@ -143,7 +143,7 @@ class DB {
 
 	public function orderBy ($orderValue, $order = 'ASC') {
 		if (empty($this->sql)) 
-			return FALSE;
+			return NULL;
 		else {
 			$orderExplode = explode('ORDER BY', $this->sql);
 
@@ -160,7 +160,7 @@ class DB {
 
 	public function extraSql ($sql) {
 		if (empty($this->sql))
-			return FALSE;
+			return NULL;
 		else 
 			$this->sql .= ' ' . $sql;
 
@@ -209,9 +209,22 @@ class DB {
 			return FALSE;
 		else 
 			return TRUE;
-	}	
+	}
 
-	public static function connect () {
+    public static function all($table) {
+        $sql = 'SELECT * FROM '.$table.';';
+
+        $con = self::connect();
+        $stmt = $con->prepare($sql);
+
+
+        $stmt->execute();
+        // Retorna um objeto da classe definida pela tabela ($this->table)
+        return $stmt->fetchAll(PDO::FETCH_CLASS, $table);
+    }
+
+
+    public static function connect () {
 		return new PDO(DB_DRIVER.":host=".DB_HOST.";dbname=".DB_NAME, DB_USER, DB_PASS);
 	}
 }

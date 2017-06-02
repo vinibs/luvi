@@ -83,6 +83,7 @@
 				<a href="#dbclassselect"><li><i>DB->select()</i></li></a>
 				<a href="#dbclasswhere"><li><i>DB->where()</i></li></a>
 				<a href="#dbclassfind"><li><i>find()</i></li></a>
+				<a href="#dbclassall"><li><i>DB::all()</i></li></a>
 				<a href="#dbclasssave"><li><i>DB::save()</i></li></a>
 				<a href="#dbclassdelete"><li><i>DB::delete()</i></li></a>
 			</ul>
@@ -1149,6 +1150,19 @@
 			</span>
 			<p>
 				Retorna o objeto salvo em caso de sucesso ou <b>NULL</b> caso contrário.
+			</p>
+			<br>
+			<a name="dbclassall"><b><i>DB::all()</i></b></a>
+			<p>
+				Recebe uma string <b>$table</b> por parâmetro e busca no banco por todos os dados da tabela passada.
+			</p>
+			<span class="pregroup">
+				<pre>object <b>all (</b> $table <b>)</b></pre>
+				<pre><br><b>Usage example:</b></pre>
+				<pre>DB::all ($mouse); <i class="comment">// Busca por todos os dados de uma dada tabela</i></pre>
+			</span>
+			<p>
+				Retorna os objetos encontrados em caso de sucesso ou <b>NULL</b> caso contrário.
 			</p>
 			<br><a name="dbclasssave"><b><i>DB::save()</i></b></a>
 			<p>
