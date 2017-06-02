@@ -1005,8 +1005,9 @@
 				Retorna um objeto da classe DB.
 			</p>
 			<p class="obs">
-				<b>Observação:</b> esta função deve ser executada SEMPRE antes da função where()
-				(quando aplicável). Caso contrário, a consulta não será executada corretamente.
+				<b>Observação:</b> esta função deve ser executada SEMPRE após a função select() e, quando
+				aplicável, antes da função where(). Caso contrário, a consulta não será executada 
+				corretamente.
 			</p>
 			<br>
 			<a name="dbwhere"><b><i>where()</i></b></a>
