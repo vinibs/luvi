@@ -13,6 +13,51 @@ function dd ($object) {
 	die;
 }
 
+// Converte o objeto e seus atributos (e valores) em uma string JSON
+function jsonSerialize ($data) {
+	return json_encode(toArray($data));
+}
+
+// Converte o objeto e seus atributos (e valores) em um vetor
+function toArray ($data) {
+	$arrProperties = array();
+	if(is_array($data) && sizeof($data) > 1){
+		// Passa por todas as posições do vetor
+		foreach($data as $i => $obj) {
+			$reflection = new ReflectionClass($obj);
+			$properties = $reflection->getProperties();
+
+			// Passa por todas as propriedades do objeto e obtém seus valores em um vetor
+			foreach ($properties as $property) {
+				$className = $property->class;
+				// Não adiciona o atributo 'primarykey' ao array de propriedades do objeto
+				if ($property->name != 'primarykey') {
+					$function = 'get'.ucfirst($property->name); // Obtém o nome da função get
+					
+					if( method_exists($obj, $function) ) {
+						$value = $obj->$function(); // Obtem o valor da propriedade
+					} else {
+						$value = null;
+					}
+					
+					// Verifica se o atributo é um objeto ou um tipo primitivo de dados
+					if (is_object($value)){
+						// Serializa as propriedades do objeto filho
+						$arrProperties[$i][$property->name] = $value->toArray();
+					} else {
+						$arrProperties[$i][$property->name] = $value;
+					}
+				}
+			}
+		}
+	} else if (is_array($data) && sizeof($data) == 1){
+		$arrProperties = singleToArray($data[0]);
+	} else {
+		$arrProperties = singleToArray($data);
+	}
+	return $arrProperties;
+}
+
 /**
  * TODAS AS FUNÇÕES ABAIXO SÃO FUNÇÕES ESSENCIAIS PARA O FUNCIONAMENTO DO SISTEMA OU ALIAS DELAS
  */
@@ -80,4 +125,36 @@ function view ($viewName, $data = null) {
 
 function model ($modelName) {
 	return (new App)->model($modelName);
+}
+
+function singleToArray ($data) {
+	$reflection = new ReflectionClass($data);
+	$properties = $reflection->getProperties();
+
+	$arrProperties = array();
+
+	// Passa por todas as propriedades do objeto e obtém seus valores em um vetor
+	foreach ($properties as $property) {
+		$className = $property->class;
+		// Não adiciona o atributo 'primarykey' ao array de propriedades do objeto
+		if ($property->name != 'primarykey') {
+			$function = 'get'.ucfirst($property->name); // Obtém o nome da função get
+			
+			if( method_exists($data, $function) ) {
+				$value = $data->$function(); // Obtem o valor da propriedade
+			} else {
+				$value = null;
+			}
+			
+			// Verifica se o atributo é um objeto ou um tipo primitivo de dados
+			if (is_object($value)){
+				// Serializa as propriedades do objeto filho
+				$arrProperties[$className][$property->name] = $value->toArray();
+			} else {
+				$arrProperties[$className][$property->name] = $value;
+			}
+		}
+	}
+
+	return $arrProperties;
 }

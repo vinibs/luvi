@@ -35,43 +35,6 @@ abstract class Model {
 		return $this->where($this->primarykey . ' = :pk', array(':pk' => $pk))->find()[0];
 	}
 
-	// Converte o objeto e seus atributos (e valores) em uma string JSON
-	public function jsonSerialize () {
-		return json_encode($this->toArray());
-	}
-
-	// Converte o objeto e seus atributos (e valores) em um vetor
-	public function toArray () {
-		$reflection = new ReflectionClass($this);
-		$properties = $reflection->getProperties();
-
-		$arrProperties = array();
-
-		// Passa por todas as propriedades do objeto e obtém seus valores em um vetor
-		foreach ($properties as $property) {
-			$className = $property->class;
-			// Não adiciona o atributo 'primarykey' ao array de propriedades do objeto
-			if ($property->name != 'primarykey') {
-				$function = 'get'.ucfirst($property->name); // Obtém o nome da função get
-				
-				if( method_exists($this, $function) ) {
-					$value = $this->$function(); // Obtem o valor da propriedade
-				} else {
-					$value = null;
-				}
-				
-				// Verifica se o atributo é um objeto ou um tipo primitivo de dados
-				if (is_object($value)){
-					// Serializa as propriedades do objeto filho
-					$arrProperties[$className][$property->name] = $value->toArray();
-				} else {
-					$arrProperties[$className][$property->name] = $value;
-				}
-			}
-		}
-		return $arrProperties;
-	}
-
 	public function getObjVars () {
 		$reflection = new ReflectionClass($this);
         $vars = $reflection->getProperties();

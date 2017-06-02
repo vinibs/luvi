@@ -58,8 +58,6 @@
 			<a href="#modelcreate"><li>Criação de um model</li></a>
 			<a href="#primarykey"><li>Chave primária</li></a>
 			<a href="#modelinit"><li>Inicialização</li></a>
-			<a href="#modeltoarray"><li>toArray()</li></a>
-			<a href="#modeljsonserialize"><li>jsonSerialize()</li></a>
 		</ul>
 		<a href="#database"><h3>Banco de Dados</h3></a>
 		<ul class="nolist">
@@ -167,7 +165,9 @@
 		<a href="#utilfunc"><h3>Funções utilitárias</h3></a>
 		<ul class="nolist">
 			<a href="#dump"><li><i>dump()</i></li></a>
-			<a href="#dd"><li><i>dd()</i></li></a>
+			<a href="#dd"><li><i>dd()</i></li></a>			
+			<a href="#toarray"><li>toArray()</li></a>
+			<a href="#jsonserialize"><li>jsonSerialize()</li></a>
 		</ul>
 	</div>
 
@@ -185,7 +185,7 @@
 		
 		<p class="obs">
 			<b>Atenção:</b> ao iniciar um projeto utilizando o Luvi, não se esqueça de renomear o arquivo
-			<b>SystemData-Example.php</b> (localizado em <i>/app/<wbr>system/<wbr></i>) para 
+			<b>SystemData-Example.php</b> (localizado em <i>/app/<wbr></i>) para 
 			<b>SystemData.php</b> e de definir nele as
 			<a href="#sysconst">constantes do sistema</a> para que o sistema funcione corretamente.
 		</p>
@@ -245,9 +245,7 @@
 									<li class="treefile"><i class="grayfont">(Conteúdo da biblioteca)</i></li>
 								</ul>
 							</ul>
-						<li class="treefile">Routes.php <i class="comment">&nbsp;&nbsp;// Contém as rotas personalizadas</i></li>
-						<li class="treefile">SystemData-Example.php <i class="comment">&nbsp;&nbsp;// Arquivo base que contém as constantes do sistema</i></li>
-					</ul>
+						</ul>
 					<li>views <i class="comment">&nbsp;&nbsp;// Destinada a armazenamento de views</i></li>
 					<ul>
 						<li>error</li>
@@ -256,6 +254,8 @@
 						</ul>
 						<li class="treefile">Default.php</li>
 					</ul>
+					<li class="treefile">Routes.php <i class="comment">&nbsp;&nbsp;// Contém as rotas personalizadas</i></li>
+					<li class="treefile">SystemData-Example.php <i class="comment">&nbsp;&nbsp;// Arquivo base que contém as constantes do sistema</i></li>
 				</ul>
 				<li>assets <i class="comment">&nbsp;&nbsp;// Arquivos para exibição pública</i></li>
 				<ul>
@@ -328,7 +328,7 @@
 		
 		<a name="sysconst"><h2>Constantes do sistema</h2></a>
 		<p>
-			O arquivo <b>/app/<wbr>system/<wbr>SystemData-Example.php</b> contém as constantes que são utilizadas pelo
+			O arquivo <b>/app/<wbr>SystemData-Example.php</b> contém as constantes que são utilizadas pelo
 			sistema na configuração de determinados recursos. Deve ser renomeado para apenas <b>SystemData.php</b>
 			para que funcione corretamente.
 		</p>
@@ -874,32 +874,6 @@
 			<br>
 			<pre>(new <b>Bird</b>)->all ();</pre>
 		</span>
-		<br>
-		<a name="modeltoarray"><h3><i>toArray()</i></h3></a>
-		<p>
-			Converte os atributos e valores do objeto atual em um array, partindo dos métodos setters do objeto para a obtenção das informações.
-		</p>
-		<span class="pregroup">
-			<pre>array <b>toArray (</b> <b>)</b></pre>
-			<pre><br><b>Usage example:</b></pre>
-			<pre>$device->toArray (); <i class="comment">// Obtém um vetor contendo os atributos e valores do objeto $device</i></pre>
-		</span>
-		<p>
-			Retorna um vetor com os atributos do objeto.
-		</p>
-		<br>
-		<a name="modeljsonserialize"><h3><i>jsonSerialize()</i></h3></a>
-		<p>
-			Converte os atributos e valores do objeto atual em uma string JSON.
-		</p>
-		<span class="pregroup">
-			<pre>string <b>jsonSerialize (</b> <b>)</b></pre>
-			<pre><br><b>Usage example:</b></pre>
-			<pre>$guitar->jsonSerialize (); <i class="comment">// Obtém a string JSON contendo os atributos e valores do objeto $guitar</i></pre>
-		</span>
-		<p>
-			Retorna uma string JSON com os atributos do objeto, partindo dos métodos setters do objeto para a obtenção das informações.
-		</p>
 
 
 		<br><br>
@@ -2314,6 +2288,32 @@
 		</span>
 		<p>
 			Não possui retorno, apenas exibe os dados.
+		</p>
+		<br>
+		<a name="toarray"><h3><i>toArray()</i></h3></a>
+		<p>
+			Converte os atributos e valores de um objeto em um array, partindo dos métodos getters do objeto para a obtenção das informações.
+		</p>
+		<span class="pregroup">
+			<pre>array <b>toArray (</b> $object <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>toArray ($device); <i class="comment">// Obtém um vetor contendo os atributos e valores do objeto $device</i></pre>
+		</span>
+		<p>
+			Retorna um vetor com os atributos do objeto.
+		</p>
+		<br>
+		<a name="jsonserialize"><h3><i>jsonSerialize()</i></h3></a>
+		<p>
+			Converte os atributos e valores de um objeto ou array em uma string JSON.
+		</p>
+		<span class="pregroup">
+			<pre>string <b>jsonSerialize (</b> $var <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>jsonSerialize ($guitar); <i class="comment">// Obtém a string JSON contendo os atributos e valores do objeto $guitar</i></pre>
+		</span>
+		<p>
+			Retorna uma string JSON com os atributos de um array ou objeto, partindo dos métodos getters do objeto para a obtenção das informações.
 		</p>
 	</div>
 </body>

@@ -55,7 +55,7 @@ class RequestRouter {
 
 	private function setRouteData ($path) {
 		$route = array();
-		require_once BASEPATH . '/app/system/Routes.php';
+		require_once BASEPATH . '/app/Routes.php';
 		$routed = FALSE;
 		$error = FALSE;
 
