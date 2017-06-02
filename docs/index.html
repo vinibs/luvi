@@ -999,7 +999,7 @@
 			<span class="pregroup">
 				<pre>object:DB <b>join (</b> string $joinTable, $joinTableCol, $thisTableCol, [$compare] <b>)</b></pre>
 				<pre><br><b>Usage example:</b></pre>
-				<pre>(new Television)->join ('hometheater', 'hometheater.id_tv', 'television.id')->where ('hometheater.video = ?', 'hdmi')->find (); <i class="comment">// Procura por toda a tabela Television, unindo-se com a tabela Hometheater, por uma TV cujo HT tenha a propriedade 'video' igual a 'hdmi' </i></pre>
+				<pre>(new Television)->select ('name')->join ('hometheater', 'hometheater.id_tv', 'television.id')->where ('hometheater.video = ?', 'hdmi')->find (); <i class="comment">// Procura por toda a tabela Television, unindo-se com a tabela Hometheater, por uma TV cujo HT tenha a propriedade 'video' igual a 'hdmi' </i></pre>
 			</span>
 			<p>
 				Retorna um objeto da classe DB.
@@ -1166,7 +1166,7 @@
 			<span class="pregroup">
 				<pre>object:DB <b>join (</b> string $joinTable, $joinTableCol, $thisTableCol, [$compare] <b>)</b></pre>
 				<pre><br><b>Usage example:</b></pre>
-				<pre>(new DB)->join ('hometheater', 'hometheater.id_tv', 'television.id')->where ('hometheater.video = ?', 'hdmi')->find (); <i class="comment">// Procura por toda a tabela Television, unindo-se com a tabela Hometheater, por uma TV cujo HT tenha a propriedade 'video' igual a 'hdmi' </i></pre>
+				<pre>(new DB)->select ('name')->join ('hometheater', 'hometheater.id_tv', 'television.id')->where ('hometheater.video = ?', 'hdmi')->find (); <i class="comment">// Procura por toda a tabela Television, unindo-se com a tabela Hometheater, por uma TV cujo HT tenha a propriedade 'video' igual a 'hdmi' </i></pre>
 			</span>
 			<p>
 				Retorna um objeto do tipo DB.
