@@ -109,6 +109,10 @@ function getInputErrors ($fieldName) {
 	return (new App)->getInputErrors($fieldName);
 }
 
+// Exibe se existe algum erro de input salvo na sessão
+function checkInputErrors ($fieldName = NULL) {
+	return (new App)->checkInputErrors($fieldName);
+}
 
 // Recebe o array de arquivos vindo do formulário e reordena os elementos
 function orderFiles (array $files) {

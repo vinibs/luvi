@@ -33,7 +33,6 @@
 			<ul class="nolist">
 				<a href="#changevalidationmsg"><li>Validação de dados</li></a>
 				<a href="#changeauthmsg"><li>Autenticação de usuário</li></a>
-				<!-- <a href="#modelinit"><li>Inicialização</li></a> -->
 			</ul>
 		</ul>
 		<a href="#controllers"><h3>Controllers</h3></a>
@@ -133,6 +132,7 @@
 		<ul class="nolist">
 			<a href="#oldval"><li><i>oldVal()</i></li></a>
 			<a href="#getinputerrors"><li><i>getInputErrors()</i></li></a>
+			<a href="#checkinputerrors"><li><i>checkInputErrors()</i></li></a>
 		</ul>
 		<a href="#formfunc"><h3>Processamento de Formulários</h3></a>
 		<ul class="nolist">
@@ -1866,6 +1866,29 @@
 		<p>
 			Retorna o valor da <i>flash</i> que contém a lista de erros encontrados no preenchimento
 			do campo de formulário identificado por <b>$inputName</b>.
+		</p>
+		<br>
+		<a name="checkinputerrors"><h3><i>checkInputErrors()</i></h3></a>
+		<p>
+			Verifica se há algum erro de formulário ainda não exibido. Quando é passado o parâmetro $inputName, verifica se há, especificamente, erros para o campo de formulário indicado.
+		</p> 
+		<p>
+			Ideal para varificar a existência de erros em um campo de formulário antes de exibi-los com <a href="#getinputerrors">getInputErrors()</a>.
+		</p>
+		<span class="pregroup">
+			<pre>bool <b>checkInputErrors (</b> [string $inputName] <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>if (checkInputErrors ('username')){</pre>
+			<pre>	echo getInputErrors ('username'));</pre>
+			<pre>}</pre>
+			<pre></pre>
+			<pre>if (checkInputErrors ()){</pre>
+			<pre>	echo getInputErrors ('password'));</pre>
+			<pre>}</pre>
+			<pre></pre>
+		</span>
+		<p>
+			Retorna <b>TRUE</b> ou <b>FALSE</b> com base na existência ou não de erros entre os campos de formulários ou no campo identificado por <b>$inputName</b>.
 		</p>
 		
 

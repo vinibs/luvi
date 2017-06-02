@@ -85,6 +85,14 @@ class App {
 			return FALSE;
 	}
 
+	public function checkInputErrors ($fieldName = NULL) {
+		if($fieldName != NULL)
+			return ($flashField = $_SESSION['flash']['inputErrors'][$fieldName] != NULL);
+		
+		else
+			return ($flashField = $_SESSION['flash']['inputErrors'] != NULL);
+	}
+
 	// Recebe o array de arquivos vindo do formulário e reordena os elementos
 	public function orderFiles ($files) {
 		$arrangedFiles = array();
