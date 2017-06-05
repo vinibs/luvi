@@ -85,13 +85,19 @@ class App {
 			return FALSE;
 	}
 
-	public function checkInputErrors ($fieldName = NULL) {
-		if($fieldName != NULL)
-			return ($flashField = $_SESSION['flash']['inputErrors'][$fieldName] != NULL);
-		
-		else
-			return ($flashField = $_SESSION['flash']['inputErrors'] != NULL);
-	}
+    public function checkInputErrors ($fieldName = NULL) {
+        if($fieldName != NULL) {
+            if (isset($_SESSION['flash']['inputErrors'][$fieldName]) && $_SESSION['flash']['inputErrors'][$fieldName] != NULL)
+                return true;
+            else
+                return false;
+        } else{
+            if (isset($_SESSION['flash']['inputErrors']) && $_SESSION['flash']['inputErrors'] != NULL)
+                return TRUE;
+            else
+                return FALSE;
+        }
+    }
 
 	// Recebe o array de arquivos vindo do formulário e reordena os elementos
 	public function orderFiles ($files) {
