@@ -6,5 +6,6 @@
  * // Use '?' to indicate that the method needs one or more parameters
  * $route['URL/?'] = 'Controller/Method'; 
  *
- * OBS: As rotas ao fim do arquivo sobrescrevem as do início.
+ * OBS: As rotas ao fim do arquivo sobrescrevem as do início, portanto rotas com parâmetros devem vir
+ * depois de rotas sem parâmetros para funcionar corretamente.
  */

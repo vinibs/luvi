@@ -114,6 +114,7 @@ class RequestRouter {
 
 					// Define que foi encontrada uma rota para a URL atual
 					$routed = TRUE;
+                    $error = FALSE;
 				} 
 				// Caso sejam passadas variáveis pra uma rota que não peça
 				else if ($clearurlvars == $pureroute) { 
