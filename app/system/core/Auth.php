@@ -134,7 +134,7 @@ class Auth {
 	}
 
 	public static function isLogged () {
-		if (session(SESSION_NAME.'Auth'))
+        if (isset($_SESSION[SESSION_NAME.'Auth']))
 			return TRUE;
 		else
 			return FALSE;
