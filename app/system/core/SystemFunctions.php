@@ -15,8 +15,12 @@ function dd ($object) {
 
 // Converte o objeto e seus atributos (e valores) em uma string JSON
 function jsonSerialize ($data) {
-	return json_encode(toArray($data));
+    if(hasObjectInArray($data))
+        return json_encode(toArray($data));
+    else
+        return json_encode($data);
 }
+
 
 // Converte o objeto e seus atributos (e valores) em um vetor
 function toArray ($data) {
@@ -131,6 +135,20 @@ function view ($viewName, $data = null) {
 
 function model ($modelName) {
 	return (new App)->model($modelName);
+}
+
+
+function hasObjectInArray ($data = array()) {
+    foreach($data as $d){
+        if(is_array($d)){
+            return hasObjectInArray($d);
+        } else {
+            if(is_object($d))
+                return true;
+            else
+                return false;
+        }
+    }
 }
 
 function singleToArray ($data) {
