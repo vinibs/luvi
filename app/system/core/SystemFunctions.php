@@ -15,7 +15,7 @@ function dd ($object) {
 
 // Converte o objeto e seus atributos (e valores) em uma string JSON
 function jsonSerialize ($data) {
-    if(hasObjectInArray($data))
+    if((is_array($data) && hasObjectInArray($data)) || is_object($data))
         return json_encode(toArray($data));
     else
         return json_encode($data);
@@ -72,9 +72,9 @@ function filterPost () {
 	return filter_var_array($_POST, FILTER_SANITIZE_STRING);
 }
 
-function filterPut () {
-	return filter_var_array($_PUT, FILTER_SANITIZE_STRING);
-}
+//function filterPut () {
+//	return filter_var_array($_PUT, FILTER_SANITIZE_STRING);
+//}
 
 function filterGet () {
 	return filter_var_array($_GET, FILTER_SANITIZE_STRING);
@@ -138,8 +138,8 @@ function model ($modelName) {
 }
 
 
-function hasObjectInArray ($data = array()) {
-    foreach($data as $d){
+function hasObjectInArray ($array = array()) {
+    foreach($array as $d){
         if(is_array($d)){
             return hasObjectInArray($d);
         } else {
