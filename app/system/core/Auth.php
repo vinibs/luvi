@@ -115,8 +115,8 @@ class Auth {
 			'User' => serialize($user)
 		]);
 
-        if($redirectLocation != null)
-            redirect($redirectLocation);
+		if($redirectLocation != null)
+		    redirect($redirectLocation);
 	}
 
 	public static function setRestricted ($redirectNoLogin = null, $redirectTimeout = null) {
@@ -170,8 +170,17 @@ class Auth {
 		
 		if (count($result) == 1)
 			return TRUE;
-		else 
-			return FALSE;
+		else {
+            // Conta o número de tentativas de login
+            if (!isset($_SESSION['LoginTries'][$compared[0]]))
+                $_SESSION['LoginTries'][$compared[0]] = 1;
+            else
+                $_SESSION['LoginTries'][$compared[0]] = $_SESSION['LoginTries'][$compared[0]] + 1;
+
+            session('LastName', $compared[0]);
+
+            return FALSE;
+        }
 	}
 
 	public static function countTries ($maxTries = 5) {
@@ -329,6 +338,6 @@ class Auth {
 		if (isset($_SESSION['LastName']))
 			return $_SESSION['LastName'];
 		else
-			return False;
+			return null;
 	}	
 }
