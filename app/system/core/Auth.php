@@ -114,7 +114,9 @@ class Auth {
 			'LastActivity' => time(), 
 			'User' => serialize($user)
 		]);
-		redirect($redirectLocation);
+
+        if($redirectLocation != null)
+            redirect($redirectLocation);
 	}
 
 	public static function setRestricted ($redirectNoLogin = null, $redirectTimeout = null) {
