@@ -23,15 +23,23 @@ class App {
 	public function session ($name, $data = null) {
 		if(!is_null($data))
 			return $_SESSION[$name] = $data;
-		else 
-			return $_SESSION[$name];
+		else {
+		    if(isset($_SESSION[$name]))
+			    return $_SESSION[$name];
+            else
+                return null;
+        }
 	}
 
 	public function cookie ($name, $data = null) {
 		if(!is_null($data))
 			return setcookie($name, $data);
-		else 
-			return $_COOKIE[$name];
+		else  {
+		    if(isset($_COOKIE[$name]))
+			    return $_COOKIE[$name];
+            else
+                return null;
+        }
 	}
 
 	public function unsetcookie ($name) {

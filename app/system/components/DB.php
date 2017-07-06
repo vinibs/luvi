@@ -65,7 +65,13 @@ class DB {
 
 		foreach ($arrVars as $var) {
 			if ($var != 'id' && $var != 'primarykey') {
-				$getFunc = 'get' . ucfirst($var);
+			    $funcNameParts = explode('_', $var);
+			    foreach($funcNameParts as $i => $part){
+			        $funcNameParts[$i] = ucfirst($part);
+                }
+                $funcName = implode('', $funcNameParts);
+
+				$getFunc = 'get' . $funcName;
 				$stmt->bindValue(':'.$var, (string) $object->$getFunc());
 			}
 		}
