@@ -5,86 +5,93 @@ class DB {
 	private $whereVars;
 	private $table;
 
-	public static function save ($object) {
-		$arrVars = $object->getObjVars();
+	public static function save ($object)
+    {
+        $arrVars = $object->getObjVars();
 
-		// Remove o atributo 'primarykey' da lista
-		$arr = $arrVars;
-		$arrVars = array();
-		foreach($arr as $i => $var){
-			if($var != 'primarykey'){
-				$arrVars[] = $var;
-			}
-		}
+        // Remove o atributo 'primarykey' da lista
+        $arr = $arrVars;
+        $arrVars = array();
+        foreach ($arr as $i => $var) {
+            if ($var != 'primarykey') {
+                $arrVars[] = $var;
+            }
+        }
 
-		// Define o número que deve ser subtraído 
-		// da contagem máxima de elementos nas rotinas abaixo
-		$varsSub = 0;
-		if(in_array('id', $arrVars))
-			$varsSub++;
+        // Define o número que deve ser subtraído
+        // da contagem máxima de elementos nas rotinas abaixo
+        $varsSub = 0;
+        if (in_array('id', $arrVars))
+            $varsSub++;
 
-		$table = $object->getTableVar();
+        $table = $object->getTableVar();
 
-		if (self::isNew($object)) {
-			$sql = 'INSERT INTO ' . $table . ' (';
-			foreach ($arrVars as $i => $var) {
-				if($var != 'id' && $var != 'primarykey'){
-					$sql .= $var;
-					if ($i < (sizeof($arrVars) - $varsSub))
-						$sql .= ', ';
-				}
-			}
-			$sql .= ') VALUES (';
-			foreach ($arrVars as $i => $var) {
-				if($var != 'id' && $var != 'primarykey'){
-					$get = 'get' . ucfirst($var);
-					$sql .= ':' . $var;
-					if ($i < (sizeof($arrVars) - $varsSub))
-						$sql .= ', ';
-				}
-			}
-			$sql .= ');';
+        if (self::isNew($object)) {
+            $sql = 'INSERT INTO ' . $table . ' (';
+            foreach ($arrVars as $i => $var) {
+                if ($var != 'id' && $var != 'primarykey') {
+                    $sql .= $var;
+                    if ($i < (sizeof($arrVars) - $varsSub))
+                        $sql .= ', ';
+                }
+            }
+            $sql .= ') VALUES (';
+            foreach ($arrVars as $i => $var) {
+                if ($var != 'id' && $var != 'primarykey') {
+                    $get = 'get' . ucfirst($var);
+                    $sql .= ':' . $var;
+                    if ($i < (sizeof($arrVars) - $varsSub))
+                        $sql .= ', ';
+                }
+            }
+            $sql .= ');';
 
 
-		} else {
-			$sql = 'UPDATE ' . $table . ' SET ';
-			foreach ($arrVars as $i => $var) {
-				if($var != 'id' && $var != 'primarykey'){
-					$get = 'get' . ucfirst($var);
-					$sql .= $var . ' = :' . $var;
-					if ($i < (sizeof($arrVars) - $varsSub))
-						$sql .= ', ';
-				}
-			}
-			$sql .= ' WHERE '.$object->primarykey.' = :'.$object->primarykey.';';
-		}
+        } else {
+            $sql = 'UPDATE ' . $table . ' SET ';
+            foreach ($arrVars as $i => $var) {
+                if ($var != 'id' && $var != 'primarykey') {
+                    $get = 'get' . ucfirst($var);
+                    $sql .= $var . ' = :' . $var;
+                    if ($i < (sizeof($arrVars) - $varsSub))
+                        $sql .= ', ';
+                }
+            }
+            $sql .= ' WHERE ' . $object->primarykey . ' = :' . $object->primarykey . ';';
+        }
 
-		
-		$con = self::connect();
-		$stmt = $con->prepare($sql);
 
-		foreach ($arrVars as $var) {
-			if ($var != 'id' && $var != 'primarykey') {
-			    $funcNameParts = explode('_', $var);
-			    foreach($funcNameParts as $i => $part){
-			        $funcNameParts[$i] = ucfirst($part);
+        $con = self::connect();
+        $stmt = $con->prepare($sql);
+
+        foreach ($arrVars as $var) {
+            if ($var != 'id' && $var != 'primarykey') {
+                $funcNameParts = explode('_', $var);
+                foreach ($funcNameParts as $i => $part) {
+                    $funcNameParts[$i] = ucfirst($part);
                 }
                 $funcName = implode('', $funcNameParts);
 
-				$getFunc = 'get' . $funcName;
-				$stmt->bindValue(':'.$var, (string) $object->$getFunc());
-			}
-		}
+                $getFunc = 'get' . $funcName;
+                $stmt->bindValue(':' . $var, (string)$object->$getFunc());
+            }
+        }
 
-		if (!self::isNew($object)) {
-			$getFunc = 'get'.ucfirst($object->primarykey);
-			$stmt->bindValue(':'.$object->primarykey, (int) $object->$getFunc());
-		}
+        if (!self::isNew($object)) {
+            $getFunc = 'get' . ucfirst($object->primarykey);
+            $stmt->bindValue(':' . $object->primarykey, (int)$object->$getFunc());
+        }
 
-		if ($stmt->execute())
-			return $object;
-		else
-			return NULL;
+        if ($stmt->execute()) {
+            // Se o objeto for novo, adiciona o ID recentemente adicionado ao objeto
+            if(self::isNew($object)){
+                $funcName = 'set' . ucfirst($object->getPrimaryKey());
+                $object->$funcName($con->lastInsertId());
+            }
+            return $object;
+        } else {
+            return NULL;
+        }
 	}
 
 	public static function delete ($object) {
