@@ -154,16 +154,18 @@ function model ($modelName) {
 
 
 function hasObjectInArray ($array = array()) {
+    $has = false;
     foreach($array as $d){
         if(is_array($d)){
-            return hasObjectInArray($d);
+            $has = hasObjectInArray($d);
         } else {
             if(is_object($d))
-                return true;
+                $has = true;
             else
-                return false;
+                $has = false;
         }
     }
+    return $has;
 }
 
 function singleToArray ($data) {
@@ -177,13 +179,20 @@ function singleToArray ($data) {
 		$className = $property->class;
 		// Não adiciona o atributo 'primarykey' ao array de propriedades do objeto
 		if ($property->name != 'primarykey') {
-			$function = 'get'.ucfirst($property->name); // Obtém o nome da função get
-			
-			if( method_exists($data, $function) ) {
-				$value = $data->$function(); // Obtem o valor da propriedade
-			} else {
-				$value = null;
-			}
+
+            $funcNameParts = explode('_', $property->name);
+            foreach ($funcNameParts as $j => $part) {
+                $funcNameParts[$j] = ucfirst($part);
+            }
+            $funcName = implode('', $funcNameParts);
+
+            $function = 'get' . $funcName; // Obtém o nome da função get
+
+            if (method_exists($data, $function)) {
+                $value = $data->$function(); // Obtem o valor da propriedade
+            } else {
+                $value = null;
+            }
 			
 			// Verifica se o atributo é um objeto ou um tipo primitivo de dados
 			if (is_object($value)){
