@@ -154,18 +154,18 @@ function model ($modelName) {
 
 
 function hasObjectInArray ($array = array()) {
-    $has = false;
-    foreach($array as $d){
+    $has = array();
+    foreach($array as $i => $d){
         if(is_array($d)){
-            $has = hasObjectInArray($d);
+            $has[$i] = hasObjectInArray($d);
         } else {
             if(is_object($d))
-                $has = true;
+                $has[$i] = true;
             else
-                $has = false;
+                $has[$i] = false;
         }
     }
-    return $has;
+    return in_array(true, $has);
 }
 
 function singleToArray ($data) {
