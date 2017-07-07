@@ -226,9 +226,14 @@ class DB {
 		return $stmt->fetchAll(PDO::FETCH_CLASS, $this->table);
 		// $result = $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna um array
 	}
+    
+    public function generatedSql () {
+        return $this->sql;
+    }
 
 
-	public static function isNew ($object) {
+
+    public static function isNew ($object) {
 		$arrVars = $object->getObjVars();
 		$table = $object->getTableVar();
 
@@ -259,7 +264,6 @@ class DB {
         // Retorna um objeto da classe definida pela tabela ($this->table)
         return $stmt->fetchAll(PDO::FETCH_CLASS, $table);
     }
-
 
     public static function connect () {
 		return new PDO(DB_DRIVER.":host=".DB_HOST.";dbname=".DB_NAME, DB_USER, DB_PASS);

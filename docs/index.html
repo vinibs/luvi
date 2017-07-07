@@ -84,6 +84,7 @@
 				<a href="#dbclassjoin"><li><i>DB->join()</i></li></a>
 				<a href="#dbclasswhere"><li><i>DB->where()</i></li></a>
 				<a href="#dbclassfind"><li><i>find()</i></li></a>
+				<a href="#dbclassgensql"><li><i>generatedSql()</i></li></a>
 				<a href="#dbclassall"><li><i>DB::all()</i></li></a>
 				<a href="#dbclasssave"><li><i>DB::save()</i></li></a>
 				<a href="#dbclassdelete"><li><i>DB::delete()</i></li></a>
@@ -1204,6 +1205,19 @@
 			</span>
 			<p>
 				Retorna o objeto salvo em caso de sucesso ou <b>NULL</b> caso contrário.
+			</p>
+			<br>
+			<a name="dbclassgensql"><b><i>generatedSql()</i></b></a>
+			<p>
+				Retorna o código SQL gerado pelas demais funções da classe DB.
+			</p>
+			<span class="pregroup">
+				<pre>object:DB <b>find (</b> <b>)</b></pre>
+				<pre><br><b>Usage example:</b></pre>
+				<pre>(new DB)->select ('id, age', 'Cat')->generatedSql (); <i class="comment">// Retorna o SQL gerado para esta consulta</i></pre>
+			</span>
+			<p>
+				Retorna uma string com o código SQL gerado pelas demais funções da classe.
 			</p>
 			<br>
 			<a name="dbclassall"><b><i>DB::all()</i></b></a>
