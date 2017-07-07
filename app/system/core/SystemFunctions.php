@@ -44,8 +44,8 @@ function toArray ($data) {
                     if ($property->name != 'primarykey') {
 
                         $funcNameParts = explode('_', $property->name);
-                        foreach ($funcNameParts as $i => $part) {
-                            $funcNameParts[$i] = ucfirst($part);
+                        foreach ($funcNameParts as $j => $part) {
+                            $funcNameParts[$j] = ucfirst($part);
                         }
                         $funcName = implode('', $funcNameParts);
 
@@ -63,14 +63,9 @@ function toArray ($data) {
                             $arrProperties[$i][$property->name] = $value->toArray();
                         } else {
                             // Cria um vetor com todas as propriedades do objeto
-                            $arrObj[$property->name] = $value;
+                            $arrProperties[$i][$property->name] = $value;
                         }
                     }
-                }
-
-                // Caso não tenha sido definida a posição $i do vetor, define ela com o vetor do objeto criado
-                if(!isset($arrProperties[$i])){
-                    $arrProperties[$i] = $arrObj;
                 }
             }
 		}
