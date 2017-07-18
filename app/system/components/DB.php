@@ -1,6 +1,13 @@
 <?php defined('INITIALIZED') OR exit('You cannot access this file directly');
 
 class DB {
+    private $select = '';
+    private $from = '';
+    private $join = '';
+    private $where = '';
+    private $extraSql = '';
+    private $orderBy = '';
+
 	private $sql;
 	private $whereVars;
 	private $table;
@@ -116,19 +123,31 @@ class DB {
 	}
 
 	public function select ($selectedData = NULL, $table) {
-		if(empty($selectedData))
+		if($selectedData == NULL || $selectedData == '')
 			$selectedData = '*';
 
 		$this->table = $table;
 
-		$this->sql = 'SELECT ' . $selectedData . ' FROM ' . $table;
+
+        // Inicia o SELECT ou adiciona elementos a ele
+        if($this->select == '')
+            $this->select = 'SELECT ' . $selectedData;
+        else
+            $this->select .= ', '.$selectedData;
+
+
+        // Inicia o FROM ou adiciona elementos a ele
+        if($this->from == '')
+            $this->from = ' FROM '.$table;
+        else
+            $this->from .= ', '.$table;
 
 		return $this;
 	}
 
 
     public function join ($table, $tableCol, $thisCol, $compare = '=') {
-        $this->sql .= ' JOIN ' . $table . ' ON ' . $table.'.'.$tableCol .' '. $compare .' '. $this->table.'.'.$thisCol.' ';
+        $this->join .= ' JOIN ' . $table . ' ON ' . $table.'.'.$tableCol .' '. $compare .' '. $this->table.'.'.$thisCol.' ';
 
         return $this;
     }
@@ -151,17 +170,18 @@ class DB {
 		} else
 			$this->table = $table;
 
-		if (empty($this->sql))
-			$this->sql = 'SELECT * FROM ' . $table . ' WHERE ' . $where;
-		else {
-            if (preg_match('/.+(WHERE).+/', $this->sql)) {
-                $this->sql .= ' AND ';
-            } else {
-                $this->sql .= ' WHERE ';
-            }
+        // Reconstroi um SELECT básico caso a função seja usada sem o auxílio da select()
+		if ($this->select == '')
+			$this->select = 'SELECT * ';
 
-            $this->sql .= $where;
-        }
+		if ($this->from == '')
+		    $this->from = 'FROM ' . $table;
+
+
+        if ($this->where == '')
+            $this->where = ' WHERE ' . $where;
+        else
+            $this->where .= ' AND ' . $where;
 
 
         if(is_array($whereVars)) {
@@ -175,36 +195,25 @@ class DB {
 	}
 
 	public function orderBy ($orderValue, $order = 'ASC') {
-		if (empty($this->sql)) 
-			return NULL;
-		else {
-			$orderExplode = explode('ORDER BY', $this->sql);
-
-			if (sizeof($orderExplode) == 1)
-				$this->sql .= ' ORDER BY ';
-			else
-				$this->sql .= ', ';
-
-			$this->sql .= $orderValue . ' ' . $order;
-		}
+	    if($this->orderBy == '')
+            $this->orderBy = ' ORDER BY '.$orderValue.' '.$order;
+        else
+            $this->orderBy .= ', '.$orderValue.' '.$order;
 
 		return $this;
 	}
 
 	public function extraSql ($sql) {
-		if (empty($this->sql))
-			return NULL;
-		else 
-			$this->sql .= ' ' . $sql;
+        $this->extraSql .= ' ' . $sql;
 
 		return $this;
 	}
 
 	public function find () {
-		$this->sql .= ';';
 
 		$con = self::connect();
-		$stmt = $con->prepare($this->sql);
+        $sql = $this->select . $this->from . $this->join . $this->where . $this->extraSql . $this->orderBy;
+        $stmt = $con->prepare($sql);
 
 		if (!empty($this->whereVars)) {
 			if (is_array($this->whereVars)) {
@@ -224,17 +233,15 @@ class DB {
 
 		// Retorna um objeto da classe definida pela tabela ($this->table)
 		return $stmt->fetchAll(PDO::FETCH_CLASS, $this->table);
-		// $result = $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna um array
 	}
     
     public function generatedSql () {
-        return $this->sql;
+        return $this->select . $this->from . $this->join . $this->where . $this->extraSql . $this->orderBy;
     }
 
 
 
     public static function isNew ($object) {
-		$arrVars = $object->getObjVars();
 		$table = $object->getTableVar();
 
 		$sql = 'SELECT * FROM ' . $table . ' WHERE '.$object->primarykey.' = :'.$object->primarykey.';';

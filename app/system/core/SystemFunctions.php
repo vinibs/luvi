@@ -2,15 +2,24 @@
 
 /* System Functions */
 
-function dump ($object) {
-	echo '<pre>';
-	var_dump($object);
-	echo '</pre>';
+
+if (!function_exists('dump')) {
+
+    function dump($object)
+    {
+        echo '<pre>';
+        var_dump($object);
+        echo '</pre>';
+    }
 }
 
-function dd ($object) {
-	dump($object);
-	die;
+if (!function_exists('dd')) {
+
+    function dd($object)
+    {
+        dump($object);
+        die;
+    }
 }
 
 // Converte o objeto e seus atributos (e valores) em uma string JSON
