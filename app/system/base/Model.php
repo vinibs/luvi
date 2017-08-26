@@ -37,7 +37,10 @@ abstract class Model {
 
 	// Obtém um dado buscando pela sua $primarykey igual ao valor passado à função
 	public function get ($pk) {
-		return $this->where($this->primarykey . ' = ?', [$pk])->find()[0];
+		if (count($this->where($this->primarykey . ' = ?', [$pk])->find()) > 0)
+			return $this->where($this->primarykey . ' = ?', [$pk])->find()[0];
+		else
+			return null;
 	}
 
 	public function getObjVars () {
