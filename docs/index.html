@@ -610,7 +610,7 @@
 			<pre>string <b>getRequest (</b> <b>)</b></pre>
 			<br>
 			<pre><b>Usage example:</b></pre>
-			<pre>$requestType = getRequest ();</pre>
+			<pre>$requestType = $this->getRequest (); <i class="comment">// Quando usado de dentro de um controller</i></pre>
 		</span>
 		<p>
 			Retorna uma string, em letras minúsculas, contendo o tipo de requisição realizada.
@@ -1985,7 +1985,7 @@
 		<span class="pregroup">
 			<pre>array <b>filterPost (</b> <b>)</b></pre>
 			<pre><br><b>Usage example:</b></pre>
-			<pre>$data = $filterPost (); <i class="comment">// $data receberá os dados enviados por POST já filtrados</i> </pre>
+			<pre>$data = filterPost (); <i class="comment">// $data receberá os dados enviados por POST já filtrados</i> </pre>
 		</span>
 		<p>
 			Retorna um array com os valores recebidos pelo método POST.
@@ -1998,7 +1998,7 @@
 		<span class="pregroup">
 			<pre>array <b>filterGet (</b> <b>)</b></pre>
 			<pre><br><b>Usage example:</b></pre>
-			<pre>$data = $filterGet (); <i class="comment">// $data receberá os dados enviados por GET já filtrados</i> </pre>
+			<pre>$data = filterGet (); <i class="comment">// $data receberá os dados enviados por GET já filtrados</i> </pre>
 		</span>
 		<p>
 			Retorna um array com os valores recebidos pelo método GET.
