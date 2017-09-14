@@ -1946,12 +1946,12 @@
 		<span class="pregroup">
 			<pre>bool <b>checkInputErrors (</b> [string $inputName] <b>)</b></pre>
 			<pre><br><b>Usage example:</b></pre>
-			<pre>if (checkInputErrors ('username')){</pre>
-			<pre>	echo getInputErrors ('username'));</pre>
+			<pre>if (checkInputErrors ('username'){</pre>
+			<pre>	echo getInputErrors ('username');</pre>
 			<pre>}</pre>
 			<pre></pre>
-			<pre>if (checkInputErrors ()){</pre>
-			<pre>	echo getInputErrors ('password'));</pre>
+			<pre>if (checkInputErrors (){</pre>
+			<pre>	echo getInputErrors ('password');</pre>
 			<pre>}</pre>
 			<pre></pre>
 		</span>
@@ -2176,10 +2176,11 @@
 			Checka a validade dos valores em <b>$data</b>, normalmente o vetor resultante do
 			recebimento de um formulário, com base em regras de validação passadas em <b>$rules</b>
 			e redireciona de volta ao formulário, carregando em <i>flash</i> os erros encontrados
-			em cada campo.
+			em cada campo e usando os valores em <b>$fieldnames</b>, quando definidos, para identificar
+			o campo com o erro.
 		</p>
 		<span class="pregroup">
-			<pre>bool <b>Validation::check (</b> array $data, array $rules <b>)</b></pre>
+			<pre>bool <b>Validation::check (</b> array $data, array $rules , [array $fieldnames]<b>)</b></pre>
 			<pre><br><b>Usage example:</b></pre>
 			<pre>Validation::check (</pre>
 			<pre>   filterPost(),</pre>
@@ -2188,11 +2189,17 @@
 			<pre>      'email' => 'required|min:6|email',</pre>
 			<pre>      'password' => 'required|equal:confirm_password',</pre>
 			<pre>      'confirm_password' => 'required',</pre>
+			<pre>   ),</pre>
+			<pre>   array(</pre>
+			<pre>      'username' => 'Nome de usuário',</pre>
+			<pre>      'email' => 'E-mail',</pre>
+			<pre>      'password' => 'Senha',</pre>
+			<pre>      'confirm_password' => 'Confirmação de senha',</pre>
 			<pre>   )</pre>
 			<pre>);</pre>
 		</span>
 		<p>
-			Redirecione e retorna <b>TRUE</b> caso não encontre erros e <b>FALSE</b> caso contrário.
+			Redireciona e retorna <b>FALSE</b> caso encontre erros e <b>TRUE</b> caso contrário.
 		</p>
 		<br>
 		<a name="valrules"><h3>Opções de validação</h3></a>
