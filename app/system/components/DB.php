@@ -97,7 +97,7 @@ class DB {
             }
             return $object;
         } else {
-            return NULL;
+            return $stmt->errorInfo()[2];
         }
 	}
 
