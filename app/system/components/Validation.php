@@ -117,7 +117,8 @@ class Validation {
 						$errors = TRUE;
 				 		$message = '"' . ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field))
                             . '" deve ser igual ao campo "'
-				 			. $rulepart[1] . '"'; // PT-BR
+				 			. ((($fieldnames[$rulepart[1]] != '') ?
+                                $fieldnames[$rulepart[1]]:$rulepart[1])) . '"'; // PT-BR
 				 		$arrayErrors[] = $message;
 						$errorsInput[$field] .= $message . '<br>';
 			 		}
