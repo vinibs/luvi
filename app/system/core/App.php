@@ -131,7 +131,7 @@ class App {
 	}
 
 	public function view ($viewName, $data = null) {
-		View::make()->call($viewName, $data);
+		ViewManager::make()->call($viewName, $data);
 	}
 
 	public function model ($modelName) {

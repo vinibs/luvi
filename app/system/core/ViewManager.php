@@ -1,6 +1,6 @@
 <?php defined('INITIALIZED') OR exit('You cannot access this file directly');
 
-class View
+class ViewManager
 {
     public function loadFile ($viewName, $data = null) {
         // Busca por arquivos .PHP, .HTML ou .PHTML para a view
