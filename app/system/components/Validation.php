@@ -40,17 +40,23 @@ class Validation {
 				// Checa pela condição "Required"
 				if ($singlerule == 'required' && empty($value)) {
 					$errors = TRUE;
-					$message = '"'  . ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field))
-                        . '" deve ser preenchido'; // PT-BR
+					$message = preg_replace(
+					    '/%field%/',
+                        ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field)),
+                        msgValidationRequired
+                    );
 				 	$arrayErrors[] = $message;
-					$errorsInput[$field] .= $message . '<br>';				 	
+					$errorsInput[$field] .= $message . '<br>';
 				}
 
 				// Checa pela condição de ser um número inteiro
 				if ($singlerule ==  'int' && !preg_match('/^[0-9]+$/', $value)) {
 					$errors = TRUE;
-					$message = '"' . ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field))
-                        . '" deve conter um número inteiro'; // PT-BR
+                    $message = preg_replace(
+                        '/%field%/',
+                        ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field)),
+                        msgValidationInt
+                    );
 					$arrayErrors[] = $message;
 					$errorsInput[$field] .= $message . '<br>';
 				}
@@ -58,8 +64,11 @@ class Validation {
 				// Checa pela condição de ser um número decimal
 				if ($singlerule ==  'decimal' && !preg_match('/^[0-9\.\,]+$/', $value)) {
 					$errors = TRUE;
-					$message = '"' . ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field))
-                        . '" deve conter um número decimal'; // PT-BR
+                    $message = preg_replace(
+                        '/%field%/',
+                        ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field)),
+                        msgValidationDecimal
+                    );
 					$arrayErrors[] = $message . '<br>';
 					$errorsInput[$field] .= $message . '<br>';
 				}
@@ -67,8 +76,11 @@ class Validation {
 				// Checa pela condição de ser um valor de apenas letras
 				if ($singlerule ==  'alpha' && !preg_match('/^[a-zA-ZÀ-úçÇ ]+$/', $value)) {
 					$errors = TRUE;
-					$message = '"' . ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field))
-                        . '" deve conter apenas letras'; // PT-BR
+					$$message = preg_replace(
+                        '/%field%/',
+                        ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field)),
+                        msgValidationAlpha
+                    );
 					$arrayErrors[] = $message;
 					$errorsInput[$field] .= $message . '<br>';
 				}
@@ -76,8 +88,11 @@ class Validation {
 				// Checa pela condição de ser um valor alfanumérico
 				if ($singlerule ==  'alphanum' && !preg_match('/^[a-zA-ZÀ-úçÇ0-9 ]+$/', $value)) {
 					$errors = TRUE;
-					$message = '"' . ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field))
-                        . '" deve conter apenas letras e números'; // PT-BR
+                    $message = preg_replace(
+                        '/%field%/',
+                        ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field)),
+                        msgValidationAlphanum
+                    );
 					$arrayErrors[] = $message;
 					$errorsInput[$field] .= $message . '<br>';
 				}
@@ -85,8 +100,11 @@ class Validation {
 				// Checa pela condição de ser um email
 				if ($singlerule ==  'email' && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
 					$errors = TRUE;
-					$message = '"' . ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field))
-                        . '" deve conter um endereço de e-mail válido'; // PT-BR
+                    $message = preg_replace(
+                        '/%field%/',
+                        ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field)),
+                        msgValidationEmail
+                    );
 					$arrayErrors[] = $message;
 					$errorsInput[$field] .= $message . '<br>';
 				}
@@ -96,9 +114,16 @@ class Validation {
 					// Checa o tamanho mínimo da string
 					if ($rulepart[0] == 'min' && strlen($value) < trim($rulepart[1])) {
 						$errors = TRUE;
-				 		$message = '"' . ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field))
-                            . '" deve conter ao menos ' . $rulepart[1]
-				 			. ' characteres'; // PT-BR
+                        $message = preg_replace(
+                            '/%field%/',
+                            ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field)),
+                            msgValidationMin
+                        );
+                        $message = preg_replace(
+                            '/%quant%/',
+                            $rulepart[1],
+                            $message
+                        );
 			 			$arrayErrors[] = $message;
 						$errorsInput[$field] .= $message . '<br>';
 
@@ -106,36 +131,37 @@ class Validation {
 					// Checa o tamanho máximo da string
 					if ($rulepart[0] == 'max' && strlen($value) > trim($rulepart[1])) {
 						$errors = TRUE;
-				 		$message = '"' . ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field))
-                            . '" deve conter no máximo ' . $rulepart[1]
-				 			. ' characteres'; // PT-BR
+                        $message = preg_replace(
+                            '/%field%/',
+                            ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field)),
+                            msgValidationMax
+                        );
+                        $message = preg_replace(
+                            '/%quant%/',
+                            $rulepart[1],
+                            $message
+                        );
 				 		$arrayErrors[] = $message;
 						$errorsInput[$field] .= $message . '<br>';
 			 		}
 					// Checa se o campo deve ser igual a outro
 					if ($rulepart[0] == 'equal' && $data[$field] != $data[$rulepart[1]]) {
 						$errors = TRUE;
-				 		$message = '"' . ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field))
-                            . '" deve ser igual ao campo "'
-				 			. ((($fieldnames[$rulepart[1]] != '') ?
-                                $fieldnames[$rulepart[1]]:$rulepart[1])) . '"'; // PT-BR
+                        $message = preg_replace(
+                            '/%field%/',
+                            ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field)),
+                            msgValidationEqual
+                        );
+                        $message = preg_replace(
+                            '/%fieldEq%/',
+                            ((($fieldnames[$rulepart[1]] != '') ? $fieldnames[$rulepart[1]]:$rulepart[1])),
+                            $message
+                        );
 				 		$arrayErrors[] = $message;
 						$errorsInput[$field] .= $message . '<br>';
 			 		}
 				}
 			}
-			/*
-			 * Lista de mensagens de erros em inglês (EN), respectivamente:
-			 * $message = '"' . $field . '" is a required field'; // EN
-			 * $message = '"' . $field . '" must be an integer'; // EN
-			 * $message = '"' . $field . '" must be a decimal number'; // EN
-			 * $message = '"' . $field . '" must have only letters'; // EN
-			 * $message = '"' . $field . '" must have only letters and numbers'; // EN
-			 * $message = '"' . $field . '" must be a valid email address'; // EN
-			 * $message = '"' . $field . '" must have at least ' . $rulepart[1]	. ' characters'; // EN
-			 * $message = '"' . $field . '" must have a maximum of ' . $rulepart[1] . ' characters'; // EN
-			 * $message = '"' . $field . '" must be identical to "' . $rulepart[1] . '"'; // EN
-			 */
 		}		
 		
 
@@ -146,4 +172,8 @@ class Validation {
 		} else
 			return TRUE;
 	}
+
+    public static function make () {
+        return new self;
+    }
 }

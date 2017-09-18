@@ -80,4 +80,8 @@ class Mail {
 
 		return $mail->send();
 	}
+
+    public static function make () {
+        return new self;
+    }
 }

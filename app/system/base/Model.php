@@ -66,4 +66,9 @@ abstract class Model {
 	public function getPrimaryKey() {
 		return $this->primarykey;
 	}
+
+    public static function make () {
+	    $class = get_called_class();
+        return new $class;
+    }
 }

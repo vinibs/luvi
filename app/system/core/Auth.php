@@ -5,7 +5,7 @@ class Auth {
 	public static function doLogin (
 		$authData, // [0 => username, 1 => password]
 		$redirectLocation = null, 
-		$dbTable = 'User'
+		$dbTable = 'user'
 		) {
 
 		foreach ($authData as $field => $data) {
@@ -13,16 +13,13 @@ class Auth {
 			$compared[] = $data;
 		}
 
-		// Mudar estas variáveis para adaptar ao projeto
-		$noUserMsg = 'That username doesn\'t exists';
-		$wrongPassMsg = 'The password is incorrect';
 		$formUser = $dbField[0]; // Nome do input referente ao usuário
 		$formPass = $dbField[1]; // Nome do input referente à senha
 
 		$result = (new DB)->where($dbField[0].' = ?', $compared[0], $dbTable)->find();
 
 		if (count($result) == 0) {
-			$error = [$formUser => $noUserMsg];
+			$error = [$formUser => msgAuthNoUsername];
 			back()->withValues()->withErrors($error);
 			return FALSE;
 
@@ -61,7 +58,7 @@ class Auth {
 
 				session('LastName', $compared[0]);
 
-				$error = [$formPass => $wrongPassMsg];
+				$error = [$formPass => msgAuthIncorrectPass];
 				back()->withValues()->withErrors($error);
 				return FALSE;
 			}
@@ -78,7 +75,7 @@ class Auth {
 
 	public static function doRegister (
 		$userData,  
-		$dbTable = 'User'
+		$dbTable = 'user'
 		) {
 
 		foreach ($userData as $field => $data) {
@@ -86,8 +83,6 @@ class Auth {
 			$compared[] = $data;
 		}
 
-		// Mudar estas variáveis para adaptar ao projeto		
-		$usedUserMsg = 'That username isn\'t available';
 		$formUser = $dbField[0]; // Nome do input referente ao usuário
 
 		$result = (new DB)->where($dbField[0].' = ?', $compared[0], $dbTable)->find();
@@ -104,7 +99,7 @@ class Auth {
 			return $user;
 
 		} else
-			$error = [$formUser => $usedUserMsg];
+			$error = [$formUser => msgAuthUsernameUnavailable];
 			back()->withValues()->withErrors($error);
 			return FALSE;			
 	}
@@ -151,7 +146,7 @@ class Auth {
 
 	public static function bindAuth (
 		$authData, // [0 => username, 1 => password]
-		$dbTable = 'User'
+		$dbTable = 'user'
 		) {
 
 		foreach ($authData as $field => $data) {
@@ -172,16 +167,21 @@ class Auth {
 			return TRUE;
 		else {
             // Conta o número de tentativas de login
-            if (!isset($_SESSION['LoginTries'][$compared[0]]))
-                $_SESSION['LoginTries'][$compared[0]] = 1;
-            else
-                $_SESSION['LoginTries'][$compared[0]] = $_SESSION['LoginTries'][$compared[0]] + 1;
-
-            session('LastName', $compared[0]);
+            self::registerTries($compared[0]);
 
             return FALSE;
         }
 	}
+
+	public static function registerTries ($username) {
+	    // Registra o número de tentativas de login para o dado nome de usuário
+        if (!isset($_SESSION['LoginTries'][$username]))
+            $_SESSION['LoginTries'][$username] = 1;
+        else
+            $_SESSION['LoginTries'][$username] = $_SESSION['LoginTries'][$username] + 1;
+
+        session('LastName', $username);
+    }
 
 	public static function countTries ($maxTries = 5) {
 		if (isset($_SESSION['LoginTries'][Auth::getLastUsername()]) &&
@@ -339,5 +339,10 @@ class Auth {
 			return $_SESSION['LastName'];
 		else
 			return null;
-	}	
+	}
+
+
+    public static function make () {
+        return new self;
+    }
 }

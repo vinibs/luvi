@@ -2,7 +2,11 @@
 
 abstract class Controller {
 	public function getRequest () {
-		return strtolower($_SERVER['REQUEST_METHOD']);
+		return getRequest();
 	}
 
+    public static function make () {
+        $class = get_called_class();
+        return new $class;
+    }
 }

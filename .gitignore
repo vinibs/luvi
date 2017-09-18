@@ -2,3 +2,7 @@
 SystemData.php
 .idea/
 .idea/*
+*.bak
+nbproject
+nbproject/*
+/nbproject/private/

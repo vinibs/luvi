@@ -14,6 +14,7 @@
 		<a href="#"><h3>Início</h3></a>
 		<a href="#basicstructure"><h3>Etrutura básica</h3></a>
 		<a href="#nomenclature"><h3>Nomenclaturas</h3></a>
+		<a href="#atualizacao"><h3>Atualização do framework</h3></a>
 		<a href="#sysconst"><h3>Constantes do sistema</h3></a>
 		<ul class="nolist">
 			<a href="#constbase"><li>Const. Base</li></a>
@@ -26,6 +27,7 @@
 			<a href="#autoroutes"><li>Rotas automáticas</li></a>
 			<a href="#customroutes"><li>Rotas personalizadas</li></a>
 			<a href="#paramroutes"><li>Rotas com argumentos</li></a>
+			<a href="#routefunction"><li>route()</li></a>
 		</ul>
 		<a href="#errormessages"><h3>Mensagens de erro do sistema</h3></a>
 		<ul class="nolist">
@@ -46,11 +48,18 @@
 			<a href="#load"><li><i>load()</i></li></a>
 			<a href="#view"><li><i>view()</i></li></a>
 			<a href="#model"><li><i>model()</i></li></a>
+			<a href="#asset"><li><i>asset()</i></li></a>
 		</ul>
 		<a href="#views"><h3>Views</h3></a>
 		<ul class="nolist">
 			<a href="#viewinclude"><li>Inclusão de views</li></a>
 			<a href="#viewvarpass"><li>Passagem de dados</li></a>
+			<a href="#viewtemplates"><li>Templates nas views</li></a>
+			<ul class="nolist">
+				<a href="#templateview"><li>Template</li></a>
+				<a href="#extendtemplate"><li>Extender template</li></a>
+				<a href="#sections"><li>Seções de dados</li></a>
+			</ul>
 		</ul>
 		<a href="#models"><h3>Models</h3></a>
 		<ul class="nolist">
@@ -100,6 +109,7 @@
 			<a href="#islogged"><li>Auth::isLogged()</li></a>
 			<a href="#getloggeduser"><li>Auth::getLoggedUser()</li></a>
 			<a href="#bindauth"><li>Auth::bindAuth()</li></a>
+			<a href="#registertries"><li>Auth::registerTries()</li></a>
 			<a href="#counttries"><li>Auth::countTries()</li></a>
 			<a href="#hashpassword"><li>Auth::hashPassword()</li></a>
 			<a href="#passwordreset"><li>Redefinição de senha</li></a>
@@ -188,7 +198,7 @@
 		
 		<p class="obs">
 			<b>Atenção:</b> ao iniciar um projeto utilizando o Luvi, não se esqueça de renomear o arquivo
-			<b>SystemData-Example.php</b> (localizado em <i>/app/<wbr></i>) para 
+			<b>SystemData-Example.php</b> (localizado em <i>/app/<wbr></i>) para
 			<b>SystemData.php</b> e de definir nele as
 			<a href="#sysconst">constantes do sistema</a> para que o sistema funcione corretamente.
 		</p>
@@ -313,7 +323,7 @@
 		</p>
 		<p>
 			No banco de dados, cada tabela deve ter exatamente o mesmo nome dos models equivalentes,
-			sem a necessidade de serem idênticos quanto às letras maiúsculas e minúsculas.
+			porém iniciando com letras minúsculas.
 		</p>
 		<p>
 			Quanto aos atributos das tabelas, <b>o padrão adotado para a chave primária é "id"</b>.
@@ -325,8 +335,17 @@
 			minúsculas), para evitar erros ao incluí-los.
 		</p>
 
+        <br><br>
 
-		<br>
+        <a name="atualizacao"><h2>Atualização do framework</h2></a>
+        <p>
+            Quando for necessário atualizar o framework, a forma mais prática de fazê-lo, sem que haja perda
+            ou sobrescrita dos dados ou configurações já realizados no projeto, é baixar o framework novamente
+            e atualizar apenas o diretório <b>/app<wbr>/system</b> e todos os seus arquivos.
+        </p>
+
+
+		<br><br>
 
 		
 		<a name="sysconst"><h2>Constantes do sistema</h2></a>
@@ -476,6 +495,20 @@
 			Portanto, se a função for definida como <b>show ($get) { ... }</b>, o nome do vetor
 			passado será <b>$get</b>, e não $param.
 		</p>
+		<br>
+		<a name="routefunction"><h3>route()</h3></a>
+		<p>
+			Auxilia na geração de links relativos para dentro do sistema, a partir da raiz do projeto.
+		</p>
+		<span class="pregroup">
+            <pre><b>Usage example:</b></pre>
+			<pre>&lt;a href="&lt;?=route('login')?&gt;"&gt;...&lt;/a&gt;</pre>
+		</span>
+		<p>
+			Assim, o link referenciará o endereço "login" a partir da raiz do projeto. Por exemplo,
+            se o projeto se localizar em "<b>/projetos<wbr>/luvi</b>", o link apontará para
+            "<b>/projetos<wbr>/luvi<wbr>/login</b>".
+		</p>
 
 
 		<br><br>
@@ -495,37 +528,22 @@
 		<br>
 		<a name="changetext"><h3>Alterar texto das mensagens</h3></a>		
 		<p>
-			É possível alterar o texto das mensagens, indo diretamente ao arquivo ao qual pertence
-			a função que a utiliza.
+			É possível alterar o texto das mensagens editando o arquivo <b>SystemMessages.php</b>.
 		</p><br>
 		<div class="lv2-content">
 			<a name="changevalidationmsg"><b>Validação de dados</b></a>
 			<p>
 				Para alterar as mensagens de validação de dados, vá até o arquivo 
-				<b>app/<wbr>system/<wbr>components/<wbr>Validation.php</b> e procure pelas definições
-				das variáveis <b>$message</b>.
+				<b>app/<wbr>SystemMessages.php</b> e edite as constantes cujos nomes são
+                iniciads por <i><b>"msgValidation"</b></i>.
 			</p>
 			<p>
-				Tais variáveis estão dispostas da seguinte maneira (o número da linha pode variar):
-			</p>
-			<span class="pregroup">
-				<pre> 43| <b>$message</b> = '...'; <i class="comment">// Caso um campo seja obrigatório e não tenha sido preenchido</i></pre>
-				<pre> 51| <b>$message</b> = '...'; <i class="comment">// Caso um valor deva ser um número inteiro</i></pre>
-				<pre> 59| <b>$message</b> = '...'; <i class="comment">// Caso um valor deva ser um número decimal</i></pre>
-				<pre> 67| <b>$message</b> = '...'; <i class="comment">// Caso um valor deva ser composto de apenas letras e espaço</i></pre>
-				<pre> 75| <b>$message</b> = '...'; <i class="comment">// Caso um valor deva ser composto de apenas letras, números e espaço</i></pre>
-				<pre> 83| <b>$message</b> = '...'; <i class="comment">// Caso um valor deva ser um endereço de e-mail com sintaxe válida</i></pre>
-				<pre> 93| <b>$message</b> = '...'; <i class="comment">// Caso um valor não tenha o número mínimo de caracteres, definido por <b>$rulepart[1]</b></i></pre>
-				<pre>102| <b>$message</b> = '...'; <i class="comment">// Caso um valor ultrapasse o número máximo de caracteres, definido por <b>$rulepart[1]</b></i></pre>
-				<pre>110| <b>$message</b> = '...'; <i class="comment">// Caso um campo não seja igual a um dado outro campo, definido por <b>$rulepart[1]</b></i></pre>
-			</span>
-			<p>
-				<b>Lembrando que <i>$field</i>, presente em todas as mensagens, representa o nome do 
-				campo do qual se trata quando a mensagem é retornada.</b>
+				<b>Lembrando que <b>%field%</b> (e demais elementos entre "%"), presente em todas as mensagens,
+                representa o nome do campo do qual se trata quando a mensagem é retornada.</b>
 			</p>
 			<p>
 				Por exemplo, se, ao analisar um campo nomeado <b><i>username</i></b> que é obrigatório
-				e não esteja preenchido, é retornada a seguinte mensagem, sendo que <b>$field</b> é 
+				e não esteja preenchido, é retornada a seguinte mensagem, sendo que <b>%field%</b> é
 				responsável por exibir o nome do campo:
 			</p>
 			<span class="pregroup">
@@ -535,17 +553,9 @@
 			<a name="changeauthmsg"><b>Autenticação de usuário</b></a>
 			<p>
 				Para alterar as mensagens de validação de dados, vá até o arquivo 
-				<b>/app/<wbr>system/<wbr>core/<wbr>Auth.php</b> e procure pelas definições de 
-				variáveis que contenham <i><b>"Msg</b></i> em seu nome.
+				<b>/app/SystemMessages.php</b> e procure pelas definições de
+				variáveis que se iniciem por <i><b>"msgAuth"</b></i> em seu nome.
 			</p>
-			<p>
-				Tais variáveis estão dispostas da seguinte maneira (o número da linha pode variar):
-			</p>
-			<span class="pregroup">
-				<pre> 17| <b>$noUserMsg</b> = '...'; <i class="comment">// Caso o usuário buscado não exista no banco de dados</i></pre>
-				<pre> 18| <b>$wrongPassMsg</b> = '...'; <i class="comment">// Caso a senha digitada esteja incorreta</i></pre>
-				<pre> 81| <b>$usedUserMsg</b> = '...'; <i class="comment">// Caso o usuário digitado não esteja disponível para registro</i></pre>
-			</span>
 		</div>
 
 
@@ -712,6 +722,23 @@
 		<p>
 			Retorna <b>TRUE</b> se o arquivo já tiver sido carregado ou <b>FALSE</b> caso contrário.
 		</p>
+		<br>
+		<a name="asset"><h3><i>asset()</i></h3></a>
+		<p>
+			Gera o caminho para, dado o nome do arquivo <b>com a extensão</b>, a partir do diretório
+			<b>/assets/</b>.
+		</p>
+		<p>
+			Útil para a inclusão de arquivos como CSS e JS nas views.
+		</p>
+		<span class="pregroup">
+			<pre>void <b>asset (</b> string $assetFile <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>&lt;link href="&lt;?=asset ('style/style.css')?&gt;"&gt;</pre>
+		</span>
+		<p>
+			Retorna uma string contendo o caminho para o arquivo a partir da raiz do projeto.
+		</p>
 
 
 		<br><br>
@@ -775,6 +802,104 @@
 			<pre>$data[1] <i class="comment">// Contém o valor de <b>$var2</b></i></pre>
 			<pre>...</pre>
 		</span>
+		<br>
+		<a name="viewtemplates"><h3>Templates nas views</h3></a>
+		<p>
+			Também é possível elaborar templates. Para isso, pode-se criar um arquivo com o HTML base da
+            página e, onde o conteúdo for variável, trocar o texto por <b>!!section!!</b>, como no exemplo:
+		</p>
+        <p class="obs">
+            <b>Observação:</b> quando fazendo uso do sistema de tamplates, ao incluir uma view, deve-se usar o
+            método <a href="#viewinclude">view()</a> para inclui-la, passando como parâmetro diretamente a view
+            que se deseja carregar, e não o template, já que na inclusão o template será carregado junto com a
+            view passada.
+        </p>
+        <br>
+        <div class="lv2-content">
+            <a name="templateview"><b>Template</b></a>
+            <p>
+                Para criar um template, pode-se criar um arquivo com o HTML base da página e, onde
+                o conteúdo for variável, trocar o texto por <b>!!section!!</b>, como no exemplo:
+            </p>
+            <span class="pregroup">
+                <pre>&lt;html&gt;</pre>
+                <pre>   &lt;head&gt;</pre>
+                <pre>       ...</pre>
+                <pre>   &lt;/head&gt;</pre>
+                <pre>   &lt;body&gt;</pre>
+                <pre>       ...</pre>
+                <pre>       <b>!!section!!</b></pre>
+                <pre>   &lt;/body&gt;</pre>
+                <pre>&lt;/html&gt;</pre>
+            </span>
+            <br>
+            <a name="extendtemplate"><b>Extender template</b></a>
+            <p>
+                Quando dentro do contexto de templates, arquivos que contenham os conteúdos variáveis devem
+                extender um arquivo de template (conforme a estrutura dada em <a href="#templateview">template</a>.
+            </p>
+            <p>
+                Para fazer isso, no arquivo HTML que contém os dados variáveis, deve-se incluir o trecho
+                <b>@extends('template')</b>, em que <b>template</b> representa o nome do arquivo (sem a extensão),
+                preferencialmente no início do arquivo, por uma questão de organização.
+            </p>
+            <span class="pregroup">
+                <pre>@extends('<b>template</b>') </pre>
+                <pre>...</pre>
+                <pre>[Resto dos códigos da página]</pre>
+            </span>
+            <p>
+                Ao referenciar o template, o sistema buscará o arquivo a partir do diretório em que a view
+                passada para o método se encontra. Por exemplo, se a view estiver em <b>/app<wbr>/views</b> e
+                o templete estiver em outro diretório, como em <b>/app<wbr>/views<wbr>/templates</b>, deve-se
+                definir o caminho para o template, na definição do <b>@extends</b>.
+            </p>
+            <p>
+                Abaixo um exemplo desta situação, considerando um exemplo em que o arquivo de template se chama
+                <b>main.php</b>:
+            </p>
+
+            <span class="pregroup">
+                <pre>@extends('<b>templates/main</b>') </pre>
+                <pre>...</pre>
+                <pre>[Resto dos códigos da página]</pre>
+            </span>
+            <br>
+            <a name="sections"><b>Seções de dados</b></a>
+            <p>
+                Representam os blocos de código HTML que substituirão os elementos <b>!!section!!</b> do template.
+            </p>
+            <p>
+                São definidos na view por um início dado por <b>@section</b> e finalizados por <b>@endsection</b>.
+            </p>
+            <span class="pregroup">
+                <pre>@extends('templates/main') </pre>
+                <pre></pre>
+                <pre><b>@section</b></pre>
+                <pre>   &lt;div class="..."&gt;&lt;/div&gt;</pre>
+                <pre><b>@endsection</b></pre>
+            </span>
+            <p>
+                Cada bloco destes será substituído por um <b>!!section!!</b> no template seguindo a sequência em que
+                forem definidos os blocos <b>@section</b>.
+            </p>
+            <p>
+                Assim, considerando um template com duas seções definidas (<b>!!section!!</b>), serão exibidas
+                a "seção 1" e depois a "seção 2" se o arquivo que o extende for definido da seguinte forma:
+            </p>
+            <span class="pregroup">
+                <pre>@extends('templates/main') </pre>
+                <pre></pre>
+                <pre><b>@section</b></pre>
+                <pre>   SEÇÃO 1</pre>
+                <pre><b>@endsection</b></pre>
+                <pre></pre>
+                <pre></pre>
+                <pre><b>@section</b></pre>
+                <pre>   SEÇÃO 2</pre>
+                <pre><b>@endsection</b></pre>
+            </span>
+        </div>
 
 
 		<br><br>
@@ -875,8 +1000,12 @@
 			<pre>$object = new <b>Bird</b>;</pre>
 			<pre>$object->all ();</pre>
 			<br>
-			<pre>(new <b>Bird</b>)->all ();</pre>
+			<pre><b>Bird</b>::make()->all ();</pre>
 		</span>
+        <p>
+            Os models (e outras classes do sistema) possuem o método <b>make()</b>, que inicia permite
+            utilizar funções dos objetos sem ter um objeto de determinada classe salvo em uma variável.
+        </p>
 
 
 		<br><br>
@@ -929,8 +1058,8 @@
 			<span class="pregroup">
 				<pre>object <b>get (</b> $id <b>)</b></pre>
 				<pre><br><b>Usage example:</b></pre>
-				<pre>(new Fruit)->get (5); <i class="comment">// Procura na tabela Fruit pela primeira linha cujo valor da chave primária seja igual a 5</i></pre>
-				<pre>(new Product)->get ('rice'); <i class="comment">// Procura na tabela Product pela primeira linha cujo valor da chave primária seja igual a 'rice</i></pre>
+				<pre>Fruit::make()->get (5); <i class="comment">// Procura na tabela Fruit pela primeira linha cujo valor da chave primária seja igual a 5</i></pre>
+				<pre>Product::make()->get ('rice'); <i class="comment">// Procura na tabela Product pela primeira linha cujo valor da chave primária seja igual a 'rice</i></pre>
 			</span>
 			<p>
 				Retorna um objeto do tipo da classe que originou a chamada à função.
@@ -943,7 +1072,7 @@
 			<span class="pregroup">
 				<pre>object_array <b>all (</b> <b>)</b></pre>
 				<pre><br><b>Usage example:</b></pre>
-				<pre>(new Juice)->all (); <i class="comment">// Retorna um vetor de objetos do tipo Juice com todos os dados armazenados na tabela de mesmo nome</i></pre>
+				<pre>Juice::make()->all (); <i class="comment">// Retorna um vetor de objetos do tipo Juice com todos os dados armazenados na tabela de mesmo nome</i></pre>
 			</span>
 			<p>
 				Retorna um vetor de objetos do tipo da classe que originou a chamada à função.
@@ -962,9 +1091,9 @@
 			<span class="pregroup">
 				<pre>object:DB <b>select (</b> [string $selectedData = NULL] <b>)</b></pre>
 				<pre><br><b>Usage example:</b></pre>
-				<pre>(new Person)->select ('id, name, lastname')->find (); <i class="comment">// Seleciona apenas 'id', 'name' e 'lastname' da tabela Person</i></pre>
-				<pre>(new Car)->select ('*')->find (); <i class="comment">// Seleciona todos os dados da tabela Car</i></pre>
-				<pre>(new Animal)->select ()->find (); <i class="comment">// Seleciona todos os dados da tabela Animal</i></pre>
+				<pre>Person::make()->select ('id, name, lastname')->find (); <i class="comment">// Seleciona apenas 'id', 'name' e 'lastname' da tabela Person</i></pre>
+				<pre>Car::make()->select ('*')->find (); <i class="comment">// Seleciona todos os dados da tabela Car</i></pre>
+				<pre>Animal::make()->select ()->find (); <i class="comment">// Seleciona todos os dados da tabela Animal</i></pre>
 			</span>
 			<p>
 				Retorna um objeto da classe DB.
@@ -999,7 +1128,7 @@
 			<span class="pregroup">
 				<pre>object:DB <b>join (</b> string $joinTable, $joinTableCol, $thisTableCol, [$compare] <b>)</b></pre>
 				<pre><br><b>Usage example:</b></pre>
-				<pre>(new Television)->join ('hometheater', 'hometheater.id_tv', 'television.id')->where ('hometheater.video = ?', 'hdmi')->find (); <i class="comment">// Procura por toda a tabela Television, unindo-se com a tabela Hometheater, por uma TV cujo HT tenha a propriedade 'video' igual a 'hdmi' </i></pre>
+				<pre>Television::make()->join ('hometheater', 'hometheater.id_tv', 'television.id')->where ('hometheater.video = ?', 'hdmi')->find (); <i class="comment">// Procura por toda a tabela Television, unindo-se com a tabela Hometheater, por uma TV cujo HT tenha a propriedade 'video' igual a 'hdmi' </i></pre>
 			</span>
 			<p>
 				Retorna um objeto da classe DB.
@@ -1026,9 +1155,9 @@
 			<span class="pregroup">
 				<pre>object:DB <b>where (</b> string $where, [$whereVars] <b>)</b></pre>
 				<pre><br><b>Usage example:</b></pre>
-				<pre>(new Cat)->where ('name = ?', 'Felix')->find (); <i class="comment">// Procura por toda a tabela Cat por um valor cujo atributo 'name' seja 'Felix'</i></pre>
-				<pre>(new Dog)->select ('id, age')->where ('name = ? AND weight > ?', [$name, $weight])->find (); <i class="comment">// Seleciona 'id' e 'age' na tabela Dog, procurando por uma linha em que 'name' seja igual ao valor de $name e 'weight' seja maior que o valor de $weight</i></pre>
-				<pre>(new Lion)->select ('*')->where ('wild = TRUE')->find (); <i class="comment">// Seleciona tudo na tabela Lion, procurando por uma linha em que 'wild' seja TRUE</i></pre>
+				<pre>Cat::make()->where ('name = ?', 'Felix')->find (); <i class="comment">// Procura por toda a tabela Cat por um valor cujo atributo 'name' seja 'Felix'</i></pre>
+				<pre>Dog::make()->select ('id, age')->where ('name = ? AND weight > ?', [$name, $weight])->find (); <i class="comment">// Seleciona 'id' e 'age' na tabela Dog, procurando por uma linha em que 'name' seja igual ao valor de $name e 'weight' seja maior que o valor de $weight</i></pre>
+				<pre>Lion::make()->select ('*')->where ('wild = TRUE')->find (); <i class="comment">// Seleciona tudo na tabela Lion, procurando por uma linha em que 'wild' seja TRUE</i></pre>
 			</span>
 			<p>
 				Retorna um objeto da classe DB.
@@ -1051,8 +1180,8 @@
 			<span class="pregroup">
 				<pre>object:DB <b>orderBy (</b> string $orderValue, [string $order = 'ASC'] <b>)</b></pre>
 				<pre><br><b>Usage example:</b></pre>
-				<pre>(new People)->select ()->orderBy ('name', 'DESC')->find (); <i class="comment">// Ordena o resultado da busca pelo campo 'name' de forma descendente (DESC)</i></pre>
-				<pre>(new Dog)->select ('id, name')->where ('weight > ?', $weight)->orderBy ('name')->orderBy ('weight', 'DESC')->find (); <i class="comment">// Ordena os resultados pelo atributo 'name' de forma ascendente e, posteriormente, pelo atributo 'weight' de forma descendente (DESC)</i></pre>
+				<pre>People::make()->select ()->orderBy ('name', 'DESC')->find (); <i class="comment">// Ordena o resultado da busca pelo campo 'name' de forma descendente (DESC)</i></pre>
+				<pre>Dog::make()->select ('id, name')->where ('weight > ?', $weight)->orderBy ('name')->orderBy ('weight', 'DESC')->find (); <i class="comment">// Ordena os resultados pelo atributo 'name' de forma ascendente e, posteriormente, pelo atributo 'weight' de forma descendente (DESC)</i></pre>
 			</span>
 			<p>
 				Retorna um objeto da classe DB.
@@ -1074,8 +1203,8 @@
 			<span class="pregroup">
 				<pre>object:DB <b>extraSql (</b> string $sql <b>)</b></pre>
 				<pre><br><b>Usage example:</b></pre>
-				<pre>(new Television)->select ()->extraSql ('Some SQL')->find (); <i class="comment">// Acrescenta o SQL à consulta</i></pre>
-				<pre>(new Printer)->select ('id, code')->where ('code < ?', $code)->orderBy ('name')->extraSql ('Another SQL')->find (); </pre>
+				<pre>Television::make()->select ()->extraSql ('Some SQL')->find (); <i class="comment">// Acrescenta o SQL à consulta</i></pre>
+				<pre>Printer::make()->select ('id, code')->where ('code < ?', $code)->orderBy ('name')->extraSql ('Another SQL')->find (); </pre>
 			</span>
 			<p>
 				Retorna um objeto da classe DB.
@@ -1150,9 +1279,9 @@
 			<span class="pregroup">
 				<pre>object:DB <b>select (</b> [string $selectedData = NULL], string $table <b>)</b></pre>
 				<pre><br><b>Usage example:</b></pre>
-				<pre>(new DB)->select ('id, name, lastname', 'Person')->find ();</pre>
-				<pre>(new DB)->select ('*', 'Car')->find ();</pre>
-				<pre>(new DB)->select (NULL, 'Animal')->find ();</pre>
+				<pre>DB::make()->select ('id, name, lastname', 'Person')->find ();</pre>
+				<pre>DB::make()->select ('*', 'Car')->find ();</pre>
+				<pre>DB::make()->select (NULL, 'Animal')->find ();</pre>
 			</span>
 			<p>
 				Retorna um objeto do tipo DB.
@@ -1167,7 +1296,7 @@
 			<span class="pregroup">
 				<pre>object:DB <b>join (</b> string $joinTable, $joinTableCol, $thisTableCol, [$compare] <b>)</b></pre>
 				<pre><br><b>Usage example:</b></pre>
-				<pre>(new DB)->select ('name')->join ('hometheater', 'hometheater.id_tv', 'television.id')->where ('hometheater.video = ?', 'hdmi')->find (); <i class="comment">// Procura por toda a tabela Television, unindo-se com a tabela Hometheater, por uma TV cujo HT tenha a propriedade 'video' igual a 'hdmi' </i></pre>
+				<pre>DB::make()->select ('name')->join ('hometheater', 'hometheater.id_tv', 'television.id')->where ('hometheater.video = ?', 'hdmi')->find (); <i class="comment">// Procura por toda a tabela Television, unindo-se com a tabela Hometheater, por uma TV cujo HT tenha a propriedade 'video' igual a 'hdmi' </i></pre>
 			</span>
 			<p>
 				Retorna um objeto do tipo DB.
@@ -1182,9 +1311,9 @@
 			<span class="pregroup">
 				<pre>object:DB <b>where (</b> string $where, [$whereVars], [string $table] <b>)</b></pre>
 				<pre><br><b>Usage example:</b></pre>
-				<pre>(new DB)->where ('name = ?', 'Felix', 'Cat')->find ();</pre>
-				<pre>(new DB)->select ('id, age', 'Dog')->where ('name = ? AND weight > ?', [$name, $weight])->find (); <i class="comment">// Seleciona 'id' e 'age' na tabela Dog, procurando por uma linha em que 'name' seja igual ao valor de $name e 'weight' seja maior que o valor de $weight</i></pre>
-				<pre>(new DB)->select ('*', 'Lion')->where ('wild = TRUE')->find (); <i class="comment">// Seleciona tudo na tabela Lion, procurando por uma linha em que 'wild' seja TRUE</i></pre>
+				<pre>DB::make()->where ('name = ?', 'Felix', 'Cat')->find ();</pre>
+				<pre>DB::make()->select ('id, age', 'Dog')->where ('name = ? AND weight > ?', [$name, $weight])->find (); <i class="comment">// Seleciona 'id' e 'age' na tabela Dog, procurando por uma linha em que 'name' seja igual ao valor de $name e 'weight' seja maior que o valor de $weight</i></pre>
+				<pre>DB::make()->select ('*', 'Lion')->where ('wild = TRUE')->find (); <i class="comment">// Seleciona tudo na tabela Lion, procurando por uma linha em que 'wild' seja TRUE</i></pre>
 			</span>
 			<p>
 				Retorna um objeto do tipo DB.
@@ -1199,9 +1328,9 @@
 			<span class="pregroup">
 				<pre>object:DB <b>find (</b> <b>)</b></pre>
 				<pre><br><b>Usage example:</b></pre>
-				<pre>(new DB)->select ('id, age', 'Cat')->find (); <i class="comment">// Executa a consulta select anterior</i></pre>
-				<pre>(new DB)->select ('id, age', 'Cat')->where ('name = ? AND weight > ?', [$name, $weight])->find (); <i class="comment">// Executa a consulta select/where anterior</i></pre>
-				<pre>(new DB)->where ('name = ? AND weight > ?', [$name, $weight])->find (); <i class="comment">// Executa a consulta select/where anterior</i></pre>
+				<pre>DB::make()->select ('id, age', 'Cat')->find (); <i class="comment">// Executa a consulta select anterior</i></pre>
+				<pre>DB::make()->select ('id, age', 'Cat')->where ('name = ? AND weight > ?', [$name, $weight])->find (); <i class="comment">// Executa a consulta select/where anterior</i></pre>
+				<pre>DB::make()->where ('name = ? AND weight > ?', [$name, $weight])->find (); <i class="comment">// Executa a consulta select/where anterior</i></pre>
 			</span>
 			<p>
 				Retorna o objeto salvo em caso de sucesso ou <b>NULL</b> caso contrário.
@@ -1214,7 +1343,7 @@
 			<span class="pregroup">
 				<pre>object:DB <b>generatedSql (</b> <b>)</b></pre>
 				<pre><br><b>Usage example:</b></pre>
-				<pre>(new DB)->select ('id, age', 'Cat')->generatedSql (); <i class="comment">// Retorna o SQL gerado para esta consulta</i></pre>
+				<pre>DB::make()->select ('id, age', 'Cat')->generatedSql (); <i class="comment">// Retorna o SQL gerado para esta consulta</i></pre>
 			</span>
 			<p>
 				Retorna uma string com o código SQL gerado pelas demais funções da classe.
@@ -1440,9 +1569,24 @@
 			Retorna <b>TRUE</b> caso os dados confiram ou <b>FALSE</b> caso contrário.
 		</p>
 		<br>
+		<a name="registertries"><h3>Auth::registerTries()</h3></a>
+		<p>
+			Registra uma tentativa incorreta de login, aumentando o contador de tentativas para o nome de usuário
+			passado em <b>$username</b>, de forma que possa ser lifo pela função <a href="#counttries">countTries()</a>.
+		</p>
+		<span class="pregroup">
+			<pre>void <b>registerTries (</b> String $username <b>)</b></pre>
+			<br>
+			<pre><b>Usage example:</b></pre>
+			<pre>Auth::registerTries ($user); </pre>
+		</span>	
+		<p>
+			Não possui retorno.
+		</p>
+		<br>
 		<a name="counttries"><h3>Auth::countTries()</h3></a>
 		<p>
-			Conta o número de tentativas de login para o último nome de usuário e diz se atingiu 
+			Conta o número de tentativas de login para o último nome de usuário e diz se atingiu
 			ou passou um limite <b>$maxTries</b> de vezes.
 		</p>
 		<span class="pregroup">
@@ -1451,7 +1595,7 @@
 			<pre><b>Usage example:</b></pre>
 			<pre>Auth::countTries (5); </pre>
 			<pre>if (Auth::countTries (3)) { ... } </pre>
-		</span>	
+		</span>
 		<p>
 			Retorna <b>TRUE</b> caso o número de tentativas seja maior ou igual ao valor passado ou
 			<b>FALSE</b> caso contrário.
@@ -1614,7 +1758,7 @@
 		<span class="pregroup">
 			<pre>object:Mail <b>setFrom (</b> string $from <b>)</b></pre>
 			<pre><br><b>Usage example:</b></pre>
-			<pre>(new Mail)->setFrom ('someone@email.com');</pre>
+			<pre>Mail::make()->setFrom ('someone@email.com');</pre>
 		</span>
 		<p>
 			Retorna um objeto da classe Mail.
@@ -1627,7 +1771,7 @@
 		<span class="pregroup">
 			<pre>object:Mail <b>setFromName (</b> string $fromName <b>)</b></pre>
 			<pre><br><b>Usage example:</b></pre>
-			<pre>(new Mail)->setFromName ('Someone');</pre>
+			<pre>Mail::make()->setFromName ('Someone');</pre>
 		</span>
 		<p>
 			Retorna um objeto da classe Mail.
@@ -1640,7 +1784,7 @@
 		<span class="pregroup">
 			<pre>object:Mail <b>setTo (</b> string $to <b>)</b></pre>
 			<pre><br><b>Usage example:</b></pre>
-			<pre>(new Mail)->setTo ('someone@email.com');</pre>
+			<pre>Mail::make()->setTo ('someone@email.com');</pre>
 		</span>
 		<p>
 			Retorna um objeto da classe Mail.
@@ -1653,7 +1797,7 @@
 		<span class="pregroup">
 			<pre>object:Mail <b>setSubject (</b> string $subject <b>)</b></pre>
 			<pre><br><b>Usage example:</b></pre>
-			<pre>(new Mail)->setSubject ('New home');</pre>
+			<pre>Mail::make()->setSubject ('New home');</pre>
 		</span>
 		<p>
 			Retorna um objeto da classe Mail.
@@ -1666,8 +1810,8 @@
 		<span class="pregroup">
 			<pre>object:Mail <b>setContent (</b> string $content <b>)</b></pre>
 			<pre><br><b>Usage example:</b></pre>
-			<pre>(new Mail)->setContent ('Hello, my friend!');</pre>
-			<pre>(new Mail)->setContent ('Dear friend,&lt;br&gt;I just want to say "hello".');</pre>
+			<pre>Mail::make()->setContent ('Hello, my friend!');</pre>
+			<pre>Mail::make()->setContent ('Dear friend,&lt;br&gt;I just want to say "hello".');</pre>
 		</span>
 		<p>
 			Retorna um objeto da classe Mail.
@@ -1680,7 +1824,7 @@
 		<span class="pregroup">
 			<pre>string <b>getTo (</b> <b>)</b></pre>
 			<pre><br><b>Usage example:</b></pre>
-			<pre>(new Mail)->getTo ();</pre>
+			<pre>Mail::make()->getTo ();</pre>
 		</span>
 		<p>
 			Retorna uma string com o conteúdo da variável.
@@ -1693,7 +1837,7 @@
 		<span class="pregroup">
 			<pre>string <b>getFrom (</b> <b>)</b></pre>
 			<pre><br><b>Usage example:</b></pre>
-			<pre>(new Mail)->getFrom ();</pre>
+			<pre>Mail::make()->getFrom ();</pre>
 		</span>
 		<p>
 			Retorna uma string com o conteúdo da variável.
@@ -1706,7 +1850,7 @@
 		<span class="pregroup">
 			<pre>string <b>getFromName (</b> <b>)</b></pre>
 			<pre><br><b>Usage example:</b></pre>
-			<pre>(new Mail)->getFromName ();</pre>
+			<pre>Mail::make()->getFromName ();</pre>
 		</span>
 		<p>
 			Retorna uma string com o conteúdo da variável.
@@ -1719,7 +1863,7 @@
 		<span class="pregroup">
 			<pre>string <b>getSubject (</b> <b>)</b></pre>
 			<pre><br><b>Usage example:</b></pre>
-			<pre>(new Mail)->getSubject ();</pre>
+			<pre>Mail::make()->getSubject ();</pre>
 		</span>
 		<p>
 			Retorna uma string com o conteúdo da variável.
@@ -1732,7 +1876,7 @@
 		<span class="pregroup">
 			<pre>string <b>getContent (</b> <b>)</b></pre>
 			<pre><br><b>Usage example:</b></pre>
-			<pre>(new Mail)->getContent ();</pre>
+			<pre>Mail::make()->getContent ();</pre>
 		</span>
 		<p>
 			Retorna uma string com o conteúdo da variável.

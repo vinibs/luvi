@@ -114,51 +114,64 @@ function back () {
 
 // Funções referentes ao uso de sessão, cookie e flash session
 function session ($name, $data = null) {
-	return (new App)->session($name, $data);
+	return App::make()->session($name, $data);
 }
 
 function cookie ($name, $data = null) {
-	return (new App)->cookie($name, $data);
+	return App::make()->cookie($name, $data);
 }
 
 function unsetcookie ($name) {
-	return (new App)->unsetcookie($name);
+	return App::make()->unsetcookie($name);
 }
 
 function flash ($name, $data = null) {
-	return (new App)->flash($name, $data);
+	return App::make()->flash($name, $data);
 }
 
 // Função para preencher o campo de formulário com o último valor inserido (usando flash)
 function oldVal ($fieldName) {
-	return (new App)->oldVal($fieldName);
+	return App::make()->oldVal($fieldName);
 }
 
 // Exibe a mensagem de erro quando retornado da função de validação
 function getInputErrors ($fieldName) {
-	return (new App)->getInputErrors($fieldName);
+	return App::make()->getInputErrors($fieldName);
 }
 
 // Exibe se existe algum erro de input salvo na sessão
 function checkInputErrors ($fieldName = NULL) {
-	return (new App)->checkInputErrors($fieldName);
+	return App::make()->checkInputErrors($fieldName);
 }
 
 // Recebe o array de arquivos vindo do formulário e reordena os elementos
 function orderFiles (array $files) {
-	return (new App)->orderFiles($files);
+	return App::make()->orderFiles($files);
 }
 
 function load ($filePath) {
-	return (new App)->load($filePath);
+	return App::make()->load($filePath);
 }
 
 function view ($viewName, $data = null) {
-	return (new App)->view($viewName, $data);
+	return App::make()->view($viewName, $data);
 }
 
 function model ($modelName) {
-	return (new App)->model($modelName);
+	return App::make()->model($modelName);
+}
+
+function route ($relativePath) {
+	return App::make()->route($relativePath);
+}
+
+function asset ($assetFile) {
+	return App::make()->asset($assetFile);
+}
+
+
+function getRequest () {
+    return strtolower($_SERVER['REQUEST_METHOD']);
 }
 
 

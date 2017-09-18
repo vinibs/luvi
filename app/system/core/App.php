@@ -131,15 +131,7 @@ class App {
 	}
 
 	public function view ($viewName, $data = null) {
-		// Busca por arquivos .PHP, .HTML ou .PHTML para a view
-		if (file_exists(BASEPATH . '/app/views/' . $viewName . '.php'))
-			return require_once BASEPATH . '/app/views/' . $viewName . '.php';
-		else if (file_exists(BASEPATH . '/app/views/' . $viewName . '.html'))
-			return require_once BASEPATH . '/app/views/' . $viewName . '.html';
-		else if (file_exists(BASEPATH . '/app/views/' . $viewName . '.phtml'))
-			return require_once BASEPATH . '/app/views/' . $viewName . '.phtml';
-		else
-			return FALSE;
+		View::make()->call($viewName, $data);
 	}
 
 	public function model ($modelName) {
@@ -148,4 +140,22 @@ class App {
 		else 
 			return FALSE;
 	}
+
+	public function route ($relativePath) {
+	    if (substr($relativePath, 0, 1) == '/')
+            return SYSROOT.$relativePath;
+	    else
+	        return SYSROOT.'/'.$relativePath;
+	}
+
+	public function asset ($assetFile) {
+	    if (substr($assetFile, 0, 1) == '/')
+            return SYSROOT.'/assets'.$assetFile;
+	    else
+	        return SYSROOT.'/assets/'.$assetFile;
+	}
+
+	public static function make () {
+	    return new self;
+    }
 }

@@ -189,9 +189,11 @@ class RequestRouter {
 		require_once BASEPATH . '/app/system/core/SystemFunctions.php';
 		require_once BASEPATH . '/app/system/base/Controller.php';
 		require_once BASEPATH . '/app/system/base/Model.php';
+		require_once BASEPATH . '/app/system/base/View.php';
+		require_once BASEPATH . '/app/SystemMessages.php';
 
-		// Carrega o controller principal
-		require_once BASEPATH . '/app/controllers/MainController.php';
+		// Carrega o controller principal (pode ser excluído ou renomeado)
+		include_once BASEPATH . '/app/controllers/MainController.php';
 
 		// Inclui recursos do sistema
 		require_once BASEPATH . '/app/system/components/DB.php';

@@ -275,4 +275,8 @@ class DB {
     public static function connect () {
 		return new PDO(DB_DRIVER.":host=".DB_HOST.";dbname=".DB_NAME, DB_USER, DB_PASS);
 	}
+
+    public static function make () {
+        return new self;
+    }
 }
