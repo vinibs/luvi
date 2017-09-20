@@ -24,51 +24,64 @@ class ViewManager
          */
 
 
+        do {
+            // Define o nome da última view carregada como sendo a atual, antes de processar
+            // os dados (para comparar posteriormente)
+            $lastView = $viewName;
 
-        // Obtém o código da view para ser analisado
-        ob_start();
-        $this->loadFile($viewName, $data);
-        $viewCode = ob_get_contents();
-        ob_end_clean();
 
-        // Verifica se a view extende algum template (checa com aspas simples e com aspas duplas)
-        preg_match_all("/\@extends\([\'|\"](.*?)[\'|\"]\)/", $viewCode, $extend);
-        if(count($extend[1]) > 0)
-            $extend = $extend[1][0]; // Posição em que é armazenado apenas o nome do arquivo extendido (apenas 1)
+            // Obtém o código HTML da view para ser analisado
+            ob_start();
+            $this->loadFile($viewName, $data);
+            $viewCode = ob_get_contents();
+            ob_end_clean();
 
-        // Verifica se há algum caminho antes da view, como em 'pasta/outrapasta/view'
-        preg_match_all('/(.*?\/)/', $viewName, $extendPath);
-        if(count($extendPath[1]) > 0)
-            $extendPath = $extendPath[1][0];
+            // Verifica se a view extende algum template (checa com aspas simples e com aspas duplas)
+            preg_match_all("/\@extends\([\'|\"](.*?)[\'|\"]\)/", $viewCode, $extend);
+            if (count($extend[1]) > 0) {
+                $extend = $extend[1][0];
+            } // Posição em que é armazenado apenas o nome do arquivo extendido (apenas 1)
+
+            // Verifica se há algum caminho antes da view, como em 'pasta/outrapasta/view'
+            preg_match_all('/(.*?\/)*/', $viewName, $extendPath);
+            if (count($extendPath[0]) > 0) {
+                $extendPath = $extendPath[0][0];
+            }
             // Posição contendo o caminho até a a view chamada, para buscar o template a partir do mesmo
             // diretório em que a view está
 
-
-        // Verifica se há 'sections' definidas na view
-        preg_match_all("/\@section[\s]*([\s\S]*)@endsection/", $viewCode, $sections);
-        if(count($sections) > 0)
-            $sections = $sections[1]; // Posição em que são armazenados apenas os conteúdos das seções
-
-
-        // Processa o conteúdo do template
-        if(count($extend[1]) > 0) { // Inclui o template extendido caso exista
-            ob_start();
-            $this->loadFile($extendPath . $extend);
-            $fileHtml = ob_get_contents();
-            ob_end_clean();
-        } else {
-            // Define o código da própria view como código da página caso não extenda um template
-            $fileHtml = $viewCode;
-        }
+            // Verifica se há 'sections' definidas na view
+            preg_match_all("/\@section[\s]*([\s\S]*)@endsection/", $viewCode, $sections);
+            if (count($sections) > 0) {
+                $pageSections[] = $sections[1];
+            } // Posição em que são armazenados apenas os conteúdos das seções
 
 
-        // Substitui cada 'section' do template pela section de índice correspondente na view
-        foreach($sections as $section){
-            $fileHtml = preg_replace('/!!section!!/', $section, $fileHtml, 1);
-        }
 
-        // Exibe o código da página
-        echo $fileHtml;
+            if(count($extend[1]) > 0) { // Define o nome do template a ser carregado a seguir
+                $viewName = $extendPath . $extend;
+            }
+            // Obtém o HTML do template principal até aqui
+
+
+            // Processa as seções das páginas, após o carregamento de todas as views
+            if(count($pageSections) > 0 && $lastView == $viewName){
+                // Vai substituindo de trás pra frente os valores (seção do template principal com o conteúdo
+                // do template secundário; template secundário com conteúdo do template terciário; ... com
+                // conteúdo da página passada inicialmente;
+
+                for($j = count($pageSections)-1; $j >= 0; $j--){
+                    foreach ($pageSections[$j] as $section) {
+                        $viewCode = preg_replace('/!!section!!/', $section, $viewCode, 1);
+                    }
+                }
+            }
+
+        } while($lastView != $viewName);
+        // Repete enquanto a última view carregada não for igual à atual (será a última, a raiz)
+
+        echo $viewCode;
+        // Exibe o HTML carregado
     }
 
 
