@@ -50,7 +50,7 @@ class ViewManager
             // diretório em que a view está
 
             // Verifica se há 'sections' definidas na view
-            preg_match_all("/\@section[\s]*([^\@]*)@endsection/", $viewCode, $sections);
+            preg_match_all("/\@section[\s]*([\s\S]*?)@endsection/", $viewCode, $sections);
             if (count($sections) > 0) {
                 $pageSections[] = $sections[1];
             } // Posição em que são armazenados apenas os conteúdos das seções
