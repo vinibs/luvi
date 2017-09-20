@@ -138,6 +138,7 @@
 		<ul class="nolist">
 			<a href="#session"><li><i>session()</i></li></a>
 			<a href="#flash"><li><i>flash()</i></li></a>
+			<a href="#hasflash"><li><i>hasFlash()</i></li></a>
 			<a href="#cookie"><li><i>cookie()</i></li></a>
 			<a href="#unsetcookie"><li><i>unsetcookie()</i></li></a>
 		</ul>
@@ -1951,6 +1952,22 @@
 		<p class="obs">
 			<b>Observação:</b> pode ser usada em conjunto com as funções <a href="#redirect">redirect()</a>
 			e <a href="#back">back()</a>.
+		</p>
+		<br>
+		<a name="hasflash"><h3><i>hasFlash()</i></h3></a>
+		<p>
+			Verifica se existe uma flash com o nome dado por<b>$name</b>.
+		</p>
+		<p>
+			Útil para verificar a existência de um valor em flash antes de exibi-lo.
+		</p>
+		<span class="pregroup">
+			<pre>boolean <b>hasFlash (</b> string $name <b>)</b></pre>
+			<pre><br><b>Usage example:</b></pre>
+			<pre>if(hasFlash ('flashThis')) { ... } </pre>
+		</span>
+		<p>
+			Retorna <b>TRUE</b> caso exista na sessão uma flash com o nome passado ou <b>FALSE</b> caso contrário.
 		</p>
 		<br>
 		<a name="cookie"><h3><i>cookie()</i></h3></a>

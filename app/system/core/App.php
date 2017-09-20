@@ -60,6 +60,10 @@ class App {
 		}
 	}
 
+	public function hasFlash ($name) {
+		return isset($_SESSION['flash'][$name]);
+	}
+
 	public function withValues () {
 		flash('inputValues', $_POST);
 		return $this;

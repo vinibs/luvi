@@ -129,6 +129,10 @@ function flash ($name, $data = null) {
 	return App::make()->flash($name, $data);
 }
 
+function hasFlash ($name) {
+	return App::make()->hasFlash($name);
+}
+
 // Função para preencher o campo de formulário com o último valor inserido (usando flash)
 function oldVal ($fieldName) {
 	return App::make()->oldVal($fieldName);
