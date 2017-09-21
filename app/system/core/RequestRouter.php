@@ -76,7 +76,7 @@ class RequestRouter {
 				else
 					$routenovars = substr($rt, 0, -1);
 				$lastroutechar = substr($rt, -1);
-				
+
 				// Define a rota limpa baseado em ter ou não a opção para parâmetros
 				if($lastroutechar == '?')
 					$routecompare = $pureroutevars;
@@ -85,23 +85,23 @@ class RequestRouter {
 
 				// URL limpa, sem / e nem parâmetros após o a rota limpa
 				$clearurlvars = substr(
-					preg_replace('[\/]', '', $urlcomponents), 
-					0, 
+					preg_replace('[\/]', '', $urlcomponents),
+					0,
 					strlen($routecompare)
 				);
 
 				// preg_replace remove as barras "/" da url passada e da rota
 				// Compara url/rota e url (descartando variáveis)/rota (descartando o '?')
 				if (
-					$clearurl == $pureroute || 
-					($lastroutechar == '?' && 
+					$clearurl == $pureroute ||
+					($lastroutechar == '?' &&
 					$clearurlvars == $pureroutevars &&
 					// Evita que uma url sem variáveis bata com uma rota com variáveis
 					$clearurlvars != $clearurl)
 				) {
 					// Separa o valor do vetor da rota para definir o controller e o método
 					$newpath = explode('/', $newpath);
-					
+
 					$controller = $newpath[0];
 					if (isset($newpath[1]))
 						$method = $newpath[1];
@@ -109,15 +109,15 @@ class RequestRouter {
 						$method = 'index';
 
 					// Vetor com as variáveis passadas à função
-					$varpass = substr($urlcomponents, strlen($routenovars));
+					$varpass = substr($urlcomponents, strlen($routecompare));
 					$varpass = explode('/', $varpass);
 
 					// Define que foi encontrada uma rota para a URL atual
 					$routed = TRUE;
                     $error = FALSE;
-				} 
+				}
 				// Caso sejam passadas variáveis pra uma rota que não peça
-				else if ($clearurlvars == $pureroute) { 
+				else if ($clearurlvars == $pureroute) {
 					$error = TRUE;
 				}
 			}
@@ -127,9 +127,9 @@ class RequestRouter {
 		if ($routed == FALSE) {
 			$urlcomponents = $path = explode('/', $urlcomponents);
 
-			// Define o controller a ser usado 
+			// Define o controller a ser usado
 			// (caso o primeiro caractere seja '?', chama o MainController e passa o $_GET)
-			if (isset($urlcomponents[0]) && !empty($urlcomponents[0]) && $urlcomponents[0][0] != '?') 
+			if (isset($urlcomponents[0]) && !empty($urlcomponents[0]) && $urlcomponents[0][0] != '?')
 				$controller = $urlcomponents[0].'Controller';
 			 else
 				$controller = 'MainController';
@@ -147,27 +147,35 @@ class RequestRouter {
 			$varpass = array_values($varpass);
 		}
 
+        if(sizeof($varpass) > 0){
+			unset($varpass[0]);
+        }
 
 		// Define os parâmetros a serem passados para a função
 		if(sizeof($varpass) > 0) {
 			// Padrão: 1º (posição 4) é ID, demais são parâmetros comuns
 
-			$id = $varpass[0];
-			unset($varpass[0]);
+			$id = $varpass[1];
+			unset($varpass[1]);
 
 			$params = array_values($varpass);
 			$params['id'] = $id;
 
 			// Limpa os valores vazios no vetor de parâmetros
 			$params = array_filter($params, function ($value) {
-				return $value !== ''; 
+				return $value !== '';
 			});
 
 			// Filtra os caracteres do vetor de parâmetros
 			$params = filter_var_array($params, FILTER_SANITIZE_STRING);
-			
+
 		} else
 			$params = '';
+
+        // Corrige os parâmetros em caso de serem um vetor vazio
+        if(is_array($params) && sizeof($params) == 0){
+            $params = '';
+        }
 
 		return array(
 			'controller' => $controller, 
