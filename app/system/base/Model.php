@@ -23,7 +23,7 @@ abstract class Model {
 
     public function join ($table, $tableCol, $thisCol, $compare = '=') {
         $tableOrigin = $this->getTableVar();
-        return (new DB)->select('*', $tableOrigin)->join($table, $tableCol, $thisCol, $compare);
+        return (new DB)->select(NULL, $tableOrigin)->join($table, $tableCol, $thisCol, $compare);
     }
 
 	public function where ($where, $whereVars = NULL) {

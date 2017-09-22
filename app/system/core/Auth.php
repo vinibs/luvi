@@ -123,7 +123,7 @@ class Auth {
 			(time() - session(SESSION_NAME.'Auth')['LastActivity']) > SESSION_ACTIVITY_TIME * 60) {
 			// Se tiver passado o tempo da sessão inativa faz logout
 			self::doLogout();
-			redirect($redirectTimeout);
+			redirect($redirectNoLogin);
 			die;
 		} else
 			// Se não tiver passado o tempo da sessão inativa, redefine o tempo

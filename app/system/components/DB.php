@@ -124,7 +124,7 @@ class DB {
 
 	public function select ($selectedData = NULL, $table) {
 		if($selectedData == NULL || $selectedData == '')
-			$selectedData = '*';
+			$selectedData = $table.'.*';
 
 		$this->table = $table;
 
@@ -172,7 +172,7 @@ class DB {
 
         // Reconstroi um SELECT básico caso a função seja usada sem o auxílio da select()
 		if ($this->select == '')
-			$this->select = 'SELECT * ';
+			$this->select = 'SELECT '.$table.'.* ';
 
 		if ($this->from == '')
 		    $this->from = 'FROM ' . $table;
@@ -244,7 +244,7 @@ class DB {
     public static function isNew ($object) {
 		$table = $object->getTableVar();
 
-		$sql = 'SELECT * FROM ' . $table . ' WHERE '.$object->primarykey.' = :'.$object->primarykey.';';
+		$sql = 'SELECT '.$table.'.* FROM ' . $table . ' WHERE '.$object->primarykey.' = :'.$object->primarykey.';';
 
 		$con = self::connect();
 		$stmt = $con->prepare($sql);
@@ -261,7 +261,7 @@ class DB {
 	}
 
     public static function all($table) {
-        $sql = 'SELECT * FROM '.$table.';';
+        $sql = 'SELECT '.$table.'.* FROM '.$table.';';
 
         $con = self::connect();
         $stmt = $con->prepare($sql);
