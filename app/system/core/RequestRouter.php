@@ -7,7 +7,8 @@ class RequestRouter {
 		self::iniSession(); // Inclui a classe Session e inicia a sessão já configurada
 
 		self::loadModels(); // Inclui todos os models
-		
+		self::loadControllers(); // Inclui todos os Controllers
+
 
 		// Quebra a URL e requisita o controller e o método passados
 		$path = explode('/', $_SERVER['REQUEST_URI']);
@@ -234,5 +235,11 @@ class RequestRouter {
 		foreach (glob("app/models/*.php") as $filename) {
 		    require_once $filename;
 		}	
+	}
+
+	private function loadControllers () {
+		foreach (glob("app/controllers/*.php") as $filename) {
+		    require_once $filename;
+		}
 	}
 }
