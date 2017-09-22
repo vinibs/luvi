@@ -1578,12 +1578,17 @@
 			Registra uma tentativa incorreta de login, aumentando o contador de tentativas para o nome de usuário
 			passado em <b>$username</b>, de forma que possa ser lifo pela função <a href="#counttries">countTries()</a>.
 		</p>
+		<p>
+			Quando fornecido, <b>$quant</b> define a o número que será registrado na contagem. Útil para redefinir
+			o contador para um determinado usuário.
+		</p>
 		<span class="pregroup">
-			<pre>void <b>registerTries (</b> String $username <b>)</b></pre>
+			<pre>void <b>registerTries (</b> String $username <b>, <b>[int $quant]</b>)</b></pre>
 			<br>
 			<pre><b>Usage example:</b></pre>
 			<pre>Auth::registerTries ($user); </pre>
-		</span>	
+			<pre>Auth::registerTries ($user, 0); </pre>
+		</span>
 		<p>
 			Não possui retorno.
 		</p>

@@ -173,12 +173,12 @@ class Auth {
         }
 	}
 
-	public static function registerTries ($username) {
+	public static function registerTries ($username, $quant = '') {
 	    // Registra o número de tentativas de login para o dado nome de usuário
         if (!isset($_SESSION['LoginTries'][$username]))
-            $_SESSION['LoginTries'][$username] = 1;
+            $_SESSION['LoginTries'][$username] = ($quant !== '') ? $quant : 1;
         else
-            $_SESSION['LoginTries'][$username] = $_SESSION['LoginTries'][$username] + 1;
+            $_SESSION['LoginTries'][$username] = ($quant !== '') ? $quant : $_SESSION['LoginTries'][$username] + 1;
 
         session('LastName', $username);
     }
