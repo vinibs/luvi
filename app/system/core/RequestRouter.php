@@ -218,7 +218,6 @@ class RequestRouter {
 
 		// Define cabeçalhos HTTP com foco na segurança da aplicação
 		header('X-Frame-Options: DENY');
-		header('X-XSS-Protection: 1; mode=block');
 		header('X-Content-Type-Options: nosniff');
 	}
 
