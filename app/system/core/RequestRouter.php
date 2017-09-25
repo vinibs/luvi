@@ -7,7 +7,8 @@ class RequestRouter {
 		self::iniSession(); // Inclui a classe Session e inicia a sessão já configurada
 
 		self::loadModels(); // Inclui todos os models
-		
+		self::loadControllers(); // Inclui todos os Controllers
+
 
 		// Quebra a URL e requisita o controller e o método passados
 		$path = explode('/', $_SERVER['REQUEST_URI']);
@@ -217,7 +218,6 @@ class RequestRouter {
 
 		// Define cabeçalhos HTTP com foco na segurança da aplicação
 		header('X-Frame-Options: DENY');
-		header('X-XSS-Protection: 1; mode=block');
 		header('X-Content-Type-Options: nosniff');
 	}
 
@@ -234,5 +234,11 @@ class RequestRouter {
 		foreach (glob("app/models/*.php") as $filename) {
 		    require_once $filename;
 		}	
+	}
+
+	private function loadControllers () {
+		foreach (glob("app/controllers/*.php") as $filename) {
+		    require_once $filename;
+		}
 	}
 }
