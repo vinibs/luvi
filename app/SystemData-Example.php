@@ -4,6 +4,7 @@ define('SYSROOT', '/luvi'); // Default: '/'
 // Complete path to application root:
 define('BASEPATH', realpath($_SERVER["DOCUMENT_ROOT"]).SYSROOT);
 define('ENVIRONMENT', 'dev'); // 'dev' or 'production'
+define('REDIR_HTTPS', true); // Define if HTTPS or not
 
 // Session settings
 define('SESSION_NAME', 'LuviSession'); // Name of session cookie
