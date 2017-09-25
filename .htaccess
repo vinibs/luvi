@@ -10,3 +10,8 @@ RewriteRule . index.php
 
 # disable directory listing
 Options -Indexes
+
+
+# force https
+ReWriteCond %{SERVER_PORT} !^81$
+RewriteRule ^/(.*) https://%{HTTP_HOST}/$1 [NC,R,L]
