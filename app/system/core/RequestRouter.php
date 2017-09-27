@@ -3,10 +3,19 @@
 class RequestRouter {
 
 	public function __construct () {
-		self::iniSystem();
-		self::iniSession(); // Inclui a classe Session e inicia a sessão já configurada
+        // Redireciona para a mesma página usando HTTPS, caso definido como true (e o acesso seja HTTP)
+        if(REDIR_HTTPS){
+            if(json_decode($_SERVER['HTTP_CF_VISITOR'])->scheme != 'https'){
+                header('Location: https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+                exit;
+            }
+        }
 
-		self::loadModels(); // Inclui todos os models
+
+        self::iniSystem();
+        self::iniSession(); // Inclui a classe Session e inicia a sessão já configurada
+
+        self::loadModels(); // Inclui todos os models
 		self::loadControllers(); // Inclui todos os Controllers
 
 
