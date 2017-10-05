@@ -1,6 +1,6 @@
 <?php defined('INITIALIZED') OR exit('You cannot access this file directly');
 
-define('SYSROOT', '/luvi'); // Default: '/'
+define('SYSROOT', '/'); // Default: '/'
 // Complete path to application root:
 define('BASEPATH', realpath($_SERVER["DOCUMENT_ROOT"]).SYSROOT);
 define('ENVIRONMENT', 'dev'); // 'dev' or 'production'

@@ -12,9 +12,10 @@
 <body>
 	<div id="sidebar">
 		<a href="#"><h3>Início</h3></a>
+        <a href="#installing"><h3>Download e instalação</h3></a>
+        <a href="#updating"><h3>Atualização do framework</h3></a>
 		<a href="#basicstructure"><h3>Etrutura básica</h3></a>
 		<a href="#nomenclature"><h3>Nomenclaturas</h3></a>
-		<a href="#atualizacao"><h3>Atualização do framework</h3></a>
 		<a href="#sysconst"><h3>Constantes do sistema</h3></a>
 		<ul class="nolist">
 			<a href="#constbase"><li>Const. Base</li></a>
@@ -198,13 +199,34 @@
 
 		
 		<p class="obs">
-			<b>Atenção:</b> ao iniciar um projeto utilizando o Luvi, não se esqueça de renomear o arquivo
+			<b>Atenção:</b> ao iniciar um projeto utilizando o Luvi, é preciso renomear o arquivo
 			<b>SystemData-Example.php</b> (localizado em <i>/app/<wbr></i>) para
-			<b>SystemData.php</b> e de definir nele as
+			<b>SystemData.php</b> e definir nele as
 			<a href="#sysconst">constantes do sistema</a> para que o sistema funcione corretamente.
 		</p>
 
 		<br>
+
+
+        <a name="installing"><h2>Download e instalação</h2></a>
+        <p>
+            Para baixar o Luvi, é preciso acessar <a href="https://github.com/vinibs/luvi" target="_blank">a
+            página no GitHub</a> e realiar o download do <b>.zip</b> contendo toda a estrutura.
+            Então, basta descompactar os arquivos e configurar as <a href="#sysconst">constantes do sistema</a>.
+        </p>
+
+
+        <br>
+
+        <a name="updating"><h2>Atualização do framework</h2></a>
+        <p>
+            Quando for necessário atualizar o framework, a forma mais prática de fazê-lo, sem que haja perda
+            ou sobrescrita dos dados ou configurações já realizados no projeto, é baixar o framework novamente
+            e atualizar apenas o diretório <b>/app<wbr>/system</b> e todos os seus arquivos.
+        </p>
+
+
+        <br><br>
 
 		<a name="basicstructure"><h2>Estrutura básica</h2></a>
 		<p>
@@ -340,16 +362,6 @@
 		</p>
 
         <br><br>
-
-        <a name="atualizacao"><h2>Atualização do framework</h2></a>
-        <p>
-            Quando for necessário atualizar o framework, a forma mais prática de fazê-lo, sem que haja perda
-            ou sobrescrita dos dados ou configurações já realizados no projeto, é baixar o framework novamente
-            e atualizar apenas o diretório <b>/app<wbr>/system</b> e todos os seus arquivos.
-        </p>
-
-
-		<br><br>
 
 		
 		<a name="sysconst"><h2>Constantes do sistema</h2></a>
@@ -761,6 +773,11 @@
 		<p>
 			Quando for necessário usar uma view no sistema, deve-se utilizar a função 
 			<a href="#view">view()</a> para carregar o arquivo que contém as informações necessárias.
+		</p>
+		<p>
+			Ao incluir um arquivo através desta função, será automaticamente procurado e incluído,
+            a partir do diretório <b>/app/<wbr>views</b>, um arquivo que possua o nome indicado e
+            tenha a extensão <b>.php</b>, <b>.html</b> ou <b>.phtml</b>.
 		</p>
 		<p>
 			Também é possível passar dados para uma view, adicionando o segundo parâmetro à sua

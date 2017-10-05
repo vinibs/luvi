@@ -197,7 +197,12 @@ class RequestRouter {
 
 	// Obtém apenas os parâmetros passados após o endereço root da aplicação
 	private function getUrlComponents () {
-		return substr($_SERVER['REQUEST_URI'], strlen(SYSROOT.'/'));
+        if(substr(SYSROOT, -1) == '/')
+            $root = substr(SYSROOT, 0,-1);
+        else
+            $root = SYSROOT;
+
+		return substr($_SERVER['REQUEST_URI'], strlen($root.'/'));
 	}
 
 	private function iniSystem () {

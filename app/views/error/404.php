@@ -13,7 +13,7 @@
 		Not Found
 	</span><br>
 	<span class="upper">
-		Go <a href="<?=SYSROOT?>/">home</a>
+		Go <a href="<?=SYSROOT?>">home</a>
 	</span>
 </body>
 </html>

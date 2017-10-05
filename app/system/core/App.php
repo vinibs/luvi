@@ -146,17 +146,29 @@ class App {
 	}
 
 	public function route ($relativePath) {
+        if(substr(SYSROOT, -1) == '/')
+            $root = substr(SYSROOT, 0,-1);
+        else
+            $root = SYSROOT;
+
+
 	    if (substr($relativePath, 0, 1) == '/')
-            return SYSROOT.$relativePath;
+            return $root.$relativePath;
 	    else
-	        return SYSROOT.'/'.$relativePath;
+	        return $root.'/'.$relativePath;
 	}
 
 	public function asset ($assetFile) {
+	    if(substr(SYSROOT, -1) == '/')
+	        $folder = 'assets';
+        else
+	        $folder = '/assets';
+
+
 	    if (substr($assetFile, 0, 1) == '/')
-            return SYSROOT.'/assets'.$assetFile;
+            return SYSROOT.$folder.$assetFile;
 	    else
-	        return SYSROOT.'/assets/'.$assetFile;
+	        return SYSROOT.$folder.'/'.$assetFile;
 	}
 
 	public static function make () {
