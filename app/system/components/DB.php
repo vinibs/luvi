@@ -8,7 +8,6 @@ class DB {
     private $extraSql = '';
     private $orderBy = '';
 
-	private $sql;
 	private $whereVars;
 	private $table;
 
@@ -95,8 +94,12 @@ class DB {
                 $funcName = 'set' . ucfirst($object->getPrimaryKey());
                 $object->$funcName($con->lastInsertId());
             }
+            $con = null;
+            $stmt = null;
             return $object;
         } else {
+            $con = null;
+            $stmt = null;
             return $stmt->errorInfo()[2];
         }
 	}
@@ -104,22 +107,28 @@ class DB {
 	public static function delete ($object) {
 		if(self::isNew($object))
 			return FALSE;
-		else
-			$arrVars = $object->getObjVars();
-			$table = $object->getTableVar();
+		else {
+            $table = $object->getTableVar();
 
-			$sql = 'DELETE FROM ' . $table . ' WHERE '.$object->primarykey.' = :pk;';
+            $sql = 'DELETE FROM ' . $table . ' WHERE ' . $object->primarykey . ' = :pk;';
 
-			$objFunc = 'get'.ucfirst($object->primarykey);
+            $objFunc = 'get' . ucfirst($object->primarykey);
 
-			$con = self::connect();
-			$stmt = $con->prepare($sql);
-			$stmt->bindValue(':pk', $object->$objFunc());
+            $con = self::connect();
+            $stmt = $con->prepare($sql);
+            $stmt->bindValue(':pk', $object->$objFunc());
 
-			if ($stmt->execute())
-				return TRUE;
-			else
-				return FALSE;
+            if ($stmt->execute()){
+                $con = null;
+                $stmt = null;
+                return TRUE;
+            }
+            else{
+                $con = null;
+                $stmt = null;
+                return FALSE;
+            }
+        }
 	}
 
 	public function select ($selectedData = NULL, $table) {
@@ -147,7 +156,8 @@ class DB {
 
 
     public function join ($table, $tableCol, $thisCol, $compare = '=') {
-        $this->join .= ' JOIN ' . $table . ' ON ' . $table.'.'.$tableCol .' '. $compare .' '. $this->table.'.'.$thisCol.' ';
+        $this->join .= ' JOIN ' . $table . ' ON ' . $table.'.'.$tableCol .' '. $compare .' '
+            . $this->table.'.'.$thisCol.' ';
 
         return $this;
     }
@@ -232,7 +242,11 @@ class DB {
         $this->whereVars = null;
 
 		// Retorna um objeto da classe definida pela tabela ($this->table)
-		return $stmt->fetchAll(PDO::FETCH_CLASS, $this->table);
+		$return =  $stmt->fetchAll(PDO::FETCH_CLASS, $this->table);
+
+        $con = null;
+        $stmt = null;
+        return $return;
 	}
     
     public function generatedSql () {
@@ -254,10 +268,16 @@ class DB {
 
 		$stmt->execute();
 
-		if ($stmt->rowCount() > 0)
-			return FALSE;
-		else 
-			return TRUE;
+		if ($stmt->rowCount() > 0){
+            $con = null;
+            $stmt = null;
+            return FALSE;
+        }
+		else {
+            $con = null;
+            $stmt = null;
+            return TRUE;
+        }
 	}
 
     public static function all($table) {
@@ -269,7 +289,11 @@ class DB {
 
         $stmt->execute();
         // Retorna um objeto da classe definida pela tabela ($this->table)
-        return $stmt->fetchAll(PDO::FETCH_CLASS, $table);
+        $return = $stmt->fetchAll(PDO::FETCH_CLASS, $table);
+
+        $con = null;
+        $stmt = null;
+        return $return;
     }
 
     public static function connect () {
