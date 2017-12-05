@@ -10,3 +10,9 @@ RewriteRule . index.php
 
 # disable directory listing
 Options -Indexes
+
+# secure htaccess file
+<Files .htaccess>
+ order allow,deny
+ deny from all
+</Files>
