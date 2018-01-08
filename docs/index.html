@@ -434,23 +434,23 @@
 			As rotas são definidas automaticamente com base na URL conforme o seguinte padrão:
 		</p>
 		<span class="pregroup">
-			<pre><span class="grayfont">http://baseurl/</span>controller/method/id/param1/param2/...</pre>
+			<pre><span class="grayfont">http://baseurl/</span>controller/method/param0/param1/param2/...</pre>
 		</span>
 		<p>
 			Portanto, o primeiro parâmetro passado pela URL é referente ao <b>controller</b>, o segundo
 		 	refere-se ao <b>método</b> e, a partir do terceiro parâmetro, são definidas as <b>variáveis
-		 	passadas ao sistema por meio do método GET</b>, sendo a primeira delas referente ao ID e as
-		 	demais indexadas como variáveis qualquer.
+		 	passadas ao sistema por meio do método GET</b>, indexadas numericamente, de forma crescente,
+            a partir do índice zero (0), desde que o método chamado aceite a passagem de parâmetros.
 	 	</p>
 	 	<br>
 	 	<a name="customroutes"><h3>Rotas personalizadas</h3></a>
 	 	<p>
 	 		Podem também ser definidas rotas personalizadas ao editar o arquivo 
-	 		<b>/app/<wbr>system/<wbr>Routes.php</b> e adicionando a rota ao vetor <b>$route</b>
-	 		conforme o padrão:
+	 		<b>/app/<wbr>system/<wbr>Routes.php</b> e realizando chamadas ao método
+            <b>Router:define()</b> conforme o padrão:
  		</p>
 		<span class="pregroup">
-	 		<pre>$route['URL'] = 'Controller/Method';</pre>
+	 		<pre>Router::define('URL', 'Controller/Method');</pre>
 	 	</span>
 	 	<br>
 	 	<p>
@@ -458,10 +458,10 @@
 	 		nos exemplos abaixo:
 	 	</p>
 	 	<span class="pregroup">
-		 	<pre>$route['user/restrictedarea'] = 'ExampleController/example';</pre>
-		 	<pre>$route['/user/restrictedarea'] = 'ExampleController/example';</pre>
-		 	<pre>$route['/user/restrictedarea/'] = 'ExampleController/example';</pre>
-			<pre>$route['user/restrictedarea/'] = 'ExampleController/example';</pre>
+		 	<pre>Router::define('user/restrictedarea', 'ExampleController/example');</pre>
+		 	<pre>Router::define('/user/restrictedarea', 'ExampleController/example');</pre>
+		 	<pre>Router::define('/user/restrictedarea/', 'ExampleController/example');</pre>
+			<pre>Router::define('user/restrictedarea/', 'ExampleController/example');</pre>
 		</span>
 		<p>
 			Todos os exemplos representam a mesma rota.
@@ -473,34 +473,41 @@
 			obter o mesmo efeito.
 		</p>
 		<p class="obs">
-			<b>Observação:</b> As rotas mais abaixo no arquivo sobrescrevem as anteriores, portanto,
-			se houver uma rota <b>'/page/?'</b> e, mais abaixo, uma rota <b>'/page/<wbr>newpage'</b>,
-			a primeira será sobrescrita pela segunda e não funcionará.
+			<b>Observação:</b> As rotas mais abaixo no arquivo são ignoradas quando uma rota referente ao
+            mesmo caminho for encontrada, portanto,
+			se houver uma rota <b>'/page/{id}'</b> e, mais abaixo, uma rota <b>'/page/<wbr>{name}'</b>,
+			a primeira será utilizada e a segunda não funcionará.
 		</p>
 		<br>
 		<a name="paramroutes"><h3>Rotas com argumentos</h3></a>
 		<p>
 			É possível determinar quando uma rota <b>deve receber as variáveis GET</b> passadas como 
-			argumentos da URL adicionando um '?' (sem aspas) à rota, conforme o padrão:
+			argumentos da URL adicionando '{var_name}' (sem aspas) à rota, em que "var_name" representa
+            o nome desejado para a variável, conforme o padrão:
 		</p>
 		<span class="pregroup">
-			<pre>$route['posts/?'] = 'PostsController/show';</pre>
+			<pre>Router::define('posts/{id}', 'PostsController/show');</pre>
+			<pre>Router::define('posts/{id}/edit', 'PostsController/edit');</pre>
 		</span>
 		<p>
-			Dessa forma, todo e qualquer parte da URL vinda depois de 'posts' será traduzida para uma
-			variável passada à função determinada na rota.
+			Dessa forma, o trecho entre chaves ({}) será traduzido para uma	variável passada à função
+            determinada na rota.
 		</p>
 		<p>
-			No caso de serem passados mais de um dado, o primeiro sempre será definido, na variável
-			passada à função, com o índice <b>'id'</b>. Por exemplo, a URL 
-			<b>'posts/<wbr>12/<wbr>14/<wbr>feb/<wbr>2017'</b> irá resultar em um vetor semelhante a:
+			Os índices no vetor de parâmetros será o nome passado à rota, entre chaves ({}), de forma que,
+            por exemplo, '{id}' gerará um índice "id" no vetor de parâmetros.
+        </p>
+        <p>
+            Por exemplo, a URL <b>'posts/<wbr>12/<wbr>14/<wbr>feb/<wbr>2017'</b>, considerando a
+            rota <b>'posts/<wbr>{id}/<wbr>{day}/<wbr>{month}/<wbr>{year}'</b>, irá resultar em um
+            vetor semelhante a:
 		</p>
 		<span class="pregroup">
 			<pre>$param = array(</pre>
-			<pre>    0 => '14',</pre>
-			<pre>    1 => 'feb',</pre>
-			<pre>    2 => '2017',</pre>
 			<pre>    id => '12'</pre>
+			<pre>    day => '14',</pre>
+			<pre>    month => 'feb',</pre>
+			<pre>    year => '2017',</pre>
 			<pre>);</pre>
 		</span>
 		<p>
@@ -508,8 +515,8 @@
 			controller que o receberá.
 		</p>
 		<p>
-			Portanto, se a função for definida como <b>show ($get) { ... }</b>, o nome do vetor
-			passado será <b>$get</b>, e não $param.
+			Portanto, se o método for definida como, por exemplo, <b>somemethod ($get) { ... }</b>,
+            o nome do vetor passado será <i><b>$get</b></i>, e não <i>$param</i>.
 		</p>
 		<br>
 		<a name="routefunction"><h3>route()</h3></a>
