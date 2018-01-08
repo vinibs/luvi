@@ -4,5 +4,5 @@ define('INITIALIZED', TRUE); // Allow to access the other files via require/incl
 
 require_once 'app/SystemData.php';
 
-require_once 'app/system/core/RequestRouter.php';
-$request = new RequestRouter();
+require_once 'app/system/core/Router.php';
+$router = new Router();

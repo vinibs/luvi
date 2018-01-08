@@ -1,6 +1,8 @@
 <?php  defined('INITIALIZED') OR exit('You cannot access this file directly');
 
-class RequestRouter {
+class Router {
+    // Define o vetor, estático, com as rotas, para ser utilizado pelos métodos de rotear e definir rotas
+    private static $routes = array();
 
 	public function __construct () {
         // Redireciona para a mesma página usando HTTPS, caso definido como true (e o acesso seja HTTP)
@@ -63,7 +65,6 @@ class RequestRouter {
 	}
 
     private function setRouteData ($path) {
-        $route = array();
         require_once BASEPATH . '/app/Routes.php';
         $routed = false;
         $error = false;
@@ -77,8 +78,8 @@ class RequestRouter {
 
 
         // Verifica se há rota definida para a URL atual
-        if (sizeof($route) > 0) {
-            foreach ($route as $rt => $newpath) {
+        if (sizeof(self::$routes) > 0) {
+            foreach (self::$routes as $rt => $newpath) {
                 // Obtém o primeiro e último caracteres da rota
                 $firstOfRoute = substr($rt, 0, 1); // Primeiro caractere da rota
                 $lastOfRoute = substr($rt, -1); // Último caractere da rota
@@ -102,7 +103,6 @@ class RequestRouter {
                     $urlcomponents == $rt)
                 {
                     $routed = true;
-
                     break; // Encerra a execução do loop
                 }
                 // Verifica se existe alguma rota com parâmetros que corresponda à URL atual.
@@ -112,7 +112,6 @@ class RequestRouter {
                     // Divide a rota e o caminho nas barras, transformando-os em vetor
                     $splitRoute = explode('/', $rt);
                     $splitPath = explode('/', $urlcomponents);
-
 
                     foreach($splitPath as $i => $pathPart){
                         // Verifica se cada posição da URL é igual à mesma posição da rota
@@ -144,10 +143,12 @@ class RequestRouter {
                             break; // Encerra a execução do loop
                         }
                     }
+
+                    if($routed) // Caso tenha encontrado uma rota e definidos controller e método,
+                        break;  // Encerra a execução do loop
                 }
             }
         }
-
 
         // Caso não seja encontrada nenhuma rota para a URL atual
         if(!$routed){
@@ -345,6 +346,7 @@ class RequestRouter {
 		return substr($_SERVER['REQUEST_URI'], strlen($root.'/'));
 	}
 
+	// Inicializa os arquivos e configurações básicas do sistema
 	private function iniSystem () {
 		// Carrega os arquivos básicos do sistema
 		require_once BASEPATH . '/app/system/core/App.php';
@@ -375,6 +377,7 @@ class RequestRouter {
 		header('X-Content-Type-Options: nosniff');
 	}
 
+	// Inicia a sessão padrão do sistema
 	private function iniSession () {
 		ini_set('session.use_only_cookies',1);
 		ini_set( 'session.cookie_httponly', SESSION_HTTP_ONLY );
@@ -384,15 +387,22 @@ class RequestRouter {
 		ob_start();
 	}
 
+	// Carrega todos os models do respectivo diretório
 	private function loadModels () {		
 		foreach (glob("app/models/*.php") as $filename) {
 		    require_once $filename;
 		}	
 	}
 
+	// Carrega todos os controllers do respectivo diretório
 	private function loadControllers () {
 		foreach (glob("app/controllers/*.php") as $filename) {
 		    require_once $filename;
 		}
 	}
+
+    // Define uma nova rota, passandoa a URL e a ação (controller e método) a ser tomada
+	public static function define ($url, $action) {
+	    self::$routes[$url] = $action;
+    }
 }
