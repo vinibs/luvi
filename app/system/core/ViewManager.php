@@ -70,14 +70,11 @@ class ViewManager
                 // pelo equivalente da view que extende
 
 
-                // Regex para encontrar trechos como "!!section('...')!!", usada em ambos os foreach abaixo,
-                // na hora de fazer as substituições das seções
-                $sectionPattern = '/!!section\([\'|\"]' . $section['name'] . '[\'|\"]\)!!/';
-
                 // Analisa todas as seções obtidas e as substitui pelo conteúdo definido previamente
                 foreach ($pageSections as $section) {
+                    // Substitui as seções pelos valores definidos nos arquivos
                     $viewCode = preg_replace(
-                        $sectionPattern,
+                        '/!!section\([\'|\"]' . $section['name'] . '[\'|\"]\)!!/',
                         $section['content'],
                         $viewCode,
                         1
@@ -88,7 +85,7 @@ class ViewManager
                     // seção (Como "@section(x) ... !!section(y)!! ... @endsection")
                     foreach ($pageSections as $section) {
                         $viewCode = preg_replace(
-                            $sectionPattern,
+                            '/!!section\([\'|\"]' . $section['name'] . '[\'|\"]\)!!/',
                             $section['content'],
                             $viewCode,
                             1
