@@ -834,20 +834,24 @@
 		<a name="viewtemplates"><h3>Templates nas views</h3></a>
 		<p>
 			Também é possível elaborar templates. Para isso, pode-se criar um arquivo com o HTML base da
-            página e, onde o conteúdo for variável, trocar o texto por <b>!!section!!</b>, como no exemplo:
+            página e, onde o conteúdo for variável, trocar o texto por <b>!!section('sectionname]')!!</b>,
+            em que <b>sectionname</b> representa o nome que identifica a seção (por exemplo, uma seção
+            identificada por "body" seria especificada como <i>!!section('body')!!</i>.
 		</p>
         <p class="obs">
             <b>Observação:</b> quando fazendo uso do sistema de tamplates, ao incluir uma view, deve-se usar o
             método <a href="#viewinclude">view()</a> para inclui-la, passando como parâmetro diretamente a view
-            que se deseja carregar, e não o template, já que na inclusão o template será carregado junto com a
-            view passada.
+            que se deseja carregar, e não o template, caso seja usado a funcionalidade de
+            <a href="#extendtemplate">extender o template</a> na view em questão.
         </p>
         <br>
         <div class="lv2-content">
             <a name="templateview"><b>Template</b></a>
             <p>
                 Para criar um template, pode-se criar um arquivo com o HTML base da página e, onde
-                o conteúdo for variável, trocar o texto por <b>!!section!!</b>, como no exemplo:
+                o conteúdo for variável, trocar o texto por <b>!!section('sec_name')!!</b>, onde
+                <b>sec_name</b> representa o nome identificador da seção, como no exemplo, em que
+                é definida uma seção chamada de "header":
             </p>
             <span class="pregroup">
                 <pre>&lt;html&gt;</pre>
@@ -856,7 +860,7 @@
                 <pre>   &lt;/head&gt;</pre>
                 <pre>   &lt;body&gt;</pre>
                 <pre>       ...</pre>
-                <pre>       <b>!!section!!</b></pre>
+                <pre>       <b>!!section('header')!!</b></pre>
                 <pre>   &lt;/body&gt;</pre>
                 <pre>&lt;/html&gt;</pre>
             </span>
@@ -895,38 +899,43 @@
             <br>
             <a name="sections"><b>Seções de dados</b></a>
             <p>
-                Representam os blocos de código HTML que substituirão os elementos <b>!!section!!</b> do template.
+                Representam os blocos de código HTML que substituirão os elementos <b>!!section('...')!!</b> do
+                template que possuam o mesmo nome..
             </p>
             <p>
-                São definidos na view por um início dado por <b>@section</b> e finalizados por <b>@endsection</b>.
+                São definidos na view por um início dado por <b>@section('sectionname')</b>, onde <b>sectionname</b>
+                representa o nome da seção - que deve ser igual ao definido no elemento <b>!!section('...')!!</b> no
+                template base -, e finalizados por <b>@endsection</b>.
             </p>
             <span class="pregroup">
                 <pre>@extends('templates/main') </pre>
                 <pre></pre>
-                <pre><b>@section</b></pre>
+                <pre><b>@section('div1')</b></pre>
                 <pre>   &lt;div class="..."&gt;&lt;/div&gt;</pre>
                 <pre><b>@endsection</b></pre>
             </span>
             <p>
-                Cada bloco destes será substituído por um <b>!!section!!</b> no template seguindo a sequência em que
-                forem definidos os blocos <b>@section</b>.
+                Cada bloco de seção será substituído pelo <b>!!section('...')!!</b> no template que possua o mesmo
+                nome identificador definido no bloco <b>@section('...')</b>.
             </p>
             <p>
-                Assim, considerando um template com duas seções definidas (<b>!!section!!</b>), serão exibidas
-                a "seção 1" e depois a "seção 2" se o arquivo que o extende for definido da seguinte forma:
+                O exemplo acima funcionará apenas para uma seção chamada <b>'div1'</b>. Por exemplo, tomemos o
+                arquivo <b>templates/main.php</b> como composto pelo seguinte código:
             </p>
             <span class="pregroup">
-                <pre>@extends('templates/main') </pre>
-                <pre></pre>
-                <pre><b>@section</b></pre>
-                <pre>   SEÇÃO 1</pre>
-                <pre><b>@endsection</b></pre>
-                <pre></pre>
-                <pre></pre>
-                <pre><b>@section</b></pre>
-                <pre>   SEÇÃO 2</pre>
-                <pre><b>@endsection</b></pre>
+                <pre>&lt;html&gt;</pre>
+                <pre>   &lt;head&gt;</pre>
+                <pre>       &lt;title&gt;Main Template&lt;/title&gt;</pre>
+                <pre>   &lt;/head&gt;</pre>
+                <pre>   &lt;body&gt;</pre>
+                <pre>       <b>!!section('div1')!!</b></pre>
+                <pre>   &lt;/body&gt;</pre>
+                <pre>&lt;/html&gt;</pre>
             </span>
+            <p>
+                Assim, é preciso que o nome indicador (<b>'div1'</b>, no exemplo acima) seja igual tanto na seção
+                definida no template quanto no bloco que define a seção na view que extende o template.
+            </p>
         </div>
 
 
