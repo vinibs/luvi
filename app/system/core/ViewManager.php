@@ -17,8 +17,8 @@ class ViewManager
     public function call ($viewName, $data = null) {
         /**
          * Sintaxe:
-         *      !!section!! - Define no template onde será substituído pelo conteúdo definido no outro arquivo
-         *      @section - Define o início do bloco que substituirá o código acima
+         *      !!section('[sec_name]')!! - Define no template o bloco que será substituído e o nome que o identifica
+         *      @section('[sec_name]') - Define o início e o nome do bloco que substituirá o código acima
          *      @endsection - Define o fim do bloco que substituirá a 'section'
          *      @extends('[file_path]') - Define qual o arquivo de template a ser complementado com o arquivo atual
          */
