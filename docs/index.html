@@ -182,7 +182,7 @@
 			<a href="#dump"><li><i>dump()</i></li></a>
 			<a href="#dd"><li><i>dd()</i></li></a>			
 			<a href="#toarray"><li>toArray()</li></a>
-			<a href="#jsonserialize"><li>jsonSerialize()</li></a>
+			<a href="#tojson"><li>toJson()</li></a>
 		</ul>
 	</div>
 
@@ -2608,14 +2608,14 @@
 			Retorna um vetor com os atributos do objeto.
 		</p>
 		<br>
-		<a name="jsonserialize"><h3><i>jsonSerialize()</i></h3></a>
+		<a name="tojson"><h3><i>toJson()</i></h3></a>
 		<p>
 			Converte os atributos e valores de um objeto ou array em uma string JSON.
 		</p>
 		<span class="pregroup">
-			<pre>string <b>jsonSerialize (</b> $var <b>)</b></pre>
+			<pre>string <b>toJson (</b> $var <b>)</b></pre>
 			<pre><br><b>Usage example:</b></pre>
-			<pre>jsonSerialize ($guitar); <i class="comment">// Obtém a string JSON contendo os atributos e valores do objeto $guitar</i></pre>
+			<pre>toJson ($guitar); <i class="comment">// Obtém a string JSON contendo os atributos e valores do objeto $guitar</i></pre>
 		</span>
 		<p>
 			Retorna uma string JSON com os atributos de um array ou objeto, partindo dos métodos getters do objeto para a obtenção das informações.

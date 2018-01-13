@@ -47,7 +47,7 @@ if (!function_exists('dd')) {
  *
  * Converte o objeto e seus atributos (e valores) em uma string JSON
  */
-function jsonSerialize ($data) {
+function toJson ($data) {
     if((is_array($data) && hasObjectInArray($data)) || is_object($data))
         return json_encode(toArray($data));
     else
