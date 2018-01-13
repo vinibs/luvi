@@ -2,4 +2,5 @@
 
 class Modelo extends Model {
 	// Arquivo de exemplo criado para manter o diretório presente no git
+    public $teste;
 }

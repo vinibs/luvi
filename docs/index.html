@@ -651,7 +651,7 @@
 		<br>
 		<a name="getparams"><h3>Parâmetros GET</h3></a>
 		<p>
-			Considerando a passagem de parâmetros padrão das <a href="paramroutes">rotas com 
+			Considerando a passagem de parâmetros padrão das <a href="#paramroutes">rotas com
 			argumentos</a>, as variáveis passadas aos métodos são processadas como trechos da URL,
 			separadas por uma barra. Desta forma, não são utilizadas as variáveis GET com o intuito
 			de manter a URL mais limpa.
@@ -1120,7 +1120,7 @@
 				Define o que deve ser buscado no banco de dados.
 			</p>
 			<p>
-				Quando executado sozinho junto à função <a class="normallink" href="#dbfind">find()</a>,
+				Quando executado sozinho junto à função <a class="normallink" href="#dbclassfind">find()</a>,
 				procura pelos dados recebidos por parâmetro (ou por todos os dados, quando o parâmetro
 				não for recebido ou definido) sem uma condição de restrição (<i>where</i>) na tabela do
 				objeto pelo qual a função é chamada.
@@ -1151,7 +1151,7 @@
 			</p>
 			<p>
 				Ao executar a consulta, utilizando o método 
-				<a href="dbclassfind" class="normallink">find()</a>, <b>os resultados
+				<a href="#dbclassfind" class="normallink">find()</a>, <b>os resultados
 				obtidos são apenas referentes ao  objeto que originou a chamada da
 				função</b>, e, portanto, os dados das colunas "incluídas" não são
 				trazidos com o objeto.
@@ -1179,7 +1179,7 @@
 			<a name="dbwhere"><b><i>where()</i></b></a>
 			<p>
 				Define a condição de restrição para a consulta dada pela função 
-				<a class="normallink" href="dbselect">select()</a> ou inicia uma nova busca por todas as colunas da tabela
+				<a class="normallink" href="#dbselect">select()</a> ou inicia uma nova busca por todas as colunas da tabela
 				seguindo a condição de restrição passada.
 			</p>
 			<p>
@@ -1483,7 +1483,7 @@
 		<br>
 		<a name="dologout"><h3>Auth::doLogout()</h3></a>
 		<p>
-			Finaliza a sessão do usuário criada pelas funções <a href="dologin">doLogin()</a> e 
+			Finaliza a sessão do usuário criada pelas funções <a href="#dologin">doLogin()</a> e
 			<a href="#createauthsession">createAuthSession()</a>.
 		</p>
 		<span class="pregroup">
@@ -1751,11 +1751,11 @@
 				ao usuário junto com o link - que será anexado ao final da mensagem automaticamente.
 			</p>
 			<span class="pregroup">
-				<pre>bool <b>resendEmail (</b> string $email, string $userClass, string $resetRequestClass, string $urlValidate, [string $mailContent] <b>)</b></pre>
+				<pre>bool <b>resendEmail (</b> string $email, string $resetRequestClass, string $urlValidate, [string $mailContent] <b>)</b></pre>
 				<br>
 				<pre><b>Usage example:</b></pre>
-				<pre>Auth::resendEmail ($email, 'User', 'PasswordReset', 'user/resetpassword');</pre>
-				<pre>Auth::resendEmail ($email, 'Users', 'NewPassRequest', 'resetpassword', $emailContent);</pre>
+				<pre>Auth::resendEmail ($email, 'PasswordReset', 'user/resetpassword');</pre>
+				<pre>Auth::resendEmail ($email, 'NewPassRequest', 'resetpassword', $emailContent);</pre>
 			</span>
 			<p>
 				Retorna <b>TRUE</b> caso tenha sucesso ao enviar o e-mail ou <b>FALSE</b> caso contrário.
@@ -2097,7 +2097,7 @@
 		<a name="oldval"><h3><i>oldVal()</i></h3></a>
 		<p>
 			Obtém o valor antigo de um campo de formulário, após um 
-			<a href="joinuse">redirecionamento em conjunto</a>
+			<a href="#joinuse">redirecionamento em conjunto</a>
 			com a função <b><a href="#withvalues">withValues()</a></b>.
 		</p> 
 		<p>
@@ -2121,7 +2121,7 @@
 		<a name="getinputerrors"><h3><i>getInputErrors()</i></h3></a>
 		<p>
 			Obtém a lista de erros referentes a um campo de formulário, após um 
-			<a href="joinuse">redirecionamento em conjunto</a>
+			<a href="#joinuse">redirecionamento em conjunto</a>
 			com a função <b><a href="#witherrors">withErrors()</a></b>.
 		</p> 
 		<p>

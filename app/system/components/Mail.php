@@ -8,8 +8,7 @@
  * @author Vinicius Baroni Soares <vinibaronisoares@gmail.com>
  * @copyright 2017 Luvi
  */
-class Mail
-{
+class Mail {
 
     /**
      * @var string $from

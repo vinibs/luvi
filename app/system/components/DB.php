@@ -72,7 +72,6 @@ class DB
             $sql .= ') VALUES (';
             foreach ($arrVars as $i => $var) {
                 if ($var != 'id' && $var != 'primarykey') {
-                    $get = 'get' . ucfirst($var);
                     $sql .= ':' . $var;
                     if ($i < (sizeof($arrVars) - $varsSub))
                         $sql .= ', ';
@@ -85,7 +84,6 @@ class DB
             $sql = 'UPDATE ' . $table . ' SET ';
             foreach ($arrVars as $i => $var) {
                 if ($var != 'id' && $var != 'primarykey') {
-                    $get = 'get' . ucfirst($var);
                     $sql .= $var . ' = :' . $var;
                     if ($i < (sizeof($arrVars) - $varsSub))
                         $sql .= ', ';

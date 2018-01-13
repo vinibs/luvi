@@ -240,7 +240,8 @@ class App
      * Carrega algum arquivo, a partir do caminho base do sistema
      */
 	public function load ($filePath) {
-		require_once BASEPATH . $filePath;
+        /** @noinspection PhpIncludeInspection */
+        require_once BASEPATH . $filePath;
 	}
 
 

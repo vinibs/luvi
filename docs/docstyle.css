@@ -1,7 +1,7 @@
 @font-face { 
     font-family: "OpenSans Light"; 
     src: url("../assets/fonts/OpenSans-Light.eot"), url("../assets/fonts/OpenSans-Light.ttf");
-    font-weight: lighter; 
+    font-weight: 100;
 }
 
 html, body {
@@ -137,7 +137,7 @@ p {
 	padding-left: 0;
 }
 	.nolist .nolist {
-		margin-top: 0px;
+		margin-top: 0;
 		padding-left: 0;
 		font-size: 10pt;
 	}

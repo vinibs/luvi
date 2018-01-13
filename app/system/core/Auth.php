@@ -25,6 +25,9 @@ class Auth
 		$dbTable = 'user'
 		) {
 
+	    $dbField = array();
+	    $compared = array();
+
 		foreach ($authData as $field => $data) {
 			$dbField[] = $field;
 			$compared[] = $data;
@@ -109,7 +112,10 @@ class Auth
 		$dbTable = 'user'
 		) {
 
-		foreach ($userData as $field => $data) {
+        $dbField = array();
+        $compared = array();
+
+        foreach ($userData as $field => $data) {
 			$dbField[] = $field;
 			$compared[] = $data;
 		}
@@ -170,7 +176,7 @@ class Auth
 			(time() - session(SESSION_NAME.'Auth')['LastActivity']) > SESSION_ACTIVITY_TIME * 60) {
 			// Se tiver passado o tempo da sessão inativa faz logout
 			self::doLogout();
-			redirect($redirectNoLogin);
+			redirect($redirectTimeout);
 			die;
 		} else
 			// Se não tiver passado o tempo da sessão inativa, redefine o tempo
@@ -217,7 +223,10 @@ class Auth
 		$dbTable = 'user'
 		) {
 
-		foreach ($authData as $field => $data) {
+        $dbField = array();
+        $compared = array();
+
+        foreach ($authData as $field => $data) {
 			$dbField[] = $field;
 			$compared[] = $data;
 		}
@@ -315,7 +324,7 @@ class Auth
 
 			$request->setEmail($email);
 			$request->setToken($token);
-			$request->setVal(1);
+			$request->setValid(1);
 			$request->save();
 
 			// Remove as barras do início e do fim da URL caso seja necessário
@@ -355,7 +364,7 @@ class Auth
      * Verifica a autenticação do token enviado por email ao usuário, seguindo padrões de BD e nomenclatura
      */
 	public static function checkToken ($token, $resetRequestClass) {
-		$request = (new $resetRequestClass)->where('token = ? AND val = ?', [$token, 1])->find();
+		$request = (new $resetRequestClass)->where('token = ? AND valid = ?', [$token, 1])->find();
 
 		if (count($request) == 1)
 			return true;
@@ -366,7 +375,6 @@ class Auth
 
     /**
      * @param string $email
-     * @param string $userClass
      * @param string $resetRequestClass
      * @param string $urlValidate
      * @param string|null $mailContent
@@ -375,13 +383,12 @@ class Auth
      * Realiza o reenvio do email de redefinição de senha, com base no padrão de BD e nomenclatura
      */
 	public static function resendEmail (
-		$email, 
-		$userClass, 
+		$email,
 		$resetRequestClass,
 		$urlValidate,
 		$mailContent = null
 	) {
-		$request = (new $resetRequestClass)->where('email = ? AND val = ?', [$email, 1])->find();
+		$request = (new $resetRequestClass)->where('email = ? AND valid = ?', [$email, 1])->find();
 		$request = $request[sizeof($request) - 1]; // Pega o último, caso haja mais de um
 		$token = $request->getToken();
 
@@ -427,6 +434,10 @@ class Auth
 		$userClass, 
 		$resetRequestClass
 	) {
+
+	    $index = array();
+	    $password = array();
+
 		foreach ($passData as $i => $pass) {
 			$index[] = $i;
 			$password[] = $pass;
@@ -438,13 +449,13 @@ class Auth
 		]);
 
 		if ($valPass) {
-			$request = (new $resetRequestClass)->where('token = ? AND val = ?', [$token, 1])->find();
+			$request = (new $resetRequestClass)->where('token = ? AND valid = ?', [$token, 1])->find();
 			if (sizeof($request) == 1)
 				$request = $request[0];
 			else
 				return false;
 
-			$request->setVal(0);			
+			$request->setValid(0);
 			$request->save();
 			$email = $request->getEmail();
 
@@ -453,11 +464,13 @@ class Auth
 			if ($user->save())
 				return true;
 			else {
-				$request->setVal(1);
+				$request->setValid(1);
 				$request->save();
 				return false;
 			}
 		}
+		else
+		    return false;
 	}
 
 

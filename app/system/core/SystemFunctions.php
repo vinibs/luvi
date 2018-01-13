@@ -13,7 +13,7 @@
 
 if (!function_exists('dump')) {
     /**
-     * @param object $object
+     * @param object|string|array $object
      * @return void
      *
      * Exibe em detalhes os dados contidos no objeto passado por parâmetros
@@ -28,7 +28,7 @@ if (!function_exists('dump')) {
 
 if (!function_exists('dd')) {
     /**
-     * @param object $object
+     * @param object|string|array $object
      * @return void
      *
      * Exibe em detalhes os dados contidos no objeto passado e encerra a execução do código
@@ -77,7 +77,7 @@ function toArray ($data) {
 
                 // Passa por todas as propriedades do objeto e obtém seus valores em um vetor
                 foreach ($properties as $property) {
-                    $className = $property->class;
+                    //$className = $property->class;
                     // Não adiciona o atributo 'primarykey' ao array de propriedades do objeto
                     if ($property->name != 'primarykey') {
 
@@ -99,7 +99,7 @@ function toArray ($data) {
                         // Verifica se o atributo é um objeto ou um tipo primitivo de dados
                         if (is_object($value)) {
                             // Serializa as propriedades do objeto filho
-                            $arrProperties[$i][$property->name] = $value->toArray();
+                            $arrProperties[$i][$property->name] = toArray($value);
                         } else {
                             // Cria um vetor com todas as propriedades do objeto
                             $arrProperties[$i][$property->name] = $value;
@@ -282,7 +282,7 @@ function orderFiles (array $files) {
  * Executa o método load() contido na classe App (alias do método)
  */
 function load ($filePath) {
-	return App::make()->load($filePath);
+	App::make()->load($filePath);
 }
 
 
@@ -399,7 +399,7 @@ function singleToArray ($data) {
 			// Verifica se o atributo é um objeto ou um tipo primitivo de dados
 			if (is_object($value)){
 				// Serializa as propriedades do objeto filho
-				$arrProperties[$className][$property->name] = $value->toArray();
+				$arrProperties[$className][$property->name] = toArray($value);
 			} else {
 				$arrProperties[$className][$property->name] = $value;
 			}

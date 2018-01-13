@@ -45,6 +45,8 @@ class Validation
 
 		$errors = false;
 		$arrayErrors = array();
+        $message = '';
+        $errorsInput = array();
 
 		foreach ($rules as $field => $fieldrules) {
 			$rule = explode('|', $fieldrules);

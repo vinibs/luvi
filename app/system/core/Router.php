@@ -43,9 +43,9 @@ class Router
 
 
 		// Quebra a URL e requisita o controller e o método passados
-		$path = explode('/', $_SERVER['REQUEST_URI']);
-		
-		$data = $this->setRouteData($path);
+		//$path = explode('/', $_SERVER['REQUEST_URI']);
+
+		$data = $this->setRouteData();
 
 		$controller = ucfirst($data['controller']);
 		$method = $data['method'];
@@ -98,6 +98,10 @@ class Router
         require_once BASEPATH . '/app/Routes.php';
         $routed = false;
         $error = false;
+
+        $controller = null;
+        $method = null;
+        $params = null;
 
         $urlcomponents = $this->getUrlComponents();
         $lastOfComp = substr($urlcomponents, -1); // Último caractere dos componentes da URL
