@@ -1,4 +1,5 @@
 <?php defined('INITIALIZED') OR exit('You cannot access this file directly'); ?>
+
 <!DOCTYPE html>
 <html>
 <head>

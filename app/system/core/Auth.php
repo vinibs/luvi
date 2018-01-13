@@ -1,7 +1,24 @@
 <?php defined('INITIALIZED') OR exit('You cannot access this file directly');
 
-class Auth {
+/**
+ * Class Auth
+ *
+ * Manages the authentication system of the framework
+ *
+ * @author Vinicius Baroni Soares <vinibaronisoares@gmail.com>
+ * @copyright 2017 Luvi
+ */
+class Auth
+{
 
+    /**
+     * @param array $authData
+     * @param string|null $redirectLocation
+     * @param string $dbTable
+     * @return bool
+     *
+     * Realiza o login, seguindo alguns padrões de banco de dados e nomenclatura
+     */
 	public static function doLogin (
 		$authData, // [0 => username, 1 => password]
 		$redirectLocation = null, 
@@ -16,15 +33,15 @@ class Auth {
 		$formUser = $dbField[0]; // Nome do input referente ao usuário
 		$formPass = $dbField[1]; // Nome do input referente à senha
 
-		$result = (new DB)->where($dbField[0].' = ?', $compared[0], $dbTable)->find();
+		$result = DB::make()->where($dbField[0].' = ?', $compared[0], $dbTable)->find();
 
 		if (count($result) == 0) {
 			$error = [$formUser => msgAuthNoUsername];
 			back()->withValues()->withErrors($error);
-			return FALSE;
+			return false;
 
 		} else {
-			$result = (new DB)->where(
+			$result = DB::make()->where(
 					$dbField[0].' = ? AND '.$dbField[1].' = ?', 
 					array(
 						$compared[0],
@@ -47,7 +64,7 @@ class Auth {
 					), 
 					$redirectLocation
 				);
-				return TRUE;
+				return true;
 
 			} else {				
 				// Conta o número de tentativas de login
@@ -60,11 +77,17 @@ class Auth {
 
 				$error = [$formPass => msgAuthIncorrectPass];
 				back()->withValues()->withErrors($error);
-				return FALSE;
+				return false;
 			}
 		}
 	}
 
+
+    /**
+     * @return void
+     *
+     * Realiza o logout do sistema, com base na estrutura padrão de login do framework
+     */
 	public static function doLogout () {
 		unset($_SESSION[SESSION_NAME.'Auth']);
 		unset($_SESSION['flash']['inputErrors']);
@@ -73,6 +96,14 @@ class Auth {
 		unset($_SESSION['LastName']);
 	}
 
+
+    /**
+     * @param array $userData
+     * @param string $dbTable
+     * @return bool|object
+     *
+     * Realiza o registro de um usuário, seguindo alguns padrões de banco de dados e nomenclatura
+     */
 	public static function doRegister (
 		$userData,  
 		$dbTable = 'user'
@@ -85,7 +116,7 @@ class Auth {
 
 		$formUser = $dbField[0]; // Nome do input referente ao usuário
 
-		$result = (new DB)->where($dbField[0].' = ?', $compared[0], $dbTable)->find();
+		$result = DB::make()->where($dbField[0].' = ?', $compared[0], $dbTable)->find();
 
 		if (count($result) == 0) {
 			$user = new $dbTable;
@@ -101,9 +132,16 @@ class Auth {
 		} else
 			$error = [$formUser => msgAuthUsernameUnavailable];
 			back()->withValues()->withErrors($error);
-			return FALSE;			
+			return false;
 	}
 
+
+    /**
+     * @param string|array|object $user
+     * @param string|null $redirectLocation
+     *
+     * Realiza a criação da sessão do usuário e, se passado por parâmetro, redireciona o usuário
+     */
 	public static function createAuthSession ($user, $redirectLocation = null) {
 		session(SESSION_NAME.'Auth', [
 			'LastActivity' => time(), 
@@ -114,6 +152,15 @@ class Auth {
 		    redirect($redirectLocation);
 	}
 
+
+    /**
+     * @param string|null $redirectNoLogin
+     * @param string|null $redirectTimeout
+     * @return void
+     *
+     * Define um trecho como restrito a usuários logados e, se passado, redireciona o usuário quando não houver
+     * login ou tiver sido passado o tempo de timeout
+     */
 	public static function setRestricted ($redirectNoLogin = null, $redirectTimeout = null) {
 		if (!self::isLogged()) {
 			// Se não estiver logado 			
@@ -130,20 +177,41 @@ class Auth {
 			$_SESSION[SESSION_NAME.'Auth']['LastActivity'] = time();
 	}
 
+
+    /**
+     * @return bool
+     *
+     * Verifica se o usuário está logado, seguindo o padrão de autenticação do framework
+     */
 	public static function isLogged () {
         if (isset($_SESSION[SESSION_NAME.'Auth']))
-			return TRUE;
+			return true;
 		else
-			return FALSE;
+			return false;
 	}
 
+
+    /**
+     * @return null
+     *
+     * Obtém o usuário atualmente logado no sistema, a partir do padrão do framework
+     */
 	public static function getLoggedUser () {
-		if (isset($_SESSION[SESSION_NAME.'Auth']))
-			return unserialize($_SESSION[SESSION_NAME.'Auth']['User']);
-		else
-			return NULL;
+		if (isset($_SESSION[SESSION_NAME.'Auth'])){
+			unserialize($_SESSION[SESSION_NAME.'Auth']['User']);
+		    return true;
+        } else
+			return null;
 	}
 
+
+    /**
+     * @param array $authData
+     * @param string $dbTable
+     * @return bool
+     *
+     * Verifica a autenticação dos dados do usuário passados por parâmetro
+     */
 	public static function bindAuth (
 		$authData, // [0 => username, 1 => password]
 		$dbTable = 'user'
@@ -164,15 +232,22 @@ class Auth {
 			)->find();
 		
 		if (count($result) == 1)
-			return TRUE;
+			return true;
 		else {
             // Conta o número de tentativas de login
             self::registerTries($compared[0]);
 
-            return FALSE;
+            return true;
         }
 	}
 
+
+    /**
+     * @param string $username
+     * @param string $quant
+     *
+     * Registra o número de tentativas incorretas de login para um dado nome de usuário
+     */
 	public static function registerTries ($username, $quant = '') {
 	    // Registra o número de tentativas de login para o dado nome de usuário
         if (!isset($_SESSION['LoginTries'][$username]))
@@ -183,14 +258,28 @@ class Auth {
         session('LastName', $username);
     }
 
+
+    /**
+     * @param int $maxTries
+     * @return bool
+     *
+     * Verifica o número de tentativas incorretas de login e indica se foi passado o limite de tentativas
+     */
 	public static function countTries ($maxTries = 5) {
 		if (isset($_SESSION['LoginTries'][Auth::getLastUsername()]) &&
-		 $_SESSION['LoginTries'][Auth::getLastUsername()] >= $maxTries) 
-			return TRUE;
+		    $_SESSION['LoginTries'][Auth::getLastUsername()] >= $maxTries)
+			return true;
 		else
-			return FALSE;
+			return false;
 	}
 
+
+    /**
+     * @param string $passwordText
+     * @return string
+     *
+     * Realiza o hash do texto passado por parâmetro, normalmente senha
+     */
 	public static function hashPassword ($passwordText) {
 		return hash('whirlpool', $passwordText);
 	}
@@ -200,6 +289,16 @@ class Auth {
 
 	// Funções para o sistema de redefinição de senha
 
+    /**
+     * @param string $email
+     * @param string $userClass
+     * @param string $resetRequestClass
+     * @param string $urlValidate
+     * @param string|null $mailContent
+     * @return bool
+     *
+     * Realiza a solicitação de redefinição de senha, seguindo o padrão de banco de dados e nomenclatura do framework
+     */
 	public static function requestPassReset (
 		$email, 
 		$userClass,
@@ -239,23 +338,42 @@ class Auth {
 			$mail->setSubject(('Passord Reset'));
 			$mail->setContent($content);
 			if($mail->send())
-				return TRUE;
+				return true;
 			else
-				return FALSE;
+				return false;
 
 		} else
-			return FALSE;
+			return false;
 	}
 
+
+    /**
+     * @param string $token
+     * @param string $resetRequestClass
+     * @return bool
+     *
+     * Verifica a autenticação do token enviado por email ao usuário, seguindo padrões de BD e nomenclatura
+     */
 	public static function checkToken ($token, $resetRequestClass) {
 		$request = (new $resetRequestClass)->where('token = ? AND val = ?', [$token, 1])->find();
 
 		if (count($request) == 1)
-			return TRUE;
+			return true;
 		else
-			return FALSE;
+			return false;
 	}
 
+
+    /**
+     * @param string $email
+     * @param string $userClass
+     * @param string $resetRequestClass
+     * @param string $urlValidate
+     * @param string|null $mailContent
+     * @return bool
+     *
+     * Realiza o reenvio do email de redefinição de senha, com base no padrão de BD e nomenclatura
+     */
 	public static function resendEmail (
 		$email, 
 		$userClass, 
@@ -287,12 +405,22 @@ class Auth {
 		$mail->setSubject(('Passord Reset'));
 		$mail->setContent($content);
 		if($mail->send())
-			return TRUE;
+			return true;
 		else
-			return FALSE;
+			return false;
 
 	}
 
+
+    /**
+     * @param array $passData
+     * @param string $token
+     * @param string $userClass
+     * @param string $resetRequestClass
+     * @return bool
+     *
+     * Realiza a alteração da senha do usuário propriamente dita
+     */
 	public static function changePassword (
 		$passData, 
 		$token, 
@@ -314,7 +442,7 @@ class Auth {
 			if (sizeof($request) == 1)
 				$request = $request[0];
 			else
-				return FALSE;
+				return false;
 
 			$request->setVal(0);			
 			$request->save();
@@ -323,17 +451,21 @@ class Auth {
 			$user = (new $userClass)->where('email = ?', $email)->find()[0];
 			$user->setPassword($password[0]);
 			if ($user->save())
-				return TRUE;
+				return true;
 			else {
 				$request->setVal(1);
 				$request->save();
-				return FALSE;
+				return false;
 			}
 		}
 	}
-	
 
 
+    /**
+     * @return null|string
+     *
+     * Obtém o último nome de usuário usado em tentativa de login
+     */
 	public static function getLastUsername () {
 		if (isset($_SESSION['LastName']))
 			return $_SESSION['LastName'];
@@ -342,6 +474,11 @@ class Auth {
 	}
 
 
+    /**
+     * @return Auth
+     *
+     * Cria uma instância da classe
+     */
     public static function make () {
         return new self;
     }

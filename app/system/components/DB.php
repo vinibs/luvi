@@ -1,6 +1,27 @@
 <?php defined('INITIALIZED') OR exit('You cannot access this file directly');
 
-class DB {
+/**
+ * Class DB
+ *
+ * Offers methods to manage a database
+ *
+ * @author Vinicius Baroni Soares <vinibaronisoares@gmail.com>
+ * @copyright 2017 Luvi
+ */
+class DB
+{
+
+    /**
+     * @var string $select
+     * @var string $from
+     * @var string $join
+     * @var string $where
+     * @var string $extraSql
+     * @var string $orderBy
+     *
+     * @var string $whereVars
+     * @var string $table
+     */
     private $select = '';
     private $from = '';
     private $join = '';
@@ -11,6 +32,13 @@ class DB {
 	private $whereVars;
 	private $table;
 
+
+    /**
+     * @param object $object
+     * @return string|object
+     *
+     * Salva um objeto no banco de dados (insere ou atualiza, dependendo da situação do objeto)
+     */
 	public static function save ($object)
     {
         $arrVars = $object->getObjVars();
@@ -99,14 +127,20 @@ class DB {
             return $object;
         } else {
             $con = null;
-            $stmt = null;
             return $stmt->errorInfo()[2];
         }
 	}
 
+
+    /**
+     * @param object $object
+     * @return bool
+     *
+     * Exclui um objeto do banco de dados
+     */
 	public static function delete ($object) {
 		if(self::isNew($object))
-			return FALSE;
+			return false;
 		else {
             $table = $object->getTableVar();
 
@@ -121,16 +155,24 @@ class DB {
             if ($stmt->execute()){
                 $con = null;
                 $stmt = null;
-                return TRUE;
+                return true;
             }
             else{
                 $con = null;
                 $stmt = null;
-                return FALSE;
+                return false;
             }
         }
 	}
 
+
+    /**
+     * @param string|null $selectedData
+     * @param string $table
+     * @return DB
+     *
+     * Inicia o processo de fazer um select no banco de dados
+     */
 	public function select ($selectedData = NULL, $table) {
 		if($selectedData == NULL || $selectedData == '')
 			$selectedData = $table.'.*';
@@ -162,15 +204,24 @@ class DB {
         return $this;
     }
 
-	/**
-	 * Padrão para o where: 
-	 * Caso 1: 'Element = ? AND OtherElement = ?'
-	 * Caso 2: 'Element = ?'
-	 *
-	 * Padrão para o whereVars: 
-	 * Caso 1: ['Value1', 'Value2']
-	 * Caso 2: 'Value1'
-	 */
+
+    /**
+     * @param string $where
+     * @param null|array $whereVars
+     * @param null|string $table
+     * @return DB
+     *
+     * Realiza um where para a consulta select ao banco de dados
+     *
+     *
+     * Padrão para o where:
+     * Caso 1: 'Element = ? AND OtherElement = ?'
+     * Caso 2: 'Element = ?'
+     *
+     * Padrão para o whereVars:
+     * Caso 1: ['Value1', 'Value2']
+     * Caso 2: 'Value1'
+     */
 	public function where ($where, $whereVars = NULL, $table = NULL) {
 		if (!isset($table)) {
 			if (isset($this->table))
@@ -204,6 +255,14 @@ class DB {
 		return $this;
 	}
 
+
+    /**
+     * @param string $orderValue
+     * @param string $order
+     * @return DB
+     *
+     * Acrescenta um order by ao select no banco de dados
+     */
 	public function orderBy ($orderValue, $order = 'ASC') {
 	    if($this->orderBy == '')
             $this->orderBy = ' ORDER BY '.$orderValue.' '.$order;
@@ -213,12 +272,25 @@ class DB {
 		return $this;
 	}
 
+
+    /**
+     * @param string $sql
+     * @return DB
+     *
+     * Adiciona um trecho SQL qualquer à consulta select no banco de dados
+     */
 	public function extraSql ($sql) {
         $this->extraSql .= ' ' . $sql;
 
 		return $this;
 	}
 
+
+    /**
+     * @return array
+     *
+     * Executa a consulta SQL previamente preparada pelos comandos select(), where()...
+     */
 	public function find () {
 
 		$con = self::connect();
@@ -248,13 +320,24 @@ class DB {
         $stmt = null;
         return $return;
 	}
-    
+
+
+    /**
+     * @return string
+     *
+     * Obtém o SQL gerado pelas demais funções da classe (select, where...)
+     */
     public function generatedSql () {
         return $this->select . $this->from . $this->join . $this->where . $this->extraSql . $this->orderBy;
     }
 
 
-
+    /**
+     * @param object $object
+     * @return bool
+     *
+     * Verifica se um dado objeto é novo no banco de dados
+     */
     public static function isNew ($object) {
 		$table = $object->getTableVar();
 
@@ -271,15 +354,22 @@ class DB {
 		if ($stmt->rowCount() > 0){
             $con = null;
             $stmt = null;
-            return FALSE;
+            return false;
         }
 		else {
             $con = null;
             $stmt = null;
-            return TRUE;
+            return true;
         }
 	}
 
+
+    /**
+     * @param string $table
+     * @return array
+     *
+     * Obtém todos os registros de uma dada tabela do banco de dados
+     */
     public static function all($table) {
         $sql = 'SELECT '.$table.'.* FROM '.$table.';';
 
@@ -296,10 +386,22 @@ class DB {
         return $return;
     }
 
+
+    /**
+     * @return PDO
+     *
+     * Realiza a conexão do sistema com o banco de dados, utilizando as constantes de sistema
+     */
     public static function connect () {
 		return new PDO(DB_DRIVER.":host=".DB_HOST.";dbname=".DB_NAME, DB_USER, DB_PASS);
 	}
 
+
+    /**
+     * @return DB
+     *
+     * Cria uma instância da classe
+     */
     public static function make () {
         return new self;
     }

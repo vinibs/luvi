@@ -1,19 +1,45 @@
 <?php defined('INITIALIZED') OR exit('You cannot access this file directly');
 
+/**
+ * Class ViewManager
+ *
+ * Set the view to be used and execute the template system to overwrite the section blocks
+ *
+ * @author Vinicius Baroni Soares <vinibaronisoares@gmail.com>
+ * @copyright 2017 Luvi
+ */
 class ViewManager
 {
+
+    /**
+     * @param string $viewName
+     * @param string|array|null $data
+     * @return bool
+     *
+     * Busca por arquivos .PHP, .HTML ou .PHTML para a view
+     */
     public function loadFile ($viewName, $data = null) {
-        // Busca por arquivos .PHP, .HTML ou .PHTML para a view
-        if (file_exists(BASEPATH . '/app/views/' . $viewName . '.php'))
-            return require_once BASEPATH . '/app/views/' . $viewName . '.php';
-        else if (file_exists(BASEPATH . '/app/views/' . $viewName . '.html'))
-            return require_once BASEPATH . '/app/views/' . $viewName . '.html';
-        else if (file_exists(BASEPATH . '/app/views/' . $viewName . '.phtml'))
-            return require_once BASEPATH . '/app/views/' . $viewName . '.phtml';
-        else
-            return FALSE;
+        if (file_exists(BASEPATH . '/app/views/' . $viewName . '.php')) {
+            require_once BASEPATH . '/app/views/' . $viewName . '.php';
+            return true;
+        } else if (file_exists(BASEPATH . '/app/views/' . $viewName . '.html')) {
+            require_once BASEPATH . '/app/views/' . $viewName . '.html';
+            return true;
+        } else if (file_exists(BASEPATH . '/app/views/' . $viewName . '.phtml')) {
+            require_once BASEPATH . '/app/views/' . $viewName . '.phtml';
+            return true;
+        } else
+            return false;
     }
 
+
+    /**
+     * @param string $viewName
+     * @param string|array|null $data
+     * @return void
+     *
+     * Chama a view e processa os templates, substituindo os blocos de seções
+     */
     public function call ($viewName, $data = null) {
         /**
          * Sintaxe:
@@ -59,7 +85,7 @@ class ViewManager
                 }
             }
 
-            if(count($extend[1]) > 0) { // Define o nome do template a ser carregado a seguir
+            if(!is_array($extend) || count($extend[1]) > 0) { // Define o nome do template a ser carregado a seguir
                 $viewName = $extendPath . $extend;
             }
             // Obtém o HTML do template principal até aqui
@@ -83,10 +109,10 @@ class ViewManager
                     // [Verifica para cada seção se há uma seção interna]
                     // Verifica se, após substituir, ainda existe uma nova seção, dentro do conteúdo vindo de outra
                     // seção (Como "@section(x) ... !!section(y)!! ... @endsection")
-                    foreach ($pageSections as $section) {
+                    foreach ($pageSections as $sect) {
                         $viewCode = preg_replace(
-                            '/!!section\([\'|\"]' . $section['name'] . '[\'|\"]\)!!/',
-                            $section['content'],
+                            '/!!section\([\'|\"]' . $sect['name'] . '[\'|\"]\)!!/',
+                            $sect['content'],
                             $viewCode,
                             1
                         );
@@ -104,7 +130,11 @@ class ViewManager
     }
 
 
-
+    /**
+     * @return ViewManager
+     *
+     * Cria uma instância da classe
+     */
     public static function make () {
         return new self;
     }

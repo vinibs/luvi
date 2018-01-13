@@ -1,7 +1,24 @@
 <?php defined('INITIALIZED') OR exit('You cannot access this file directly');
 
-class Validation {
+/**
+ * Class Validation
+ *
+ * Offers methods to execute data validation
+ *
+ * @author Vinicius Baroni Soares <vinibaronisoares@gmail.com>
+ * @copyright 2017 Luvi
+ */
+class Validation
+{
 
+    /**
+     * @param array $data
+     * @param array $rules
+     * @param array|null $fieldnames
+     * @return bool
+     *
+     * Realiza uma verificação nos campos passados, com os dados passados, seguindo as regras passadas
+     */
 	public static function check (array $data, array $rules, array $fieldnames = null) {
 		/**
 		 * array $rules deve ser definido por:
@@ -26,7 +43,7 @@ class Validation {
 		 * Caso contrário, retorna FALSE, indicando que não encontrou erros.
 		 */
 
-		$errors = FALSE;
+		$errors = false;
 		$arrayErrors = array();
 
 		foreach ($rules as $field => $fieldrules) {
@@ -39,7 +56,7 @@ class Validation {
 
 				// Checa pela condição "Required"
 				if ($singlerule == 'required' && empty($value)) {
-					$errors = TRUE;
+					$errors = true;
 					$message = preg_replace(
 					    '/%field%/',
                         ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field)),
@@ -51,7 +68,7 @@ class Validation {
 
 				// Checa pela condição de ser um número inteiro
 				if ($singlerule ==  'int' && !preg_match('/^[0-9]+$/', $value)) {
-					$errors = TRUE;
+					$errors = true;
                     $message = preg_replace(
                         '/%field%/',
                         ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field)),
@@ -63,7 +80,7 @@ class Validation {
 
 				// Checa pela condição de ser um número decimal
 				if ($singlerule ==  'decimal' && !preg_match('/^[0-9\.\,]+$/', $value)) {
-					$errors = TRUE;
+					$errors = true;
                     $message = preg_replace(
                         '/%field%/',
                         ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field)),
@@ -75,7 +92,7 @@ class Validation {
 
 				// Checa pela condição de ser um valor de apenas letras
 				if ($singlerule ==  'alpha' && !preg_match('/^[a-zA-ZÀ-úçÇ ]+$/', $value)) {
-					$errors = TRUE;
+					$errors = true;
 					$$message = preg_replace(
                         '/%field%/',
                         ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field)),
@@ -87,7 +104,7 @@ class Validation {
 
 				// Checa pela condição de ser um valor alfanumérico
 				if ($singlerule ==  'alphanum' && !preg_match('/^[a-zA-ZÀ-úçÇ0-9 ]+$/', $value)) {
-					$errors = TRUE;
+					$errors = true;
                     $message = preg_replace(
                         '/%field%/',
                         ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field)),
@@ -99,7 +116,7 @@ class Validation {
 
 				// Checa pela condição de ser um email
 				if ($singlerule ==  'email' && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
-					$errors = TRUE;
+					$errors = true;
                     $message = preg_replace(
                         '/%field%/',
                         ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field)),
@@ -113,7 +130,7 @@ class Validation {
 				if (sizeof($rulepart = explode(':', $singlerule)) > 1) {
 					// Checa o tamanho mínimo da string
 					if ($rulepart[0] == 'min' && strlen($value) < trim($rulepart[1])) {
-						$errors = TRUE;
+						$errors = true;
                         $message = preg_replace(
                             '/%field%/',
                             ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field)),
@@ -130,7 +147,7 @@ class Validation {
 					}
 					// Checa o tamanho máximo da string
 					if ($rulepart[0] == 'max' && strlen($value) > trim($rulepart[1])) {
-						$errors = TRUE;
+						$errors = true;
                         $message = preg_replace(
                             '/%field%/',
                             ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field)),
@@ -146,7 +163,7 @@ class Validation {
 			 		}
 					// Checa se o campo deve ser igual a outro
 					if ($rulepart[0] == 'equal' && $data[$field] != $data[$rulepart[1]]) {
-						$errors = TRUE;
+						$errors = true;
                         $message = preg_replace(
                             '/%field%/',
                             ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field)),
@@ -168,11 +185,17 @@ class Validation {
 		// Se houver algum erro, retorna FALSE e redireciona para a página anterior. Senão, retorna TRUE
 		if ($errors) {
 			back()->flash('inputErrors', $errorsInput);
-			return FALSE;
+			return false;
 		} else
-			return TRUE;
+			return true;
 	}
 
+
+    /**
+     * @return Validation
+     *
+     * Cria uma instância da classe
+     */
     public static function make () {
         return new self;
     }

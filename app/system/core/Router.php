@@ -1,9 +1,30 @@
 <?php  defined('INITIALIZED') OR exit('You cannot access this file directly');
 
-class Router {
-    // Define o vetor, estático, com as rotas, para ser utilizado pelos métodos de rotear e definir rotas
+/**
+ * Class Router
+ *
+ * Sets the routing methods and its related functions
+ *
+ * @author Vinicius Baroni Soares <vinibaronisoares@gmail.com>
+ * @copyright 2017 Luvi
+ */
+class Router
+{
+
+    /**
+     * @var array $routes
+     *
+     * Define o vetor, estático, com as rotas, para ser utilizado pelos métodos de rotear e definir rotas
+     */
     private static $routes = array();
 
+
+    /**
+     * Router constructor.
+     * @return boolean
+     *
+     * Gets the controller, method and parameters to be used, start the session and the other components of the system
+     */
 	public function __construct () {
         // Redireciona para a mesma página usando HTTPS, caso definido como true (e o acesso seja HTTP)
         if(REDIR_HTTPS){
@@ -62,9 +83,18 @@ class Router {
 			view('error/404');			
 			return false;
 		}
+		else {
+		    return true;
+        }
 	}
 
-    private function setRouteData ($path) {
+
+    /**
+     * @return array
+     *
+     * Define os dados a serem utilizados na rota, como controller, método e parâmetros
+     */
+    private function setRouteData () {
         require_once BASEPATH . '/app/Routes.php';
         $routed = false;
         $error = false;
@@ -209,8 +239,11 @@ class Router {
     }
 
 
-
-	// Obtém apenas os parâmetros passados após o endereço root da aplicação
+    /**
+     * @return string
+     *
+     * Obtém apenas os parâmetros passados após o endereço root da aplicação
+     */
 	private function getUrlComponents () {
         if(substr(SYSROOT, -1) == '/')
             $root = substr(SYSROOT, 0,-1);
@@ -220,7 +253,12 @@ class Router {
 		return substr($_SERVER['REQUEST_URI'], strlen($root.'/'));
 	}
 
-	// Inicializa os arquivos e configurações básicas do sistema
+
+    /**
+     * @return void
+     *
+     * Inicializa os arquivos e configurações básicas do sistema
+     */
 	private function iniSystem () {
 		// Carrega os arquivos básicos do sistema
 		require_once BASEPATH . '/app/system/core/App.php';
@@ -251,7 +289,12 @@ class Router {
 		header('X-Content-Type-Options: nosniff');
 	}
 
-	// Inicia a sessão padrão do sistema
+
+    /**
+     * @return void
+     *
+     * Inicia a sessão padrão do sistema
+     */
 	private function iniSession () {
 		ini_set('session.use_only_cookies',1);
 		ini_set( 'session.cookie_httponly', SESSION_HTTP_ONLY );
@@ -261,21 +304,38 @@ class Router {
 		ob_start();
 	}
 
-	// Carrega todos os models do respectivo diretório
+
+    /**
+     * @return void
+     *
+     * Carrega todos os models do respectivo diretório
+     */
 	private function loadModels () {		
 		foreach (glob("app/models/*.php") as $filename) {
 		    require_once $filename;
 		}	
 	}
 
-	// Carrega todos os controllers do respectivo diretório
+
+    /**
+     * @return void
+     *
+     * Carrega todos os controllers do respectivo diretório
+     */
 	private function loadControllers () {
 		foreach (glob("app/controllers/*.php") as $filename) {
 		    require_once $filename;
 		}
 	}
 
-    // Define uma nova rota, passandoa a URL e a ação (controller e método) a ser tomada
+
+    /**
+     * @param string $url
+     * @param string $action
+     * @return void
+     *
+     * Define uma nova rota, passandoa a URL e a ação (controller e método) a ser tomada
+     */
 	public static function define ($url, $action) {
 	    self::$routes[$url] = $action;
     }
