@@ -294,7 +294,7 @@ function load ($filePath) {
  * Executa o método view() contido na classe App (alias do método)
  */
 function view ($viewName, $data = null) {
-	return App::make()->view($viewName, $data);
+	App::make()->view($viewName, $data);
 }
 
 

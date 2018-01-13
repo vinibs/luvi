@@ -719,13 +719,13 @@
 			por <b>$data</b>, conforme citado em <a href="#viewvarpass">passagem de dados</a>.
 		</p>
 		<span class="pregroup">
-			<pre>bool <b>view (</b> string $viewName, [$data = NULL] <b>)</b></pre>
+			<pre>void <b>view (</b> string $viewName, [$data = NULL] <b>)</b></pre>
 			<pre><br><b>Usage example:</b></pre>
 			<pre>view ('LoginForm');</pre>
 			<pre>view ('somePage', $viewData);</pre>
 		</span>
 		<p>
-			Retorna <b>TRUE</b> se o arquivo já tiver sido carregado ou <b>FALSE</b> caso contrário.
+			Não possui retorno.
 		</p>
 		<br>
 		<a name="model"><h3><i>model()</i></h3></a>
@@ -743,7 +743,7 @@
 			<pre>model ('Animal');</pre>
 		</span>
 		<p>
-			Retorna <b>TRUE</b> se o arquivo já tiver sido carregado ou <b>FALSE</b> caso contrário.
+			Retorna <b>TRUE</b> se o arquivo for carregado corretamente ou <b>FALSE</b> caso contrário.
 		</p>
 		<br>
 		<a name="asset"><h3><i>asset()</i></h3></a>
@@ -1954,14 +1954,15 @@
 			variável de sessão especificada.
 		</p>
 		<span class="pregroup">
-			<pre>undefined <b>session (</b> string $name, [$content = null] <b>)</b></pre>
+			<pre>bool|string <b>session (</b> string $name, [$content = null] <b>)</b></pre>
 			<pre><br><b>Usage example:</b></pre>
 			<pre>session ('someString', 'String content'); <i class="comment">// Define o valor 'String content' para a variável de sessão 'someString'</i></pre>
 			<pre>session ('someString'); <i class="comment">// Obtém o valor armazenado na variável de sessão 'someString'</i></pre>
 		</span>
 		<p>
-			Retorna a variável de sessão com o valor atualizado quando <b>$content</b> é passado ou
-			retorna apenas seu valor caso contrário.
+			Retorna <b>TRUE</b> quando <b>$content</b> é passado e houve sucesso ao definir o conteúdo
+            da variável de sessão, retorna apenas seu valor caso tal parâmetro não seja passado e a variável
+            de sessão exista ou retorna <b>FALSE</b> caso não exista a variável de sessão com o nome passado.
 		</p>
 		<p class="obs">
 			<b>Observação:</b> pode ser usada em conjunto com as funções <a href="#redirect">redirect()</a>
@@ -1978,14 +1979,15 @@
 			variável de sessão especificada e a destroi.
 		</p>
 		<span class="pregroup">
-			<pre>undefined <b>flash (</b> string $name, [$content = null] <b>)</b></pre>
+			<pre>bool|string <b>flash (</b> string $name, [$content = null] <b>)</b></pre>
 			<pre><br><b>Usage example:</b></pre>
 			<pre>flash ('flashThis', 'some message'); <i class="comment">// Define o valor 'some message' para a variável de sessão 'flashThis'</i></pre>
 			<pre>flash ('flashThis'); <i class="comment">// Obtém o valor armazenado na variável de sessão 'flashThis' e a destroi</i></pre>
 		</span>
 		<p>
-			Retorna a variável de sessão com o valor atualizado quando <b>$content</b> é passado ou
-			retorna apenas seu valor caso contrário.
+            Retorna <b>TRUE</b> quando <b>$content</b> é passado e houve sucesso ao definir o conteúdo
+            da variável flash, retorna apenas seu valor caso tal parâmetro não seja passado e a variável
+            flash exista ou retorna <b>FALSE</b> caso não exista a variável de sessão com o nome passado.
 		</p>
 		<p class="obs">
 			<b>Observação:</b> pode ser usada em conjunto com as funções <a href="#redirect">redirect()</a>
@@ -2000,7 +2002,7 @@
 			Útil para verificar a existência de um valor em flash antes de exibi-lo.
 		</p>
 		<span class="pregroup">
-			<pre>boolean <b>hasFlash (</b> string $name <b>)</b></pre>
+			<pre>bool <b>hasFlash (</b> string $name <b>)</b></pre>
 			<pre><br><b>Usage example:</b></pre>
 			<pre>if(hasFlash ('flashThis')) { ... } </pre>
 		</span>
@@ -2018,14 +2020,15 @@
 			variável de sessão especificada.
 		</p>
 		<span class="pregroup">
-			<pre>undefined <b>cookie (</b> string $name, [$content = null] <b>)</b></pre>
+			<pre>bool|string <b>cookie (</b> string $name, [$content = null] <b>)</b></pre>
 			<pre><br><b>Usage example:</b></pre>
 			<pre>cookie ('aCookie', 'Some value'); <i class="comment">// Define o valor 'Some value' para o cookie 'aCookie'</i></pre>
 			<pre>cookie ('aCookie'); <i class="comment">// Obtém o valor armazenado no cookie 'aCookie'</i></pre>
 		</span>
 		<p>
-			Retorna o cookie com o valor atualizado quando <b>$content</b> é passado ou
-			retorna apenas seu valor caso contrário.
+            Retorna <b>TRUE</b> quando <b>$content</b> é passado e houve sucesso ao definir o conteúdo
+            da variável do cookie, retorna apenas seu valor caso tal parâmetro não seja passado e o cookie
+            exista ou retorna <b>FALSE</b> caso não exista o cookie com o nome passado.
 		</p>
 		<p class="obs">
 			<b>Observação:</b> pode ser usada em conjunto com as funções <a href="#redirect">redirect()</a>
@@ -2105,13 +2108,14 @@
 			a menos que seu valor seja redefinido.
 		</p>
 		<span class="pregroup">
-			<pre>string <b>oldVal (</b> string $inputName <b>)</b></pre>
+			<pre>bool|string <b>oldVal (</b> string $inputName <b>)</b></pre>
 			<pre><br><b>Usage example:</b></pre>
 			<pre>&lt;input type="text" name="username" value="&lt;?= oldVal ('username') ?&gt;"&gt; </pre>
 		</span>
 		<p>
 			Retorna o valor da <i>flash</i> que contém o conteúdo digitado em <b>$inputName</b> antes da
-			última submissão de formulário.
+			última submissão de formulário ou <b>FALSE</b> caso não haja registros salvos para o dado campo
+            de formulário.
 		</p>
 		<br>
 		<a name="getinputerrors"><h3><i>getInputErrors()</i></h3></a>
@@ -2128,14 +2132,15 @@
 			a menos que seu valor seja redefinido.
 		</p>
 		<span class="pregroup">
-			<pre>string <b>getInputErrors (</b> string $inputName <b>)</b></pre>
+			<pre>bool|string <b>getInputErrors (</b> string $inputName <b>)</b></pre>
 			<pre><br><b>Usage example:</b></pre>
 			<pre>&lt;input type="text" name="username"&gt; &lt;?= getInputErrors ('username') ?&gt;</pre>
 			<pre></pre>
 		</span>
 		<p>
 			Retorna o valor da <i>flash</i> que contém a lista de erros encontrados no preenchimento
-			do campo de formulário identificado por <b>$inputName</b>.
+			do campo de formulário identificado por <b>$inputName</b> ou <b>FALSE</b> caso não haja
+            registros salvos para o dado campo de formulário.
 		</p>
 		<br>
 		<a name="checkinputerrors"><h3><i>checkInputErrors()</i></h3></a>
