@@ -317,6 +317,11 @@
 					<li class="treefile">docstyle.css</li>
 					<li class="treefile">index.html</li>
 				</ul>
+				<li>templates <i class="comment">&nbsp;&nbsp;// Arquivos base, de exemplo, para a construção dos componentes do sistema</i></li>
+				<ul>
+					<li class="treefile">TemplateController.php</li>
+					<li class="treefile">TemplateModel.php</li>
+				</ul>
 				<li class="treefile">.htaccess</li>
 				<li class="treefile">index.php</li>
 				<li class="treefile">LICENSE</li>
@@ -599,6 +604,11 @@
 		<span class="pregroup">
 			<pre>class SomeController extends <i><b>Controller</b></i> { ... }</pre>
 		</span>
+		<p>
+			Pode-se, a fim de simplificar a criação de um controller, copiar o arquivo <b>TemplateController.php</b>,
+			do diretório <b>/templates</b>, para o diretório <b>/app/<wbr>controllers</b> e renomeá-lo (tanto 
+			o arquivo quanto a classe) para se adequar às necessidades.
+		</p>
 		<p>
 			É importante ressaltar que cada função representa o método para o qual a URL direcionará.
 		</p>
@@ -950,7 +960,7 @@
 			apagar dados.
 		</p>
 		<p>
-			Os models devem ser armazenados no diretório <b>/app/models</b>.
+			Os models devem ser armazenados no diretório <b>/app/<wbr>models</b>.
 		</p>
 		<span class="pregroup">
 			<pre>class SomeModel extends <i><b>Model</b></i> { ... }</pre>
@@ -973,6 +983,11 @@
 			Ao criar um model, é preciso adicionar a ele atributos para cada uma das colunas na tabela do banco
             de dados referente a este objeto, bem como suas respectivas funções <b>set</b> e <b>get</b>, caso
             estas variáveis sejam privadas.
+		</p>
+		<p>
+			A fim de simplificar o processo de criação de um model, pode-se copiar o arquivo 
+			<b>TemplateModel.php</b> do diretório <b>/templates</b> para o diretório 
+			<b>/app/<wbr>models</b> e realizar as alterações nos nomes do arquivo e da classe.
 		</p>
 		<span class="pregroup">
 			<pre>class Car extends <i>Model</i> { </pre>
