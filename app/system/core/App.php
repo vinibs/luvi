@@ -18,18 +18,23 @@ class App
      *
      * Realiza o redirecionamento para uma URL passada por parâmetro
      */
-	public static function redirect ($url = '', $status = 200) {
-		http_response_code($status);
-		if (substr($url, 0, 7) == 'http://' || substr($url, 0, 8) == 'https://')
-			header('Location: '.$url);
-		else {
-			if ($url[0] == '/') {
-				$url = substr($url, 1);
-			}
-			header('Location: '.SYSROOT.'/'.$url);
-		}
-		return (new App);
-	}
+    public static function redirect ($url = '', $status = 200) {
+        http_response_code($status);
+        if (substr($url, 0, 7) == 'http://' || substr($url, 0, 8) == 'https://')
+            header('Location: '.$url);
+        else {
+            if ($url[0] == '/') {
+                $url = substr($url, 1);
+            }
+
+            if(SYSROOT[strlen(SYSROOT)-1] == '/')
+                $finalUrl = SYSROOT.$url;
+            else
+                $finalUrl = SYSROOT.'/'.$url;
+            header('Location: '.$finalUrl);
+        }
+        return (new App);
+    }
 
 
     /**
