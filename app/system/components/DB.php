@@ -42,6 +42,7 @@ class DB
 	public static function save ($object)
     {
         $arrVars = $object->getObjVars();
+        //print_r($object);
 
         // Remove o atributo 'primarykey' da lista
         $arr = $arrVars;
@@ -51,6 +52,7 @@ class DB
                 $arrVars[] = $var;
             }
         }
+        //print_r($arrVars);
 
         // Define o número que deve ser subtraído
         // da contagem máxima de elementos nas rotinas abaixo
@@ -61,7 +63,7 @@ class DB
         $table = $object->getTableVar();
 
         if (self::isNew($object)) {
-            $sql = 'INSERT INTO ' . $table . ' (';
+            $sql = 'INSERT INTO `' . $table . '` (';
             foreach ($arrVars as $i => $var) {
                 if ($var != 'id' && $var != 'primarykey') {
                     $sql .= $var;
@@ -81,7 +83,7 @@ class DB
 
 
         } else {
-            $sql = 'UPDATE ' . $table . ' SET ';
+            $sql = 'UPDATE `' . $table . '` SET ';
             foreach ($arrVars as $i => $var) {
                 if ($var != 'id' && $var != 'primarykey') {
                     $sql .= $var . ' = :' . $var;
@@ -92,7 +94,7 @@ class DB
             $sql .= ' WHERE ' . $object->primarykey . ' = :' . $object->primarykey . ';';
         }
 
-
+        //echo "\n".$sql."\n";
         $con = self::connect();
         $stmt = $con->prepare($sql);
 
@@ -106,9 +108,10 @@ class DB
 
                 $getFunc = 'get' . $funcName;
                 $stmt->bindValue(':' . $var, (string)$object->$getFunc());
+                //echo '$stmt->bindValue(":"'.$var.', '.(string)$object->$getFunc().');'."\n";
             }
         }
-
+        //exit;
         if (!self::isNew($object)) {
             $getFunc = 'get' . ucfirst($object->primarykey);
             $stmt->bindValue(':' . $object->primarykey, (int)$object->$getFunc());
@@ -124,6 +127,7 @@ class DB
             $stmt = null;
             return $object;
         } else {
+            dump($sql);
             $con = null;
             return $stmt->errorInfo()[2];
         }
@@ -142,7 +146,7 @@ class DB
 		else {
             $table = $object->getTableVar();
 
-            $sql = 'DELETE FROM ' . $table . ' WHERE ' . $object->primarykey . ' = :pk;';
+            $sql = 'DELETE FROM `' . $table . '` WHERE ' . $object->primarykey . ' = :pk;';
 
             $objFunc = 'get' . ucfirst($object->primarykey);
 
@@ -187,7 +191,7 @@ class DB
 
         // Inicia o FROM ou adiciona elementos a ele
         if($this->from == '')
-            $this->from = ' FROM '.$table;
+            $this->from = ' FROM `'.$table.'`';
         else
             $this->from .= ', '.$table;
 
@@ -196,8 +200,8 @@ class DB
 
 
     public function join ($table, $tableCol, $thisCol, $compare = '=') {
-        $this->join .= ' JOIN ' . $table . ' ON ' . $table.'.'.$tableCol .' '. $compare .' '
-            . $this->table.'.'.$thisCol.' ';
+        $this->join .= ' JOIN `' . $table . '` ON `' . $table.'`.'.$tableCol .' '. $compare .' `'
+            . $this->table.'`.'.$thisCol.' ';
 
         return $this;
     }
@@ -231,10 +235,10 @@ class DB
 
         // Reconstroi um SELECT básico caso a função seja usada sem o auxílio da select()
 		if ($this->select == '')
-			$this->select = 'SELECT '.$table.'.* ';
+			$this->select = 'SELECT `'.$table.'`.* ';
 
 		if ($this->from == '')
-		    $this->from = 'FROM ' . $table;
+		    $this->from = 'FROM ` . $table'. '`';
 
 
         if ($this->where == '')
@@ -339,7 +343,7 @@ class DB
     public static function isNew ($object) {
 		$table = $object->getTableVar();
 
-		$sql = 'SELECT '.$table.'.* FROM ' . $table . ' WHERE '.$object->primarykey.' = :'.$object->primarykey.';';
+		$sql = 'SELECT `'.$table.'`.* FROM `' . $table . '` WHERE '.$object->primarykey.' = :'.$object->primarykey.';';
 
 		$con = self::connect();
 		$stmt = $con->prepare($sql);
@@ -369,7 +373,7 @@ class DB
      * Obtém todos os registros de uma dada tabela do banco de dados
      */
     public static function all($table) {
-        $sql = 'SELECT '.$table.'.* FROM '.$table.';';
+        $sql = 'SELECT `'.$table.'`.* FROM `'.$table.'`;';
 
         $con = self::connect();
         $stmt = $con->prepare($sql);
