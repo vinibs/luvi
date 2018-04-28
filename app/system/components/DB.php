@@ -177,7 +177,7 @@ class DB
      */
 	public function select ($selectedData = NULL, $table) {
 		if($selectedData == NULL || $selectedData == '')
-			$selectedData = $table.'.*';
+			$selectedData = '`'.$table.'`.*';
 
 		$this->table = $table;
 
@@ -193,7 +193,7 @@ class DB
         if($this->from == '')
             $this->from = ' FROM `'.$table.'`';
         else
-            $this->from .= ', '.$table;
+            $this->from .= ', `'.$table.'`';
 
 		return $this;
 	}
