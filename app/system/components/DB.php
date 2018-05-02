@@ -235,10 +235,10 @@ class DB
 
         // Reconstroi um SELECT básico caso a função seja usada sem o auxílio da select()
 		if ($this->select == '')
-			$this->select = 'SELECT `'.$table.'`.* ';
+			$this->select = 'SELECT `' . $table . '`.* ';
 
 		if ($this->from == '')
-		    $this->from = 'FROM ` . $table'. '`';
+		    $this->from = 'FROM `' . $table . '`';
 
 
         if ($this->where == '')
