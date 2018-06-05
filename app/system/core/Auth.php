@@ -203,10 +203,9 @@ class Auth
      * Obtém o usuário atualmente logado no sistema, a partir do padrão do framework
      */
 	public static function getLoggedUser () {
-		if (isset($_SESSION[SESSION_NAME.'Auth'])){
-			unserialize($_SESSION[SESSION_NAME.'Auth']['User']);
-		    return true;
-        } else
+		if (isset($_SESSION[SESSION_NAME.'Auth']))
+			return unserialize($_SESSION[SESSION_NAME.'Auth']['User']);
+        else
 			return null;
 	}
 
