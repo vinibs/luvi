@@ -66,6 +66,7 @@
 		<ul class="nolist">
 			<a href="#modelcreate"><li>Criação de um model</li></a>
 			<a href="#primarykey"><li>Chave primária</li></a>
+			<a href="#tablename"><li>Nome da tabela</li></a>
 			<a href="#modelinit"><li>Inicialização</li></a>
 		</ul>
 		<a href="#database"><h3>Banco de Dados</h3></a>
@@ -1040,6 +1041,26 @@
 			Desta forma, ao relizar uma busca pela função <a href="#dbget">get()</a>, a consulta 
 			procurará pelo valor passado na coluna denominada "animal_id", ao invés de procurar por uma
 			coluna chamada "id" e buscar tal valor nela.
+		</p>
+		<a name="tablename"><h3><i>Nome da tabela</i></h3></a>
+		<p>
+			Ao realizar qualquer ação no banco de dados, o nome da tabela referente ao model utilizado
+			é obtido automaticamente através do nome da classe.
+		</p>
+		<p>
+			Entretanto, caso o nome da tabela possua diferenças na grafia se comparado ao nome da 
+			classe, pode-se definir, no próprio model, a variável <b><i>public</i> $tableName</b>, 
+			de forma a especificar com precisão a tabela à qual o model se refere.
+		</p>
+		<span class="pregroup">
+			<pre>class AnimalZoologico extends <i>Model</i> { </pre>
+			<pre>    <b><i>public</i> $tableName</b> = 'animal_zoologico'; </pre>
+			<pre>}</pre>
+		</span>
+		<p>
+			Desta forma, ao relizar qualquer ação que faça referência à tabela de um objeto desta
+			classe, será considerado o nome definido manualmente com prioridade em relação ao obtido
+			pelo nome da classe.
 		</p>
 		<a name="modelinit"><h3><i>Inicialização</i></h3></a>
 		<p>
@@ -2400,7 +2421,7 @@
 			Função estática da classe <b>Validation</b>. 
 		</p> 
 		<p>
-			Checka a validade dos valores em <b>$data</b>, normalmente o vetor resultante do
+			Checa a validade dos valores em <b>$data</b>, normalmente o vetor resultante do
 			recebimento de um formulário, com base em regras de validação passadas em <b>$rules</b>
 			e redireciona de volta ao formulário, carregando em <i>flash</i> os erros encontrados
 			em cada campo.
@@ -2419,7 +2440,7 @@
 			<pre>);</pre>
 		</span>
 		<p>
-			Redirecione e retorna <b>TRUE</b> caso não encontre erros e <b>FALSE</b> caso contrário.
+			Redireciona e retorna <b>TRUE</b> caso não encontre erros e <b>FALSE</b> caso contrário.
 		</p>
 		<br>
 		<a name="valrules"><h3>Opções de validação</h3></a>
