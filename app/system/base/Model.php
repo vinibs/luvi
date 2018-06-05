@@ -107,6 +107,7 @@ abstract class Model {
      */
 	public function getObjVars () {
 		$reflection = new ReflectionClass($this);
+		$parentVars = $reflection->getParentClass()->getProperties();
         $vars = $reflection->getProperties();
 
         $arrVars = array();
@@ -114,7 +115,11 @@ abstract class Model {
         foreach ($vars as $privateVar) {
          	$arrVars[] = $privateVar->getName();
         }
-
+        foreach ($parentVars as $privateVar) {
+            if(!in_array($privateVar->getName(), $arrVars))
+         	    $arrVars[] = $privateVar->getName();
+        }
+        
         return $arrVars;
 	}
 
