@@ -17,6 +17,10 @@ abstract class Model {
      */
 	public $primarykey = 'id';
 
+    /**
+     * @var string $tableName
+     */
+    public $tableName = null;
 
     /**
      * @return object|string
@@ -105,23 +109,23 @@ abstract class Model {
      *
      * Obtém os atributos do objeto e seus valores
      */
-	public function getObjVars () {
-		$reflection = new ReflectionClass($this);
-		$parentVars = $reflection->getParentClass()->getProperties();
+    public function getObjVars () {
+        $reflection = new ReflectionClass($this);
+        $parentVars = $reflection->getParentClass()->getProperties();
         $vars = $reflection->getProperties();
 
         $arrVars = array();
 
         foreach ($vars as $privateVar) {
-         	$arrVars[] = $privateVar->getName();
+            $arrVars[] = $privateVar->getName();
         }
         foreach ($parentVars as $privateVar) {
             if(!in_array($privateVar->getName(), $arrVars))
-         	    $arrVars[] = $privateVar->getName();
+                $arrVars[] = $privateVar->getName();
         }
-        
+
         return $arrVars;
-	}
+    }
 
 
     /**
@@ -131,6 +135,9 @@ abstract class Model {
      * o objeto e a tabela)
      */
 	public function getTableVar () {
+	    if($this->tableName != null)
+	        return $this->tableName;
+
 		$backtrace = debug_backtrace()[0];
 		$class = get_class($backtrace['object']);
 
@@ -145,6 +152,15 @@ abstract class Model {
      */
 	public function getPrimaryKey() {
 		return $this->primarykey;
+	}
+
+    /**
+     * @return string
+     *
+     * Obtém o nome da tabela referente ao ovjeto tual
+     */
+	public function getTableName() {
+		return $this->tableName;
 	}
 
 

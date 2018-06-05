@@ -48,7 +48,7 @@ class DB
         $arr = $arrVars;
         $arrVars = array();
         foreach ($arr as $i => $var) {
-            if ($var != 'primarykey') {
+            if ($var != 'primarykey' && $var != 'tableName') {
                 $arrVars[] = $var;
             }
         }
@@ -65,7 +65,7 @@ class DB
         if (self::isNew($object)) {
             $sql = 'INSERT INTO `' . $table . '` (';
             foreach ($arrVars as $i => $var) {
-                if ($var != 'id' && $var != 'primarykey') {
+                if ($var != 'id' && $var != 'primarykey' && $var != 'tableName') {
                     $sql .= $var;
                     if ($i < (sizeof($arrVars) - $varsSub))
                         $sql .= ', ';
@@ -73,7 +73,7 @@ class DB
             }
             $sql .= ') VALUES (';
             foreach ($arrVars as $i => $var) {
-                if ($var != 'id' && $var != 'primarykey') {
+                if ($var != 'id' && $var != 'primarykey' && $var != 'tableName') {
                     $sql .= ':' . $var;
                     if ($i < (sizeof($arrVars) - $varsSub))
                         $sql .= ', ';
@@ -85,7 +85,7 @@ class DB
         } else {
             $sql = 'UPDATE `' . $table . '` SET ';
             foreach ($arrVars as $i => $var) {
-                if ($var != 'id' && $var != 'primarykey') {
+                if ($var != 'id' && $var != 'primarykey' && $var != 'tableName') {
                     $sql .= $var . ' = :' . $var;
                     if ($i < (sizeof($arrVars) - $varsSub))
                         $sql .= ', ';
@@ -99,7 +99,7 @@ class DB
         $stmt = $con->prepare($sql);
 
         foreach ($arrVars as $var) {
-            if ($var != 'id' && $var != 'primarykey') {
+            if ($var != 'id' && $var != 'primarykey' && $var != 'tableName') {
                 $funcNameParts = explode('_', $var);
                 foreach ($funcNameParts as $i => $part) {
                     $funcNameParts[$i] = ucfirst($part);
