@@ -42,7 +42,6 @@ class DB
 	public static function save ($object)
     {
         $arrVars = $object->getObjVars();
-        //print_r($object);
 
         // Remove o atributo 'primarykey' da lista
         $arr = $arrVars;
@@ -52,7 +51,6 @@ class DB
                 $arrVars[] = $var;
             }
         }
-        //print_r($arrVars);
 
         // Define o número que deve ser subtraído
         // da contagem máxima de elementos nas rotinas abaixo
@@ -66,7 +64,7 @@ class DB
             $sql = 'INSERT INTO `' . $table . '` (';
             foreach ($arrVars as $i => $var) {
                 if ($var != 'id' && $var != 'primarykey' && $var != 'tableName') {
-                    $sql .= $var;
+                    $sql .= self::camelCaseToUnderline($var);
                     if ($i < (sizeof($arrVars) - $varsSub))
                         $sql .= ', ';
                 }
@@ -74,7 +72,7 @@ class DB
             $sql .= ') VALUES (';
             foreach ($arrVars as $i => $var) {
                 if ($var != 'id' && $var != 'primarykey' && $var != 'tableName') {
-                    $sql .= ':' . $var;
+                    $sql .= ':' . self::camelCaseToUnderline($var);
                     if ($i < (sizeof($arrVars) - $varsSub))
                         $sql .= ', ';
                 }
@@ -86,7 +84,7 @@ class DB
             $sql = 'UPDATE `' . $table . '` SET ';
             foreach ($arrVars as $i => $var) {
                 if ($var != 'id' && $var != 'primarykey' && $var != 'tableName') {
-                    $sql .= $var . ' = :' . $var;
+                    $sql .= $var . ' = :' . self::camelCaseToUnderline($var);
                     if ($i < (sizeof($arrVars) - $varsSub))
                         $sql .= ', ';
                 }
@@ -94,24 +92,19 @@ class DB
             $sql .= ' WHERE ' . $object->primarykey . ' = :' . $object->primarykey . ';';
         }
 
-        //echo "\n".$sql."\n";
         $con = self::connect();
         $stmt = $con->prepare($sql);
 
         foreach ($arrVars as $var) {
             if ($var != 'id' && $var != 'primarykey' && $var != 'tableName') {
-                $funcNameParts = explode('_', $var);
-                foreach ($funcNameParts as $i => $part) {
-                    $funcNameParts[$i] = ucfirst($part);
-                }
-                $funcName = implode('', $funcNameParts);
+
+                $funcName = self::underlineToCamelCase($var);
 
                 $getFunc = 'get' . $funcName;
-                $stmt->bindValue(':' . $var, (string)$object->$getFunc());
-                //echo '$stmt->bindValue(":"'.$var.', '.(string)$object->$getFunc().');'."\n";
+                $stmt->bindValue(':' . self::camelCaseToUnderline($var), (string)$object->$getFunc());
             }
         }
-        //exit;
+
         if (!self::isNew($object)) {
             $getFunc = 'get' . ucfirst($object->primarykey);
             $stmt->bindValue(':' . $object->primarykey, (int)$object->$getFunc());
@@ -127,7 +120,6 @@ class DB
             $stmt = null;
             return $object;
         } else {
-            dump($sql);
             $con = null;
             return $stmt->errorInfo()[2];
         }
@@ -179,7 +171,7 @@ class DB
 		if($selectedData == NULL || $selectedData == '')
 			$selectedData = '`'.$table.'`.*';
 
-		$this->table = $table;
+		$this->table = self::camelCaseToUnderline($table);
 
 
         // Inicia o SELECT ou adiciona elementos a ele
@@ -231,7 +223,7 @@ class DB
 			else
 				die('ERROR: Cannot search with undefined table');
 		} else
-			$this->table = $table;
+			$this->table = self::camelCaseToUnderline($table);
 
         // Reconstroi um SELECT básico caso a função seja usada sem o auxílio da select()
 		if ($this->select == '')
@@ -315,14 +307,8 @@ class DB
         // Limpa as variáveis do where após executar a consulta
         $this->whereVars = null;
 
-        $class = explode('_', $this->table);
-        foreach($class as $i => $comp) {
-            $class[$i] = ucfirst($comp);
-        }
-        $class = implode('', $class);
-
 		// Retorna um objeto da classe definida pela tabela ($this->table)
-		$return =  $stmt->fetchAll(PDO::FETCH_CLASS, $class);
+		$return =  $stmt->fetchAll(PDO::FETCH_CLASS, self::underlineToCamelCase($this->table));
 
         $con = null;
         $stmt = null;
@@ -412,5 +398,44 @@ class DB
      */
     public static function make () {
         return new self;
+    }
+
+
+    /**
+     * @param $camelCase
+     * @return string
+     *
+     * Converte uma string em CamelCase para o padrão separado por underline
+     */
+    public static function camelCaseToUnderline ($camelCase) {
+        $arr = preg_split('/(?=[A-Z])/',$camelCase);
+
+        // Remove índices vazios
+        foreach($arr as $i => $piece) {
+            if($piece == '')
+                unset($arr[$i]);
+        }
+
+        // Agrupa novamente utilizando o underline
+        $underlined = implode('_', $arr);
+        return strtolower($underlined);
+    }
+
+
+    /**
+     * @param $underlined
+     * @return string
+     *
+     * Converte uma string separada por underlines para o padrão CamelCase
+     */
+    public static function underlineToCamelCase ($underlined) {
+        $arr = explode('_', $underlined);
+
+        // Adiciona primeira letra maiúscula a cada palavra
+        foreach($arr as $i => $piece) {
+            $arr[$i] = ucfirst($piece);
+        }
+
+        return implode('', $arr);
     }
 }

@@ -141,7 +141,7 @@ abstract class Model {
 		$backtrace = debug_backtrace()[0];
 		$class = get_class($backtrace['object']);
 
-		return lcfirst($class);
+		return DB::camelCaseToUnderline($class);
 	}
 
 
