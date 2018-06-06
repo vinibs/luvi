@@ -310,6 +310,8 @@ class DB
         // Define o nome da classe a ser utilizada
         $className = self::underlineToCamelCase($this->table);
 
+        $return = array();
+
 		// Retorna um objeto da classe definida
         while($arr = $stmt->fetch(PDO::FETCH_ASSOC)){
             $obj = new $className();
@@ -319,7 +321,6 @@ class DB
             }
             $return[] = $obj;
         }
-		//$return =  $stmt->fetchAll(PDO::FETCH_CLASS, self::underlineToCamelCase($this->table));
 
         $con = null;
         $stmt = null;
