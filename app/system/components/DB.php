@@ -84,7 +84,7 @@ class DB
             $sql = 'UPDATE `' . $table . '` SET ';
             foreach ($arrVars as $i => $var) {
                 if ($var != 'id' && $var != 'primarykey' && $var != 'tableName') {
-                    $sql .= $var . ' = :' . self::camelCaseToUnderline($var);
+                    $sql .= self::camelCaseToUnderline($var) . ' = :' . self::camelCaseToUnderline($var);
                     if ($i < (sizeof($arrVars) - $varsSub))
                         $sql .= ', ';
                 }
