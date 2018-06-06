@@ -39,8 +39,8 @@ class Validation
 		 * - max:X (tamanho máximo de caracteres definido por X)
 		 * - equal:Y (deve ser igual ao campo Y)
 		 *
-		 * Retorna um array com todas as mensagens de erro encontradas, caso haja.
-		 * Caso contrário, retorna FALSE, indicando que não encontrou erros.
+		 * Cria uma flash com todas as mensagens de erro encontradas e retorna FALSE, caso haja.
+		 * Caso contrário, retorna TRUE, indicando que não encontrou erros.
 		 */
 
 		$errors = false;
@@ -95,7 +95,7 @@ class Validation
 				// Checa pela condição de ser um valor de apenas letras
 				if ($singlerule ==  'alpha' && !preg_match('/^[a-zA-ZÀ-úçÇ ]+$/', $value)) {
 					$errors = true;
-					$$message = preg_replace(
+					$message = preg_replace(
                         '/%field%/',
                         ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field)),
                         msgValidationAlpha
