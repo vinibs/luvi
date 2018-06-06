@@ -315,8 +315,14 @@ class DB
         // Limpa as variáveis do where após executar a consulta
         $this->whereVars = null;
 
+        $class = explode('_', $this->table);
+        foreach($class as $i => $comp) {
+            $class[$i] = ucfirst($comp);
+        }
+        $class = implode('', $class);
+
 		// Retorna um objeto da classe definida pela tabela ($this->table)
-		$return =  $stmt->fetchAll(PDO::FETCH_CLASS, $this->table);
+		$return =  $stmt->fetchAll(PDO::FETCH_CLASS, $class);
 
         $con = null;
         $stmt = null;
