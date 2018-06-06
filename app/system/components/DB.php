@@ -307,8 +307,19 @@ class DB
         // Limpa as variáveis do where após executar a consulta
         $this->whereVars = null;
 
-		// Retorna um objeto da classe definida pela tabela ($this->table)
-		$return =  $stmt->fetchAll(PDO::FETCH_CLASS, self::underlineToCamelCase($this->table));
+        // Define o nome da classe a ser utilizada
+        $className = self::underlineToCamelCase($this->table);
+
+		// Retorna um objeto da classe definida
+        while($arr = $stmt->fetch(PDO::FETCH_ASSOC)){
+            $obj = new $className();
+            foreach($arr as $attr => $val) {
+                $function = 'set' . self::underlineToCamelCase($attr);
+                $obj->$function($val);
+            }
+            $return[] = $obj;
+        }
+		//$return =  $stmt->fetchAll(PDO::FETCH_CLASS, self::underlineToCamelCase($this->table));
 
         $con = null;
         $stmt = null;
