@@ -2422,9 +2422,8 @@
 		</p> 
 		<p>
 			Checa a validade dos valores em <b>$data</b>, normalmente o vetor resultante do
-			recebimento de um formulário, com base em regras de validação passadas em <b>$rules</b>
-			e redireciona de volta ao formulário, carregando em <i>flash</i> os erros encontrados
-			em cada campo.
+			recebimento de um formulário, com base em regras de validação passadas em <b>$rules</b>,
+			carregando em <i>flash</i> os erros encontrados em cada campo.
 		</p>
 		<span class="pregroup">
 			<pre>bool <b>Validation::check (</b> array $data, array $rules <b>)</b></pre>
@@ -2440,7 +2439,8 @@
 			<pre>);</pre>
 		</span>
 		<p>
-			Redireciona e retorna <b>TRUE</b> caso não encontre erros e <b>FALSE</b> caso contrário.
+			Retorna <b>FALSE</b> caso encontre erros, definindo uma flash com os erros encontrados,
+			e <b>TRUE</b> caso contrário.
 		</p>
 		<br>
 		<a name="valrules"><h3>Opções de validação</h3></a>

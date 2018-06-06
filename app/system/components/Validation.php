@@ -186,7 +186,7 @@ class Validation
 
 		// Se houver algum erro, retorna FALSE e redireciona para a página anterior. Senão, retorna TRUE
 		if ($errors) {
-			back()->flash('inputErrors', $errorsInput);
+			flash('inputErrors', $errorsInput);
 			return false;
 		} else
 			return true;
