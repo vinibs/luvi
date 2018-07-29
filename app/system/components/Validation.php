@@ -37,7 +37,7 @@ class Validation
 		 * - email (email com sintaxe válida)
 		 * - min:X (tamanho mínimo de caracteres definido por X)
 		 * - max:X (tamanho máximo de caracteres definido por X)
-		 * - equal:Y (deve ser igual ao campo Y)
+		 * - equals:Y (deve ser igual ao campo Y)
 		 *
 		 * Cria uma flash com todas as mensagens de erro encontradas e retorna FALSE, caso haja.
 		 * Caso contrário, retorna TRUE, indicando que não encontrou erros.
@@ -164,12 +164,12 @@ class Validation
 						$errorsInput[$field] .= $message . '<br>';
 			 		}
 					// Checa se o campo deve ser igual a outro
-					if ($rulepart[0] == 'equal' && $data[$field] != $data[$rulepart[1]]) {
+					if ($rulepart[0] == 'equals' && $data[$field] != $data[$rulepart[1]]) {
 						$errors = true;
                         $message = preg_replace(
                             '/%field%/',
                             ((($fieldnames[$field] != '') ? $fieldnames[$field]:$field)),
-                            msgValidationEqual
+                            msgValidationEquals
                         );
                         $message = preg_replace(
                             '/%fieldEq%/',

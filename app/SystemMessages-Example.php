@@ -12,7 +12,7 @@ define('msgValidationAlphanum', '"%field%" deve conter apenas letras e números'
 define('msgValidationEmail', '"%field%" deve conter um endereço de e-mail válido');
 define('msgValidationMin', '"%field%" deve conter ao menos %quant% caracteres');
 define('msgValidationMax', '"%field%" deve conter no máximo %quant% caracteres');
-define('msgValidationEqual', '"%field%" deve ser igual ao campo "%fieldEq%"');
+define('msgValidationEquals', '"%field%" deve ser igual ao campo "%fieldEq%"');
 
 
 // Auth messages
