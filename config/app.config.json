@@ -1,0 +1,6 @@
+{
+    "namespacePrefix": "App\\",
+    "publicFolder": "public",
+    "sessionID": "MyApp",
+    "locale": "en-en"
+}

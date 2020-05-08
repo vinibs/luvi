@@ -1,0 +1,13 @@
+{
+    "error": {
+        "invalid_path_route" : "Invalid path string format for route \"{path}\" [{method}]",
+        "invalid_action_route" : "Invalid action string format for route \"{path}\" [{method}]",
+        "undefined_action_route": "Undefined action for route \"{route}\"",
+        "controller_not_found": "Unable to execute route action. Controller \"{controller}\" not found",
+        "method_not_found": "Unable to execute route action. Method \"{method}\" not found in controller \"{controller}\"",
+        "invalid_value_url_parameter": "Invalid value \"{value}\" for URL parameter",
+        "file_not_found_loading_view": "File not found while loading view \"{viewName}\""
+    },
+    "hello_world" : "Hello World",
+    "bark": "woof"
+}

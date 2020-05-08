@@ -1,0 +1,10 @@
+<html>
+<?php 
+    $headerData = ['title' => 'Olá mundo'];
+    $this->include('template/html_header', $headerData); 
+?>
+
+<body>
+    <h1><?= App\Core\I18n::get('hello_world') ?></h1>
+</body>
+</html>

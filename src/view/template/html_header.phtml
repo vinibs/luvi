@@ -1,0 +1,14 @@
+<head>
+    <meta charset="utf-8">
+    <title>
+        <?php 
+        try { echo App\Core\I18n::get('hello_world'); }
+        catch (\Exception $e) { echo $e->getMessage(); }
+        ?>
+        |
+        <?= $viewData['title'] ?>
+
+    </title>
+    <link rel="stylesheet" type="text/css" 
+        href="<?=$this->asset('css/teste.css')?>" />
+</head>
