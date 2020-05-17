@@ -1,28 +1,28 @@
 <?php
 
 /**
- * $router já está definido e não deve ser sobrescrito.
+ * $router is already defined and shouldn't be overriden.
  * 
- * Para definir um grupo de rotas, usar, antes das rotas 
- * que serão incluídas:
+ * To define a route group, use, before the routes that
+ * will be included:
  * $router->group()
  * 
- * Para definir uma rota, usar:
+ * To define a route, use:
  * $router->get(), $router->post(), 
- * $router->put() ou $router->delete()
+ * $router->put() or $router->delete()
  * 
- * Exemplo 1:
+ * Example 1:
  * $router->get('/', 'MainController:index');
  * 
- * Exemplo 2:
- * $router->group('/produtos')
+ * Example 2:
+ * $router->group('/products')
  *      ->get('/', 'ProductsController:index);
- * (É o equivalente à rota "/produtos")
+ * (It's the same as "/products" route)
  * 
- * Exemplo 3:
- * $router->group('/produtos')
- *      ->get('/lista', 'ProductsController:list);
- * (É o equivalente à rota "/produtos/lista")
+ * Example 3:
+ * $router->group('/products')
+ *      ->get('/list', 'ProductsController:list);
+ * (It's the same as "/products/list" route)
  */
 
 $router

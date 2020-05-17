@@ -10,18 +10,19 @@ namespace App\Core;
  */
 abstract class Model {
     /**
-     * O objeto com as configurações de BD importadas do JSON
+     * Object with DB configurations imported from JSON
+     * 
      * @var object
      */
     protected $dbConfig;
 
     /**
-     * Inicializa o valor dos atributos
+     * Initializes attributes' values
      * 
      * @return void
      */
     public function __construct () {
-        // Importa a configuração global do BD para a classe
+        // Imports the global DB configuration to the class
         global $dbConfig;
         $this->dbConfig = $dbConfig;
     }

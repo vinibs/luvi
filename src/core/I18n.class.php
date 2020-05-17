@@ -12,93 +12,95 @@ use App\Core\Session;
  */
 class I18n {
     /**
-     * Instância da classe (padrão singleton)
+     * The class' instance (singleton model)
+     * 
      * @var I18n
      */
     private static $instance;
 
     /**
-     * Strings do idioma atual
+     * Current language strings
+     * 
      * @var array
      */
     private $currentLangStrings;
 
     /**
-     * Identificação do idioma atual
+     * Current language identification
+     * 
      * @var string
      */
     private $currentLocale;
 
     /**
-     * Construtor privado (padrão singleton)
+     * Private constructor (singleton pattern)
      * 
      * @return void
      */
     private function __construct () { }
 
     /**
-     * Obtém ou cria a instância do singleton
+     * Gets or creates a singleton's instance
      * 
      * @return I18n
      */
     public static function getInstance () : I18n
     {
-        // Não foi criada uma instância ainda?
+        // It wasn't created yet?
         if (is_null(self::$instance)) {
-            // Cria uma nova instância
+            // Creates a new instance
             self::$instance = new self;
         }
 
-        // Retorna a instância da classe
+        // Returns the class' instance
         return self::$instance;
     }
 
-    // Obtém as strings do idioma informado
     /**
+     * Gets given language's strings 
+     * 
      * @param string $locale The locale of the needed strings
-     * 
      * @return object
-     * 
      * @throws \Exception If the locale file could not be found
      */
     private static function getLocaleStrings (string $locale) : object
     {
-        // Obtém a instância da classe
+        // Gets class' instance
         $i18n = self::getInstance();
 
-        // O objeto já está armazenando os dados do idioma atual?
+        // Is the object storing current langage's data?
         if (
             is_null($i18n->currentLangStrings) ||
             strcmp($i18n->currentLocale, $locale) !== 0
         ) {
-            // Não, então se prepara para carregar o JSON do idioma
+            // No, then prepares to load the language's JSON
             $fileLocation = __DIR__ . '/../lang/' . $locale . '.json';
 
-            // O arquivo para esse idioma existe?
+            // Does the file for this language exist?
             if (!file_exists($fileLocation)) {
-                // Não, gera uma exceção com mensagem de erro em inglês
+                // No, then generates an exception with error in english
                 $errorMessage = 
                     'Locale file not found for "' . $locale . '"';
                 throw new \Exception($errorMessage);
             }
 
-            // Lê o arquivo
+            // Reads the file
             $localeStrings = file_get_contents($fileLocation);
-            // Processa o arquivo JSON
+            // Processes the JSON file
             $localeStrings = json_decode($localeStrings);
 
-            // Armazena as strings vindas do JSON
+            // Stores the strings that come from the JSON file
             $i18n->currentLangStrings = $localeStrings;
-            // Armazena qual é o idioma atualmente na memória
+            // Stores which is the current loaded language
             $i18n->currentLocale = $locale;
         }
 
-        // Retorna as strings do idioma selecionado
+        // Return ths string of the selected language
         return $i18n->currentLangStrings;
     }
 
     /**
-     * Obtém a string para o idioma padrão ou o selecionado
+     * Gets the string from the default or the selected language
      * 
      * @param string $token The needed string's token
      * @param null|array $params The values to be put into the string
@@ -112,57 +114,57 @@ class I18n {
         string $locale = null
     ) : string 
     {
-        // Foi passado o idioma?
+        // There was given a language?
         if (is_null($locale)) {
-            // Não, procura pelo valor na sessão e, se 
-            // não encontrar, usa o default do sistema
+            // No, search for the value in session and,
+            // if cannot find, uses the system default
             $locale = Session::get('locale') ?? defaultLocale;
         }
 
-        // Obtém a lista de strings no idioma
+        // Gets the languages's strings list
         $strings = self::getLocaleStrings($locale);
-        // Prepara a variável para definir a string a ser retornada
+        // Prepares the variable to set the string to return
         $string = null;
 
-        // Quebra o token para ler as subseções do arquivo
+        // Splits the token to read file's subsections
         $tokenParts = explode('.', $token);
 
         $errorMessage = 'Token not found: "' . $token . '"';
 
-        // Itera sobre as partes (sub-objetos)
+        // Iterate through the parts (sub objects)
         foreach ($tokenParts as $i => $part) {
-            // É o sub-objeto inicial?
+            // Is it the first sub object?
             if ($i === 0) {
-                // Existe o elemento na lista?
+                // Does the element exist in the list?
                 if (isset($strings->$part)) {
-                    // Sim, define o valor inicial da string
+                    // Yes, defines the string's inital value
                     $string = $strings->$part;
                     continue;
                 }
-                // Não, gera exceção
+                // No, throws an exception
                 throw new \Exception($errorMessage);
             }
 
-            // Não, pega o próximo objeto da lista
+            // No, passes to the next object in the list
             if (isset($string->$part)) {
                 $string = $string->$part;
                 continue;
             }
-            // Não encontrou, gera exceção
+            // Didn't find, throws an exception
             throw new \Exception($errorMessage);
         }
 
-        // Há parâmetros?
+        // There are parameters?
         if (is_null($params)) {
-            // Não, retorna a string do token diretamente
+            // No, returns the token's string directly
             return $string;
         }
 
-        // Processa os parâmetros na string
+        // PRocesses the string's parameters
         foreach ($params as $key => $param) {
-            // Monta a identificação do parâmetro
+            // Builds the parameter's identification
             $paramId = '{' . $key . '}';
-            // Substitui a identificação do parâmetro pelo valor
+            // Replaces the parameter's identification with the value
             $string = str_replace($paramId, $param, $string);
         }
 

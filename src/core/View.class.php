@@ -12,26 +12,29 @@ use App\Core\I18n;
  */
 class View {
     /**
-     * A instância da classe (modelo singleton)
+     * Classe's instance (singleton model)
+     * 
      * @var View
      */
     private static $instance;
 
     /**
-     * Define o caminho para o diretório de views
+     * Define the path to the views' directory
+     * 
      * @var string
      */
     private static $viewPath = __DIR__ . '/../view/';
 
     /**
-     * Define o nome da pasta pública
+     * Defines the public folder's name
+     * 
      * @var string
      */
     private $publicFolder;
    
 
     /**
-     * Define os atributos da classe 
+     * Defines the classe's attributes
      * 
      * @return void
      */
@@ -42,25 +45,25 @@ class View {
     }
 
     /**
-     * Obtém ou cria a instância do singleton
+     * Gets or creates the singleton's instance
      * 
      * @return View
      */ 
     public static function getInstance () : View
     {
-        // Não foi criada uma instância ainda?
+        // It wasn't created yet?
         if (is_null(self::$instance)) {
-            // Cria uma nova instância
+            // Creates a new instance
             self::$instance = new self;
         }
 
-        // Retorna a instância da classe
+        // Returns the class' instance
         return self::$instance;
     }
 
 
     /**
-     * Carrega a view dentro do contexto de objeto
+     * Loads the view in the object context
      * 
      * @param string $filePath The file path
      * @param int $httpStatus The HTTP status
@@ -74,16 +77,16 @@ class View {
         array $viewData = null
     ) : int
     {
-        // Define o status HTTP da resposta
+        // Defines the response HTTP status
         http_response_code($httpStatus);
-        // Retorna o resultado da inclusão do arquivo
+        // Returns the result of file include
         return require_once $filePath;
     }
 
     /**
-     * Inclui uma view em uma outra view já carregada
-     * (É um atalho - alias - para o método estático load())
-     * 
+     * Includes a view in another, already loaded, view
+     * (It is an alias to the static load() method)
+     *  
      * @param string $viewFilePath The included view's file path
      * @param null|array $includedData
      * 
@@ -100,8 +103,8 @@ class View {
     }
 
     /**
-     * Carrega uma view com base no caminho/nome, a partir da
-     * raiz do diretório de views
+     * Loads a view based on its path/name, from the views
+     * directory's root
      * 
      * @param string $viewFilePath The view's file path
      * @param int $httpStatus The HTTP status
@@ -117,9 +120,9 @@ class View {
         array $viewData = null
     ) : int 
     {
-        // Identifica o arquivo com o prefixo ".view"
+        // Identify the file with ".view" prefix
         $viewFile = self::$viewPath . $viewFilePath;
-        // Busca arquivos .php ou .html para renderizar
+        // Search for .php or .html files to render
         $extensions = [
             '.php', 
             '.phtml', 
@@ -129,19 +132,19 @@ class View {
             '.view.html'
         ];
 
-        // Busca identificar o arquivo com base na extensão
+        // Tries to identify the file based on its extension
         foreach ($extensions as $ext) {
-            // O arquivo com a extensão atual existe?
+            // There is a file with current extension?
             if (file_exists($viewFile . $ext)) {
-                // Sim, então define o status HTTP, 
-                // realiza o require dele e retorna
+                // Yeas. Then, defines the HTTP status, 
+                // requires the file and returns
                 return View::getInstance()
                     ->loadFile($viewFile . $ext, $httpStatus, $viewData);
             }
         }
 
-        // Não encontrou o arquivo, retorna status 500 e 
-        // lança uma exceção com mensagem de erro
+        // Didn't find the file. Returns HTTP 500 status
+        // and throws an exception with error message
         http_response_code(500);
         $tokenParams = [
             'viewName' => $viewFilePath
@@ -154,7 +157,7 @@ class View {
     }
 
     /**
-     * Obtém o caminho absoluto para um asset
+     * Gets the absolute path to a public asset
      * 
      * @param string $assetPath The path to the asset inside public folder
      * 
@@ -162,22 +165,22 @@ class View {
      */
     public function asset (string $assetPath) : ?string
     {
-        // Retira barra no início do caminho do arquivo, se houver
+        // Removes slash at the start of file's path, if needed
         if (substr($assetPath, 0, 1) === '/') {
             $assetPath = substr($assetPath, 1);
         }
 
-        // Constrói o caminho absoluto para verificar o arquivo
+        // Builds the absolute path to verify the file
         $fullAssetPath = __DIR__ . '/../../' . $this->publicFolder
             . '/' . $assetPath;
 
-        // Retorna o caminho absoluto (com base na raiz do
-        // servidor - pasta pública) se o arquivo existir
+        // Returns the absolute path (based on the server's 
+        // root - the public folder) if the file exists
         if (file_exists($fullAssetPath)) {
             return '/' . $assetPath;
         }
 
-        // Retorna false se não encontrar o arquivo
+        // Returns false if the file doesn't exist
         return false;
     }
 }

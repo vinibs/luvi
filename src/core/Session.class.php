@@ -10,28 +10,30 @@ namespace App\Core;
  */
 class Session {
     /**
-     * A instância da classe (modelo singleton)
+     * The class' instance (singleton model)
+     * 
      * @var Session
      */
     private static $instance;
     
     /**
-     * Define a identificação da variável de sessão
+     * Defines the session variable's ID
+     * 
      * @var string
      */
     private $sessionID;
    
 
     /**
-     * Construtor privado (padrão singleton) 
+     * Private constructor (sigleton pattern)
      * 
      * @return void
      */
     private function __construct () 
     {
-        // Verifica se a sessão já está iniciada
+        // Checks if the session has already started
         if (session_status() == PHP_SESSION_NONE) {
-            // Não, então inicia
+            // No, then starts it
             session_start();
         }
         global $appConfig;
@@ -39,36 +41,36 @@ class Session {
     }
 
     /**
-     * Obtém ou cria a instância do singleton
+     * Gets or creates a singleton's instance
      * 
      * @return Session
      */ 
     public static function getInstance () : Session
     {
-        // Não foi criada uma instância ainda?
+        // It wasn't created yet?
         if (is_null(self::$instance)) {
-            // Cria uma nova instância
+            // Creates a new instance
             self::$instance = new self;
         }
 
-        // Retorna a instância da classe
+        // Returns the class' instance
         return self::$instance;
     }
 
     /**
-     * Inicia a sesssão e retorna o objeto instanciado
+     * Starts a session e returns the instance object
      *
      * @return Session
      */
     public static function start () : Session
     {
-        // Atalho para obter a instância da classe,
-        // o que já inicia a sessão se necessário
+        // Alias to get the class' instance, which
+        // already starts the session if needed
         return self::getInstance();
     }
 
     /**
-     * Define uma variável de sessão
+     * Sets a session variable
      * 
      * @param string $name
      * @param mixed $value
@@ -77,19 +79,20 @@ class Session {
      */
     public static function set (string $name, $value) : bool
     {
-        // Obtém a instância da classe, que 
-        // inicializa a sessão e os atributos
+        // Gets the class' instance, which
+        // starts the session and its attributes
         $session = self::getInstance();
-        // Define a variável de sessão para o nome informado
+        // Sets the session variable with the given name
         $_SESSION[$session->sessionID][$name] = $value;
 
-        // Retorna o resultado de ter sido atribuído o valor à sessão ou não
+        // Returns wether the value was successfully set 
+        // to the session or not
         return $_SESSION[$session->sessionID][$name] === $value ? 
             true : false;
     }
 
     /**
-     * Retorna o valor de uma variável de sessão
+     * Returns the value of a session variable
      * 
      * @param string $name
      * 
@@ -97,22 +100,22 @@ class Session {
      */
     public static function get (string $name)
     {
-        // Obtém a instância da classe, que 
-        // inicializa a sessão e os atributos
+        // Gets the class' instance, which
+        // starts the session and its attributes
         $session = self::getInstance();
-        // Verifica se existe o índice com o nome informado
+        // Check if there is an index with the given name
         if (!isset($_SESSION[$session->sessionID][$name])) {
-            // Não existe, retorna nulo
+            // There isn't, returns null
             return null;
         }
 
-        // O índice existe, retorna seu valor
+        // Index exists, returns its value
         return $_SESSION[$session->sessionID][$name];
     }
 
     /**
-     * Define uma variável flash de sessão (se passado o parâmetro $value)
-     * ou retorna o valor armazenado e destrói a variável em seguida
+     * Defines a flash session variable (if given the $value parameter)
+     * or returns the stored value and destroys the variable
      * 
      * @param string $name
      * @param null|mixed $value
@@ -121,34 +124,36 @@ class Session {
      */
     public static function flash (string $name, $value = null)
     {
-        // Obtém a instância da classe, que 
-        // inicializa a sessão e os atributos
+        // Gets the class' instance, which
+        // starts the session and its attributes
         $session = self::getInstance();
-        // Gera a identificação da variável de flash, 
-        // dentro da variável de sessão
+        // Generates the flash variable's ID inside
+        // the session variable
         $flashId = $session->sessionID . '/flash';
 
-        // O parâmetro $value é nulo?
+        // Is $value parameter null?
         if (is_null($value)) {
-            // Sim, então verifica se existe o índice com o nome informado
+            // Yes. Checks if there is an index with the given name
             if (!isset($_SESSION[$session->sessionID][$flashId][$name])) {
-                // O índice não existe ainda, retorna nulo
+                // Index doesn't exist yet. Returns null
                 return null;
             }
 
-            // O índice existe, então obtém o valor 
-            // armazenado na flash do nome informado
+            // Index already exists, so gets its value
+            // stored in flash with the given name
             $flashValue = $_SESSION[$session->sessionID][$flashId][$name];
-            // Remove a flash com o nome informado
+            // Remove the flash with the given name
             unset($_SESSION[$session->sessionID][$flashId][$name]);
-            // Retorna o valor armazenado
+            // Returns the stored value
             return $flashValue;
         }
 
-        // Há o atributo $value, então define a variável de sessão para a flash
+        // There isn't the $value attribute, so defines 
+        // the flash session variable
         $_SESSION[$session->sessionID][$flashId][$name] = $value;
 
-        // Retorna o resultado de ter sido atribuído o valor à sessão ou não
+        // Returns wether the value was successfully set 
+        // to the session or not
         return $_SESSION[$session->sessionID][$flashId][$name] === $value ? 
             true : false;
     }

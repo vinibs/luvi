@@ -10,25 +10,28 @@ namespace App\Core;
  */
 class Router {
     /**
-     * A instância da classe (modelo singleton)
+     * The class' instance (singleton model)
+     * 
      * @var Router
      */
     private static $instance;
 
     /**
-     * Lista de rotas
+     * Routes list
+     * 
      * @var array
      */
     private $routes;
 
     /**
-     * Grupo a ser utilizado para novas rotas
+     * Group to be used to new routes
+     * 
      * @var string
      */
     private $currentGroup;
 
     /**
-     * Inicializa o valor dos atributos
+     * Initializes attributes values
      * 
      * @return void
      */
@@ -40,7 +43,7 @@ class Router {
     }
 
     /**
-     * Registra uma rota na lista de rotas da classe
+     * Registers a route in class' routes list
      * 
      * @param string $path The route path
      * @param string $action What should be called for the route
@@ -53,15 +56,15 @@ class Router {
         string $action, 
         string $httpMethod
     ) : void {
-        // Se a rota for vazia (raiz), considera a barra
+        // If route's path is empty (root), is considered as slash
         if (empty($path)) {
             $path = '/';
         }
 
-        // Verifica se o formato do caminho da rota é válido
+        // Check if route's path format is valid
         $regexUriFormat = '/^\/?(([A-z0-9\_\-\+]+|\{[A-z0-9\_\-]+\})\/?)*$/';
         if (!preg_match($regexUriFormat, $path)) {
-            // Não, então dispara exceção
+            // No, then throws exception
             $tokenParams = [
                 'path' => $path,
                 'method' => strtoupper($httpMethod)
@@ -78,10 +81,10 @@ class Router {
             }
         }
 
-        // Verifica o formato da ação da rota
+        // Checks the route's action format
         $regexActionFormat = '/^[A-z0-9\_]+\:[A-z0-9\_]+$/';
         if (!preg_match($regexActionFormat, $action)) {
-            // É inválido, dispara exceção
+            // It is invalid, throws exception
             $tokenParams = [
                 'path' => $path,
                 'method' => strtoupper($httpMethod)
@@ -100,13 +103,13 @@ class Router {
 
         $httpMethod = strtolower($httpMethod);
 
-        // Se o último caractere da rota for "/", 
-        // o remove da string para padronizar
+        // If route's last character is "/", removes 
+        // it from string
         if (substr($path, -1) === '/' && strlen($path) > 1) {
             $path = substr($path, 0, -1);
         }
 
-        // Define os atributos da rota
+        // Sets route's attributes
         $route = [
             'group' => $this->currentGroup,
             'uri' => $path,
@@ -114,12 +117,12 @@ class Router {
             'params' => array()
         ];
 
-        // Se o índice com o método HTTP informado não exisitr na lista
+        // If the given HTTP method's index doesn't exist in the list
         if (!key_exists($httpMethod, $this->routes)) {
             $this->routes[$httpMethod] = array();
         }
 
-        // Se o índice com o grupo não existir na lista do método HTTP
+        // If there is no index with for given group in the HTTP method's list
         if (!key_exists($this->currentGroup, $this->routes[$httpMethod])) {
             $this->routes[$httpMethod][$this->currentGroup] = array();
         }
@@ -128,7 +131,7 @@ class Router {
     }
 
     /**
-     * Chama a ação registrada para processar a rota
+     * Calls the action registered to process the route
      * 
      * @param array $route The route data
      * 
@@ -139,9 +142,9 @@ class Router {
      */
     private function callRouteAction (array $route) : void
     {
-        // Caso não encontre o índice 'action' na rota ou
-        // a ação seja nula ou vazia, dispara uma exceção
-        // com mensagem de erro
+        // If it can't find the 'action' index in route or
+        // the action is null or empty, throws an exception
+        // with an error message
         if (
             !isset($route['action']) 
             || is_null($route['action']) 
@@ -162,18 +165,18 @@ class Router {
             }
         }
 
-        // Separa as partes (controller e método) da ação da rota
+        // Split the route's action parts (controller and method)
         $actionParts = explode(':', $route['action']);
         $controllerName = $actionParts[0];
         $methodName = $actionParts[1];
 
-        // Constroi o nome do controller com o namespace
+        // Build the controllers name with namespace
         $controllerFullName = namespacePrefix . 'Controller\\' 
             . $controllerName;
 
-        // Verifica se a classe declarada para o controller existe
+        // Checks if controller's declared class exists
         if (!class_exists($controllerFullName)) {
-            // Não existe, lança exceção
+            // It doesn't, throws exception
             $tokenParams = [
                 'controller' => $controllerName,
             ];
@@ -189,12 +192,12 @@ class Router {
             }
         }
 
-        // Instancia a classe do controller
+        // Intantiate the controller's class
         $controller = new $controllerFullName();
 
-        // Verifica se o método declarado para a ação existe na classe
+        // Checks if the declared action methos exists in class
         if (!method_exists($controller, $methodName)) {
-            // Não existe, lança exceção
+            // It doesn't, throws excenption
             $tokenParams = [
                 'method' => $methodName,
                 'controller' => $controllerName
@@ -211,18 +214,18 @@ class Router {
             }
         }
 
-        // Funde os parâmetros da rota com os GET comuns
+        // Merge route's params with GET default params
         $requestParams = array_merge($route['params'], $_GET);
-        // Adiciona todos os parâmetros à global $_GET também
+        // Also adds all params to global $_GET variable
         $_GET = $requestParams;
 
-        // Executa o método do controller, passando os parâmetros
+        // Runs controller's method, passing the parameters
         $controller->$methodName($requestParams);
         return;
     }
 
     /**
-     * Converte a rota recebida em uma regex
+     * Converts the route in a regex
      * 
      * @param array $route The route data
      * 
@@ -232,15 +235,14 @@ class Router {
     {
         $routeToRegex = $route['uri'];
 
-        // Adiciona uma condicional à barra inicial da rota
+        // Adds a conditional to path's beginning slash
         if (substr($routeToRegex, 0, 1) === '/') {
             $routeToRegex = '/?' . substr($routeToRegex, 1);
         }
-        // Escapa as barras da rota
+        // Escape route's slashes
         $regexRoute = '/^' 
             . str_replace('/', '\/', $routeToRegex) . '\/?$/';
-        // Troca os parâmetros para identifica qualquer valor
-        // que não contenha o caractere "/"
+        // Change parameters to identify any value without "/"
         $regexRoute = preg_replace(
             '/\{[a-z]+\}/', 
             '[^\/]+', 
@@ -251,24 +253,24 @@ class Router {
     }
 
     /**
-     * Obtém ou cria a instância do singleton
+      * Gets or creates a singleton's instance
      * 
      * @return Router
      */
     public static function getInstance () : Router
     {
-        // Não foi criada uma instância ainda?
+        // It wasn't created yet?
         if (is_null(self::$instance)) {
-            // Cria uma nova instância
+            // Creates a new instance
             self::$instance = new self;
         }
 
-        // Retorna a instância da classe
+        // Returns the class' instance
         return self::$instance;
     }
 
     /**
-     * Chama a ação necessária para a rota
+     * Calls the needed action for the route
      * 
      * @return void
      * 
@@ -276,62 +278,60 @@ class Router {
      */
     public function process () : void
     {
-        // Obtém a URL atual
+        // Gets current URL
         $requestUri = filter_input(
             \INPUT_SERVER, 
             'REQUEST_URI', 
             \FILTER_SANITIZE_SPECIAL_CHARS
         );
 
-        // Quebra a URL requisitada em '?', caso
-        // sejam passados métodos GET da maneira comum
+        // Splits request URL in "?", if there 
+        // are usual GET parameters
         $uriParts = explode('?', $requestUri);
-        // Registra apenas a primeira parte da URL como caminho
+        // Registers only the first URL part as path
         $requestUri = $uriParts[0];
         
-        // Se o último caractere da URL for "/", 
-        // o remove da string
+        // If last URL character is "/", remove it from string
         if (substr($requestUri, -1) === '/' && strlen($requestUri) > 1) {
             $requestUri = substr($requestUri, 0, -1);
         }
 
-        // Obtém o método HTTP usado na requisição
+        // Gets the request's HTTP method
         $httpMethod = strtolower(filter_input(
             \INPUT_SERVER, 
             'REQUEST_METHOD', 
             \FILTER_SANITIZE_SPECIAL_CHARS
         ));
 
-        // Armazena a rota encontrada
+        // Stores the found route
         $foundRoute = null;
 
-        // Existe uma posição para o método HTTP atual no array de rotas?
+        // Is there an index to current HTTP method in routes' array?
         if (isset($this->routes[$httpMethod])) {
-            
-            // Passa pelos grupos de rotas definidos pelo método HTTP atual
+            // Passes through groups of routes defined by current HTTP method
             foreach ($this->routes[$httpMethod] as $group => $groupRoutes) {
-                // Verifica se a URL atual faz parte do grupo de rotas
+                // Checks if current URL is part of route's group
                 $len = strlen($group);
                 if (strncmp($group, $requestUri, $len) !== 0) {
-                    // Não, então segue para o próximo grupo
+                    // No, then goes to the next group
                     continue;
                 }
 
-                // Verifica se alguma rota do grupo corresponde à URL atual
+                // Checks if any route in the group corresponds to current URL
                 foreach ($groupRoutes as $index => $route) {
-                    // Processa o caminho da rota para adicionar o grupo
+                    // Processes route's path to add its group
                     $processedRoute = $group;
 
-                    // Caso não haja barra para separar o grupo e a rota,
-                    // adiciona
+                    // If there is no slash to separate group and 
+                    // route path, adds it
                     if (
                         substr($route['uri'], 0, 1) !== '/' && 
                         substr($processedRoute, -1) !== '/'
                     ) {
                         $processedRoute .= '/';
                     }
-                    // Caso o grupo termine em "/" e a rota também se incie
-                    // em "/", remove a barra do fim do grupo
+                    // If group ends in "/" and the route starts with an "/",
+                    // removes the slash from the end of group string
                     else if (
                         substr($processedRoute, -1) === '/' &&
                         substr($route['uri'], 0, 1) === '/'
@@ -339,10 +339,10 @@ class Router {
                         $len = strlen($processedRoute) - 1;
                         $processedRoute = substr($processedRoute, 0, $len);
                     }
-                    // Adiciona a rota básica à rota processada
+                    // Adds the basic route to the processed one
                     $processedRoute .= $route['uri'];
                     
-                    // Remove a barra no final da rota processada, se tiver
+                    // Removes slash at the end of processed route, if needed
                     if (
                         substr($processedRoute, -1) === '/' && 
                         strlen($processedRoute) > 1
@@ -351,47 +351,47 @@ class Router {
                         $processedRoute = substr($processedRoute, 0, $len);
                     }
 
-                    // Reatribui a URL com o grupo, evitando barras duplas
+                    // Redefine URL with group, avoiding double slashes
                     $processedRoute = str_replace('//', '/', $processedRoute);
                     $route['uri'] = $processedRoute;
 
-                    // A rota é exatamente a URL atual?
+                    // Is route exactly the same as the current URL?
                     if (strcmp($processedRoute, $requestUri) === 0) {
-                        // Sim, define a rota encontrada
+                        // Yes, sets the found route
                         $foundRoute = $route;
                         break;
                     }
                     else {
-                        // Obtém a regex para a rota que está sendo verificada
+                        // Gets the regex for the currently checked route
                         $regexRoute = $this->generateRouteRegex($route);
 
-                        // A URL atual corresponde a 
-                        // uma rota com parâmetros?
+                        // Does the current URL correspond to a param route?
                         if (preg_match($regexRoute, $requestUri) === 1) {
-                            // Sim, então verifica:
-                            // Já foi encontrada uma rota para essa URL?
+                            // Yes, then checks:
+                            // There was a found route for this URL?
                             if (!is_null($foundRoute)) {
-                                // Sim, então extrai as opções de grupo para 
-                                // verificar se a rota rota encontrada é 
-                                //específica para o grupo dessa URL
+                                // Yes, then extract the group options to
+                                // check if the found route is specific for
+                                // this URL group
                                 $groupLen = strlen($foundRoute['group']);
-                                // Obtem a substring da rota, com o comprimento 
-                                // do grupo
+                                // Gets a substring from the route with the
+                                // group's length
                                 $substrGroup = substr(
                                     $foundRoute['uri'], 
                                     0, 
                                     $groupLen
                                 );
-                                // Obtém o resto da rota, sem os caracteres 
-                                // até o comprimento da string do grupo
+                                // Gets the rest of route's path, without the
+                                // first [group string's length] characters
                                 $noGroupUri = substr(
                                     $foundRoute['uri'], 
                                     $groupLen
                                 );
 
-                                // Verifica se o grupo extraído é o mesmo 
-                                // do definido e se a rota, com grupo, 
-                                // é maior que a rota sem ele
+                                // Checks if the extracted group is the same
+                                // as the defined one and if the route, with
+                                // the group, is larger than the route 
+                                // without it
                                 if (
                                     strcmp(
                                         $foundRoute['group'], 
@@ -399,45 +399,44 @@ class Router {
                                     ) == 0 &&
                                     strcmp($foundRoute['uri'], $noGroupUri) > 0
                                 ) {
-                                    // É, então ignora a rota atual porque a 
-                                    // anterior é específica para o grupo
+                                    // Yes, so ignores current route because
+                                    // the previous one is specific for the
+                                    // group
                                     break;
                                 }
                             }
         
-                            // Define a rota encontrada
+                            // Defines the found route
                             $foundRoute = $route;
                             $routeParams = array();
 
-                            // Quebra a URL e a rota nas barras
+                            // Splits URL and route in its slashes
                             $routeParts = explode('/', $processedRoute);
                             $urlParts = explode('/', $requestUri);
                             
-                            // Verifica as partes da URL para identificar 
-                            // os parâmetros
+                            // Checks URL parts to identify its params
                             foreach ($urlParts as $i => $urlPart) {
-                                // Regex para identificar a sintaxe da 
-                                // definição do parâmetro
+                                // Regex to identify param definition syntax
                                 $regexParam = '/^\{[A-z0-9\_\-]+\}$/';
-                                // Verifica se a parte da rota bate com a 
-                                // sintaxe de parâmetro
+                                // Checks if route's part corresponds to the
+                                // parameter syntax
                                 if (
                                     preg_match(
                                         $regexParam, 
                                         $routeParts[$i]
                                     ) === 1
-                                    ) {
-                                    // Sim, então a parte da rota é um parâmetro
+                                ) {
+                                    // Yes, then route's part is a param
                                     
-                                    // Extrai o nome do parâmetro
+                                    // Extracts parameter's name
                                     $paramName = preg_replace(
                                         '/[\{\}]/', 
                                         '', 
                                         $routeParts[$i]
                                     );
 
-                                    // Os caracteres usados no parâmetro são
-                                    //  válidos?
+                                    // Are the characters used in 
+                                    // this parameter valid?
                                     $regexEncodedChars = 
                                         '/^[A-z0-9\-\_\.\+\%]+$/';
                                     if (
@@ -446,7 +445,7 @@ class Router {
                                             $urlPart
                                         ) !== 1
                                     ) {
-                                        // Não, então gera uma mensagem de erro
+                                        // No, generates an error message
                                         $tokenParams = [
                                             'value' => $urlPart
                                         ];
@@ -460,8 +459,8 @@ class Router {
                                             echo $e->getMessage();
                                         }
 
-                                        // Tenta carregar a view de erro 
-                                        // com a mensagem
+                                        // Try to load the error view with
+                                        // the message
                                         try {
                                             View::load(
                                                 'error/400', 
@@ -470,15 +469,15 @@ class Router {
                                             );
                                             return;
                                         }
-                                        // Se não, gera uma exceção
+                                        // Else, generates an exception
                                         catch (\Exception $e) {
                                             http_response_code(400);
                                             throw new \Exception($errorMessage);
                                         }
                                     }
                                     
-                                    // Adiciona o parâmetro e seu valor 
-                                    // ao array de parâmetros
+                                    // Adds the parameter and its value to
+                                    // the params array
                                     $routeParams[$paramName] = $urlPart;
                                 }
                             }
@@ -491,34 +490,33 @@ class Router {
             }
         }
 
-        // Encontrou uma rota para a URL atual?
+        // There was found a route to current URL?
         if (!is_null($foundRoute)) {
-            // Sim, executa a chamada da ação da rota
+            // Yes, runs the route's action
             try {
                 $this->callRouteAction($foundRoute);
             }
-            // Exibe a mensagem da exceção caso não consiga
-            // carregar a ação da rota
+            // Show the exception message if can't load the route's action
             catch (\Exception $e) {
                 echo $e->getMessage();
             }
             return;
         }
         
-        // Não encontrou nenhuma rota, carrega view de 404
+        // Didn't find any route, loads the 404 view
         try {
             View::load('error/404', 404);
         }
         catch (\Exception $e) {
-            // Caso a view padrão de erro não exista, 
-            // apenas exibe a mensagemda exceção
+            // If the default error view doesn't exist, 
+            // just show the exception message
             echo $e->getMessage();
         }
         return;
     }
 
     /**
-     * Define o grupo a ser utilizado para as próximas rotas definidas
+     * Defines the group to be used for the next defined routes
      * 
      * @param string $groupBaseUri The base part of the routes group
      * 
@@ -531,7 +529,7 @@ class Router {
     }
 
     /**
-     * Registra uma rota de método GET
+     * Registers a route for the GET method
      * 
      * @param string $path The route URI path
      * @param string $action What should be done for the route
@@ -545,7 +543,7 @@ class Router {
     }
 
     /**
-     * Registra uma rota de método POST
+     * Registers a route for the POST method
      * 
      * @param string $path The route URI path
      * @param string $action What should be done for the route
@@ -559,7 +557,7 @@ class Router {
     }
 
     /**
-     * Registra uma rota de método PUT
+     * Registers a route for the PUT method
      * 
      * @param string $path The route URI path
      * @param string $action What should be done for the route
@@ -573,7 +571,7 @@ class Router {
     }
 
     /**
-     * Registra uma rota de método DELETE
+     * Registers a route for the DELETE method
      * 
      * @param string $path The route URI path
      * @param string $action What should be done for the route

@@ -1,22 +1,22 @@
 <?php
 
 /**
- * Autoloader de configurações (em /config) e classes (em /src)
+ * Configurations (in /config) and class (in /src) autoloader
  * 
  * @author Vinicius Baroni Soares <hiviniciusbs@gmail.com>
  * @copyright 2020
  */
 spl_autoload_register(NULL, FALSE);
 
-// Função para definir a constante de prefixo do namespace
+// Function to define the namespace prefix constant
 function setNamespacePrefix (?string $configNamePrefix) : void
 {
-    // Carrega o namespace base com base na configuração (se houver)
+    // Loads the base namespace, based on the configuration, if any
     $namespacePrefix = null;
     if (!is_null($configNamePrefix)) {
         $namespacePrefix = $configNamePrefix;
 
-        // Adiciona a '\' se precisar
+        // Adds a "\" if needed
         if (substr($configNamePrefix, -1) !== '\\') {
             $namespacePrefix .= '\\';
         }
@@ -25,83 +25,82 @@ function setNamespacePrefix (?string $configNamePrefix) : void
         $namespacePrefix = 'App\\';
     }
     
-    // Define a constante com o prefixo do namespace
+    // Defines the namespace prefix constant
     define('namespacePrefix', $namespacePrefix);
 }
 
-
-// Inclui todos os arquivos JSON na raiz de '/config'
+// Includes all JSON files in /config root directory
 foreach (glob(__DIR__ . '/../../config/*.json') as $file) {
-    // Obtém a posição na string onde começa o nome do arquivo
+    // Gets the string position where begins the file name
     $fileNameStart = strrpos($file, '/') + 1;
-    // Obtém o nome do arquivo sendo lido
+    // Gets the name of the file that is currently being read
     $fileName = substr($file, $fileNameStart);
 
-    // Separa o nome do arquivo nos pontos
+    // Splits the file name in its dots (".")
     $fileNameParts = explode('.', $fileName); 
     
-    // Define que o nome da variável será o primeiro 
-    // bloco do nome do arquivo
+    // Defines that the variable name will be the
+    // first block from the file name
     $varName = $fileNameParts[0] . 'Config';
 
-    // Obtém o conteúdo do arquivo
+    // Gets the file's content
     $content = json_decode(file_get_contents($file));
 
-    // Define a constante com o valor do arquivo
+    // Defines the constant with the file's value
     $$varName = $content;
 }
 
-// Inclui todos os arquivos PHP na raiz de '/config'
+// Includes all PHP files that are in /config root directory
 foreach (glob(__DIR__ . '/../../config/*.php') as $file) {
     include_once $file;
 }
 
-// Depois de incluir os arquivos de configuração, chama a
-// função para definir a constante de prefixo do namespace
+// After including the config files, calls the function to
+// set the namespace prefix constant
 setNamespacePrefix($appConfig->namespacePrefix ?? null);
 
-// Carrega automaticamente todas as classes dentro de '/src'
+// Automatically loads all classes inside the /src folder
 spl_autoload_register(function (string $fullClass) : void
 {
-    // Obtém o diretório atual
+    // Gets the current direcory
     $baseDir = __DIR__ . '/../';
 
-    // A classe usa o prefixo no namespace?
+    // Does the class use the namespace's prefix?
     $len = strlen(namespacePrefix);
     if (strncmp(namespacePrefix, $fullClass, $len) !== 0) {
-        // Não, então segue para o próximo autoloader registrado
+        // No, so goes to the next registered autoload
         return;
     }
 
-    // Obtém as partes do caminho resultante para padronizar
+    // Gets the resultant's path parts to standardize
     $class_parts = explode('\\', $fullClass);
     $standarized_class = '';
 
-    // Remove as iniciais maiúsculas do caminho até a classe
+    // Removes the first uppercase characters from the class' path
     foreach ($class_parts as $index => $part) {
-        // Se for o último item da lista (o nome da classe),
-        // inclui diretamente o texto na string padronizada
+        // If it is the last item in the list (the class name),
+        // includes directly the text in the standardized string
         if ($index === count($class_parts) - 1) {
             $standarized_class .= $part;
         }
-        // Se for parte do caminho, retira as maiúsculas
+        // If it is part of the path, removes the uppercase characters
         else {
             $standarized_class .= strtolower($part) . '/';
         }
     }
 
-    // Substitui o separador de namespace '\' por barra
+    // Replaces the namespace separator ("\") with a slash
     $className = str_replace('\\', '/', substr($fullClass, $len));
 
     
     $classFile = $baseDir . $className;
 
-    // Ajusta para buscar os arquivos .php e .class.php
+    // Sets to search file with ".php" and ".class.php" files
     $classExtensions = ['.php', '.class.php'];
 
-    // Verifica em cada formato/extensão de arquivo para importar
+    // Checks for every file format/extension to import
     foreach ($classExtensions as $extension) {
-        // Se a classe existir, faz um include
+        // If the class exists, include it
         if (file_exists($classFile . $extension)) {
             include_once $classFile . $extension;
             break;
@@ -109,16 +108,16 @@ spl_autoload_register(function (string $fullClass) : void
     }
 });
 
-// Tenta carregar as classes no diretório "/vendor" (se existir)
+// Tries to load the classes in the /vendor directory (if it exists)
 spl_autoload_register(function ($vendorClass) : void {
-    // Caminho do diretório base
+    // Path of the base directory
     $vendorPath = __DIR__ . '/../../vendor/';
-    // Caminho do arquivo, trocando "\" por "/"
+    // File path, replacing "\" with "/"
     $filePath = $vendorPath . str_replace('\\', '/', $vendorClass) . '.php';
 
-    // O caminho aponta para um arquivo válido?
+    // Does the path points to a valid file?
     if (file_exists($filePath)) {
-        // Sim, inclui
+        // Yes, includes it
         include_once $filePath;
     }
 });
