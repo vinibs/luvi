@@ -160,7 +160,7 @@ class I18n {
             return $string;
         }
 
-        // PRocesses the string's parameters
+        // Processes the string's parameters
         foreach ($params as $key => $param) {
             // Builds the parameter's identification
             $paramId = '{' . $key . '}';

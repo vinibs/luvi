@@ -6,7 +6,12 @@
         "controller_not_found": "Não foi possível executar a ação da rota. O controller \"{controller}\" não foi encontrado",
         "method_not_found": "Não foi possível executar a ação da rota. O método \"{method}\" não foi encontrado no controller \"{controller}\"",
         "invalid_value_url_parameter": "Valor \"{value}\" inválido para um parâmetro de URL",
-        "file_not_found_loading_view": "Arquivo não encontrado ao carregar a view \"{viewName}\""
+        "file_not_found_loading_view": "Arquivo não encontrado ao carregar a view \"{viewName}\"",
+        "driver_not_found_in_db_config": "Propriedade \"driver\" não encontrada na configuração do banco de dados",
+        "host_not_found_in_db_config": "Propriedade \"host\" não encontrada na configuração do banco de dados",
+        "database_not_found_in_db_config": "Propriedade \"database\" não encontrada na configuração do banco de dados",
+        "user_not_found_in_db_config": "Propriedade \"user\" não encontrada na configuração do banco de dados",
+        "password_not_found_in_db_config": "Propriedade \"password\" não encontrada na configuração do banco de dados"
     },
     "hello_world" : "Olá mundo",
     "bark": "au"

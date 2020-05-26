@@ -6,7 +6,12 @@
         "controller_not_found": "Unable to execute route action. Controller \"{controller}\" not found",
         "method_not_found": "Unable to execute route action. Method \"{method}\" not found in controller \"{controller}\"",
         "invalid_value_url_parameter": "Invalid value \"{value}\" for URL parameter",
-        "file_not_found_loading_view": "File not found while loading view \"{viewName}\""
+        "file_not_found_loading_view": "File not found while loading view \"{viewName}\"",
+        "driver_not_found_in_db_config": "\"Driver\" property not found in database configuration",
+        "host_not_found_in_db_config": "\"Host\" property not found in database configuration",
+        "database_not_found_in_db_config": "\"Database\" property not found in database configuration",
+        "user_not_found_in_db_config": "\"User\" property not found in database configuration",
+        "password_not_found_in_db_config": "\"Password\" property not found in database configuration"
     },
     "hello_world" : "Hello World",
     "bark": "woof"

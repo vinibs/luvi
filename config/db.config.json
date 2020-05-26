@@ -1,3 +1,7 @@
 {
-    
+    "driver": "mysql",
+    "host": "samplehost",
+    "database": "sampledatabase",
+    "user": "sampleuser",
+    "password": "samplepassword"
 }

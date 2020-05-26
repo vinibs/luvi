@@ -157,4 +157,24 @@ class Session {
         return $_SESSION[$session->sessionID][$flashId][$name] === $value ? 
             true : false;
     }
+
+    /**
+     * Identifies if a flash variable with a given name exists
+     * 
+     * @param string $name
+     * 
+     * @return bool
+     */
+    public static function hasFlash (string $name) : bool
+    {
+        // Gets the class' instance, which
+        // starts the session and its attributes
+        $session = self::getInstance();
+        // Generates the flash variable's ID inside
+        // the session variable
+        $flashId = $session->sessionID . '/flash';
+
+        // Returns wether the session variable exists or not
+        return isset($_SESSION[$session->sessionID][$flashId][$name]);
+    }
 }
