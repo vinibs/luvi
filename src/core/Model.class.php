@@ -6,7 +6,9 @@ namespace App\Core;
  * Class Model
  * 
  * @author Vinicius Baroni Soares <hiviniciusbs@gmail.com>
- * @copyright 2020
+ * @copyright 2020 - Luvi
+ * @link https://github.com/vinibs/luvi
+ * @license MIT License
  */
 abstract class Model {
     /**

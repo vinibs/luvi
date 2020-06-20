@@ -8,7 +8,9 @@ use App\Core\I18n;
  * Class View
  * 
  * @author Vinicius Baroni Soares <hiviniciusbs@gmail.com>
- * @copyright 2020
+ * @copyright 2020 - Luvi
+ * @link https://github.com/vinibs/luvi
+ * @license MIT License
  */
 class View {
     /**
@@ -136,7 +138,10 @@ class View {
         foreach ($extensions as $ext) {
             // There is a file with current extension?
             if (file_exists($viewFile . $ext)) {
-                // Yeas. Then, defines the HTTP status, 
+                // Sets the HTTP header for HTML content
+                header('Content-Type: text/html');
+
+                // Yes. Then, defines the HTTP status,
                 // requires the file and returns
                 return View::getInstance()
                     ->loadFile($viewFile . $ext, $httpStatus, $viewData);

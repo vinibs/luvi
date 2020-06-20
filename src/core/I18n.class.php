@@ -8,7 +8,9 @@ use App\Core\Session;
  * Class I18n
  * 
  * @author Vinicius Baroni Soares <hiviniciusbs@gmail.com>
- * @copyright 2020
+ * @copyright 2020 - Luvi
+ * @link https://github.com/vinibs/luvi
+ * @license MIT License
  */
 class I18n {
     /**

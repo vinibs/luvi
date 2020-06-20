@@ -6,7 +6,9 @@ namespace App\Core;
  * Class Router
  * 
  * @author Vinicius Baroni Soares <hiviniciusbs@gmail.com>
- * @copyright 2020
+ * @copyright 2020 - Luvi
+ * @link https://github.com/vinibs/luvi
+ * @license MIT License
  */
 class Router {
     /**
@@ -581,6 +583,20 @@ class Router {
     public function delete ($path, $action) : Router
     {
         $this->registerRoute($path, $action, 'delete');
+        return $this;
+    }
+
+    /**
+     * Registers a route for the OPTIONS method
+     * 
+     * @param string $path The route URI path
+     * @param string $action What should be done for the route
+     * 
+     * @return Router
+     */
+    public function options ($path, $action) : Router
+    {
+        $this->registerRoute($path, $action, 'options');
         return $this;
     }
 }

@@ -4,7 +4,9 @@
  * Configurations (in /config) and class (in /src) autoloader
  * 
  * @author Vinicius Baroni Soares <hiviniciusbs@gmail.com>
- * @copyright 2020
+ * @copyright 2020 - Luvi
+ * @link https://github.com/vinibs/luvi
+ * @license MIT License
  */
 spl_autoload_register(NULL, FALSE);
 

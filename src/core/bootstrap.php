@@ -3,7 +3,9 @@
  * App initializer
  * 
  * @author Vinicius Baroni Soares <hiviniciusbs@gmail.com>
- * @copyright 2020
+ * @copyright 2020 - Luvi
+ * @link https://github.com/vinibs/luvi
+ * @license MIT License
  */
 
  // Loads all classes and config files
@@ -11,7 +13,7 @@ require_once __DIR__ . '/autoload.php';
 
 use App\Core\Router as Router;
 
-define('defaultLocale', $appConfig->language ?? 'en-en');
+define('defaultLocale', $appConfig->locale ?? 'en-en');
 
 // Initializes a router object
 $router = Router::getInstance();
