@@ -80,14 +80,12 @@ abstract class Model {
             throw new \Exception($errorMessage);
         }
 
-        // Creates the object's connection variable
-        $this->connection = new \PDO(
+        // Returns a new connection variable
+        return new \PDO(
             "{$dbConfig->driver}:host={$dbConfig->host};"
             . "dbname={$dbConfig->database}",
             $dbConfig->user,
             $dbConfig->password
         );
-
-        return $this->connection;
     }
 }
