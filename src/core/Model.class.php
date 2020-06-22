@@ -10,7 +10,7 @@ namespace App\Core;
  * @link https://github.com/vinibs/luvi
  * @license MIT License
  */
-abstract class Model {
+abstract class Model implements \JsonSerializable {
     /**
      * Object with DB configurations imported from JSON
      * 
@@ -87,5 +87,18 @@ abstract class Model {
             $dbConfig->user,
             $dbConfig->password
         );
+    }
+
+    /**
+     * Returns even the protected attributes when an object is serialized to JSON
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+        unset($vars['dbConfig']);
+        unset($vars['connection']);
+
+        return $vars;
     }
 }
