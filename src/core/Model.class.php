@@ -16,14 +16,14 @@ abstract class Model implements \JsonSerializable {
      * 
      * @var object
      */
-    protected $dbConfig;
+    protected static $dbConfig;
 
     /**
      * PDO database connection
      * 
      * @var \PDO
      */
-    protected $connection;
+    protected static $connection;
 
     /**
      * Initializes attributes' values
@@ -33,7 +33,7 @@ abstract class Model implements \JsonSerializable {
     public function __construct () {
         // Imports the global DB configuration to the class
         global $dbConfig;
-        $this->dbConfig = $dbConfig;
+        self::$dbConfig = $dbConfig;
     }
 
     /**
@@ -43,7 +43,7 @@ abstract class Model implements \JsonSerializable {
      * 
      * @return \PDO
      */
-    protected function connect (object $dbConfig) : \PDO
+    protected static function connect (object $dbConfig) : \PDO
     {
         // Does the driver property exist in dbConfig?
         if (!isset($dbConfig->driver)) {
