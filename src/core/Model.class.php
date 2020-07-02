@@ -23,7 +23,7 @@ abstract class Model implements \JsonSerializable {
      * 
      * @var \PDO
      */
-    protected static $connection;
+    protected $connection;
 
     /**
      * Initializes attributes' values
