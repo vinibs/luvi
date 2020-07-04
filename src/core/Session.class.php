@@ -23,7 +23,7 @@ class Session {
      * 
      * @var string
      */
-    private $sessionID;
+    private static $sessionID;
    
 
     /**
@@ -33,13 +33,25 @@ class Session {
      */
     private function __construct () 
     {
+        // Sets the class initial data
+        self::__init();
+
         // Checks if the session has already started
         if (session_status() == PHP_SESSION_NONE) {
-            // No, then starts it
-            session_start();
+            // Starts the session
+            self::start();
         }
+    }
+
+    /**
+     * Initiates the class' attributes
+     * 
+     * @return void
+     */
+    private static function __init ()
+    {
         global $appConfig;
-        $this->sessionID = $appConfig->sessionID ?? 'App';
+        self::$sessionID = $appConfig->sessionID ?? 'App';
     }
 
     /**
@@ -66,8 +78,18 @@ class Session {
      */
     public static function start () : Session
     {
-        // Alias to get the class' instance, which
-        // already starts the session if needed
+        // Sets the class initial data
+        self::__init();
+
+        // Checks if the session has already started
+        if (session_status() == PHP_SESSION_NONE) {
+            // Sets the name of the session using the configuration value
+            session_name(self::$sessionID ?? 'LuviSession');
+
+            // No, then starts it
+            session_start();
+        }
+
         return self::getInstance();
     }
 
@@ -85,11 +107,11 @@ class Session {
         // starts the session and its attributes
         $session = self::getInstance();
         // Sets the session variable with the given name
-        $_SESSION[$session->sessionID][$name] = $value;
+        $_SESSION[$name] = $value;
 
         // Returns wether the value was successfully set 
         // to the session or not
-        return $_SESSION[$session->sessionID][$name] === $value;
+        return $_SESSION[$name] === $value;
     }
 
     /**
@@ -105,13 +127,13 @@ class Session {
         // starts the session and its attributes
         $session = self::getInstance();
         // Check if there is an index with the given name
-        if (!isset($_SESSION[$session->sessionID][$name])) {
+        if (!isset($_SESSION[$name])) {
             // There isn't, returns null
             return null;
         }
 
         // Index exists, returns its value
-        return $_SESSION[$session->sessionID][$name];
+        return $_SESSION[$name];
     }
 
     /**
@@ -130,32 +152,32 @@ class Session {
         $session = self::getInstance();
         // Generates the flash variable's ID inside
         // the session variable
-        $flashId = $session->sessionID . '/flash';
+        $flashId = $session::$sessionID . '/flash';
 
         // Is $value parameter null?
         if (is_null($value)) {
             // Yes. Checks if there is an index with the given name
-            if (!isset($_SESSION[$session->sessionID][$flashId][$name])) {
+            if (!isset($_SESSION[$flashId][$name])) {
                 // Index doesn't exist yet. Returns null
                 return null;
             }
 
             // Index already exists, so gets its value
             // stored in flash with the given name
-            $flashValue = $_SESSION[$session->sessionID][$flashId][$name];
+            $flashValue = $_SESSION[$flashId][$name];
             // Remove the flash with the given name
-            unset($_SESSION[$session->sessionID][$flashId][$name]);
+            unset($_SESSION[$flashId][$name]);
             // Returns the stored value
             return $flashValue;
         }
 
         // There isn't the $value attribute, so defines 
         // the flash session variable
-        $_SESSION[$session->sessionID][$flashId][$name] = $value;
+        $_SESSION[$flashId][$name] = $value;
 
         // Returns wether the value was successfully set 
         // to the session or not
-        return $_SESSION[$session->sessionID][$flashId][$name] === $value;
+        return $_SESSION[$flashId][$name] === $value;
     }
 
     /**
@@ -172,9 +194,9 @@ class Session {
         $session = self::getInstance();
         // Generates the flash variable's ID inside
         // the session variable
-        $flashId = $session->sessionID . '/flash';
+        $flashId = $session::$sessionID . '/flash';
 
         // Returns wether the session variable exists or not
-        return isset($_SESSION[$session->sessionID][$flashId][$name]);
+        return isset($_SESSION[$flashId][$name]);
     }
 }
