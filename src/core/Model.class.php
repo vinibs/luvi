@@ -30,10 +30,19 @@ abstract class Model implements \JsonSerializable {
      * 
      * @return void
      */
-    public function __construct () {
+    public static function init () {
         // Imports the global DB configuration to the class
-        global $dbConfig;
-        self::$dbConfig = $dbConfig;
+        if (is_null(self::$dbConfig)) {
+            global $dbConfig;
+            self::$dbConfig = $dbConfig;
+        }
+    }
+
+    /**
+     * Model constructor.
+     */
+    public function __construct () {
+        self::init();
     }
 
     /**
