@@ -89,8 +89,7 @@ class Session {
 
         // Returns wether the value was successfully set 
         // to the session or not
-        return $_SESSION[$session->sessionID][$name] === $value ? 
-            true : false;
+        return $_SESSION[$session->sessionID][$name] === $value;
     }
 
     /**
@@ -156,8 +155,7 @@ class Session {
 
         // Returns wether the value was successfully set 
         // to the session or not
-        return $_SESSION[$session->sessionID][$flashId][$name] === $value ? 
-            true : false;
+        return $_SESSION[$session->sessionID][$flashId][$name] === $value;
     }
 
     /**
