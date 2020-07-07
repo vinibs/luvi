@@ -92,7 +92,7 @@ spl_autoload_register(function (string $fullClass) : void
     }
 
     // Replaces the namespace separator ("\") with a slash
-    $className = str_replace('\\', '/', substr($fullClass, $len));
+    $className = str_replace('\\', '/', substr($standarized_class, $len));
 
     
     $classFile = $baseDir . $className;
