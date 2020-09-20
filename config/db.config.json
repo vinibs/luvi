@@ -3,5 +3,6 @@
     "host": "samplehost",
     "database": "sampledatabase",
     "user": "sampleuser",
-    "password": "samplepassword"
+    "password": "samplepassword",
+    "charset": "utf8"
 }
