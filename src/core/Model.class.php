@@ -89,9 +89,16 @@ abstract class Model implements \JsonSerializable {
             throw new \Exception($errorMessage);
         }
 
+        // Does the dbConfig have a property for the charset?
+        $charset = '';
+        if (isset($dbConfig->charset)) {
+            $charset = "charset={$dbConfig->charset};";
+        }
+
         // Returns a new connection variable
         return new \PDO(
             "{$dbConfig->driver}:host={$dbConfig->host};"
+            . $charset
             . "dbname={$dbConfig->database}",
             $dbConfig->user,
             $dbConfig->password
