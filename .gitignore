@@ -5,4 +5,4 @@
 nbproject
 nbproject/*
 
-*/config/db.config.json
+config/db.config.json
